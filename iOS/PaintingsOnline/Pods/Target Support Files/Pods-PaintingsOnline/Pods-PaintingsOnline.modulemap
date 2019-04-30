@@ -1,0 +1,6 @@
+framework module Pods_PaintingsOnline {
+  umbrella header "Pods-PaintingsOnline-umbrella.h"
+
+  export *
+  module * { export * }
+}
