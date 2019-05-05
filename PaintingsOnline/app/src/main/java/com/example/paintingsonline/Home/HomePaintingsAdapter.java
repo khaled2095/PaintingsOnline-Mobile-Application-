@@ -6,12 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import com.android.volley.toolbox.NetworkImageView;
 import com.example.paintingsonline.Model.Paintings;
 import com.example.paintingsonline.R;
+import com.example.paintingsonline.Utils.MySingleton;
 
 import java.util.List;
 
@@ -44,7 +44,7 @@ public class HomePaintingsAdapter extends RecyclerView.Adapter<HomePaintingsAdap
         paintingViewHolder.paintingName.setText(paintings.getName());
         paintingViewHolder.paintingPrice.setText(String.valueOf(paintings.getPrice()));
 
-        Glide.with(mctx).load(paintings.getImage()).into(paintingViewHolder.i1);
+        paintingViewHolder.i1.setImageUrl(paintings.getImage(), MySingleton.getInstance(mctx).getImageLoader());
 
     }
 
@@ -58,7 +58,7 @@ public class HomePaintingsAdapter extends RecyclerView.Adapter<HomePaintingsAdap
     class PaintingViewHolder extends RecyclerView.ViewHolder
     {
 
-        ImageView i1;
+        NetworkImageView i1;
         TextView paintingName, paintingPrice;
 
         public PaintingViewHolder(@NonNull View itemView)
