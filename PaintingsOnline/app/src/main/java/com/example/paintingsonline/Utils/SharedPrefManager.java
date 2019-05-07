@@ -28,7 +28,7 @@ public class SharedPrefManager
         return instance;
     }
 
-    public boolean userlogin(int id, String username, String password ,String email, String address)
+    public boolean userlogin(int id, String username, String password ,String email, String address, String fullname)
     {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -37,7 +37,7 @@ public class SharedPrefManager
         editor.putString(KEY_EMAIL, email);
         editor.putString(KEY_USERNAME, username);
         editor.putString(KEY_PASSWORD, password);
-       // editor.putString(KEY_FULLNAME, fullname);
+        editor.putString(KEY_FULLNAME, fullname);
         editor.putString(KEY_ADDRESS, address);
         editor.apply();
         return true;
