@@ -1,6 +1,7 @@
 package com.example.paintingsonline.Registration;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -28,6 +29,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private EditText username, address, email, password, conpass, fullname;
     private Button signUp,  user, artist;
     private TextView signIn;
+    int u = 0 ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -43,29 +45,29 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         password = findViewById(R.id.regpass);
         conpass = findViewById(R.id.regconpass);
 
-//        user = findViewById(R.id.user);
-//        artist = findViewById(R.id.artist1);
+        user = findViewById(R.id.user);
+        artist = findViewById(R.id.artist1);
 
 
 
-//        if (user.isClickable())
-//        {
-//            user.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    user.setTextColor(Color.parseColor("White"));
-//                }
-//            });
-//        }
-//        else if (artist.isClickable())
-//        {
-//            artist.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    artist.setTextColor(Color.parseColor("White"));
-//                }
-//            });
-//        }
+        user.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view)
+            {
+                buttonPressed(view);
+                u = 0;
+            }
+        });
+
+        artist.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                buttonPressed(view);
+                u = 1;
+            }
+        });
 
 
 
@@ -76,6 +78,24 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         signIn.setOnClickListener(this);
 
     }
+
+
+    public boolean buttonPressed(View v)
+    {
+        switch(v.getId()) {
+            case R.id.user:
+                user.setTextColor(Color.parseColor("White"));
+                artist.setTextColor(Color.parseColor("Black"));
+                break;
+            case R.id.artist1:
+                user.setTextColor(Color.parseColor("Black"));
+                artist.setTextColor(Color.parseColor("White"));
+                break;
+        }
+
+        return false;
+    }
+
 
 
     private void registerUser()
@@ -96,7 +116,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         URL_REGISTER += "&Password=" + pass;
         URL_REGISTER += "&Email=" + em;
         URL_REGISTER += "&Name=" + fname;
-        URL_REGISTER += "&Usertype=1";
+        URL_REGISTER += "&Usertype=" + u;
         URL_REGISTER += "&Address=" + addr;
 
 
