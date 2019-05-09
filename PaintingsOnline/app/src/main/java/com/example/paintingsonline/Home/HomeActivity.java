@@ -74,8 +74,8 @@ public class HomeActivity extends AppCompatActivity {
                         String image = jsonObject.getString("painting_url");
                         int price = jsonObject.getInt("painting_price");
 
-                        Paintings paintings = new Paintings(id, title, image, price);
-                        paintingsList.add(paintings);
+                        Paintings paintings1 = new Paintings(id, title, image, price);
+                        paintingsList.add(paintings1);
                     }
                     catch (JSONException e)
                     {
@@ -100,8 +100,8 @@ public class HomeActivity extends AppCompatActivity {
     private void initrecyclerView(List<Paintings> pl)
     {
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        HomePaintingsAdapter hpa = new HomePaintingsAdapter(this, pl);
-        recyclerView.setAdapter(hpa);
+        HomePaintingsAdapter homePaintingsAdapter = new HomePaintingsAdapter(this, pl);
+        recyclerView.setAdapter(homePaintingsAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }

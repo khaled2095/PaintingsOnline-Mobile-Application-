@@ -17,13 +17,13 @@ import java.util.List;
 
 public class HomePaintingsAdapter extends RecyclerView.Adapter<HomePaintingsAdapter.PaintingViewHolder>
 {
-    private Context mctx;
+    private Context mcon;
     private List<Paintings> paintingsList;
 
 
     public HomePaintingsAdapter(Context mctx, List<Paintings> paintingsList)
     {
-        this.mctx = mctx;
+        this.mcon = mctx;
         this.paintingsList = paintingsList;
     }
 
@@ -31,7 +31,7 @@ public class HomePaintingsAdapter extends RecyclerView.Adapter<HomePaintingsAdap
     @Override
     public PaintingViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
     {
-        LayoutInflater layoutInflater = LayoutInflater.from(mctx);
+        LayoutInflater layoutInflater = LayoutInflater.from(mcon);
         View view = layoutInflater.inflate(R.layout.row_home_item, viewGroup, false);
         return new PaintingViewHolder(view);
 
@@ -44,7 +44,7 @@ public class HomePaintingsAdapter extends RecyclerView.Adapter<HomePaintingsAdap
         paintingViewHolder.paintingName.setText(paintings.getName());
         paintingViewHolder.paintingPrice.setText(String.valueOf(paintings.getPrice()));
 
-        paintingViewHolder.i1.setImageUrl(paintings.getImage(), MySingleton.getInstance(mctx).getImageLoader());
+        paintingViewHolder.img1.setImageUrl(paintings.getImage(), MySingleton.getInstance(mcon).getImageLoader());
 
     }
 
@@ -58,14 +58,14 @@ public class HomePaintingsAdapter extends RecyclerView.Adapter<HomePaintingsAdap
     class PaintingViewHolder extends RecyclerView.ViewHolder
     {
 
-        NetworkImageView i1;
+        NetworkImageView img1;
         TextView paintingName, paintingPrice;
 
         public PaintingViewHolder(@NonNull View itemView)
         {
             super(itemView);
 
-            i1 = itemView.findViewById(R.id.imgpaintings);
+            img1 = itemView.findViewById(R.id.imgpaintings);
             paintingName = itemView.findViewById(R.id.painting_Name);
             paintingPrice = itemView.findViewById(R.id.price);
         }
