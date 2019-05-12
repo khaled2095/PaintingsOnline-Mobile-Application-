@@ -18,7 +18,45 @@
             android:layout_height="wrap_content"
             android:id="@+id/rel1">
 
-            <include layout="@layout/top_tabs"/>
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <android.support.v7.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/paintingtoolbar">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="5dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_centerVertical="true"
+                            android:id="@+id/backarrow"
+                            android:src="@drawable/ic_back"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Upload Paintings"
+                            android:textSize="24sp"
+                            android:layout_marginStart="50dp"
+                            android:id="@+id/paintingname"/>
+
+
+                    </RelativeLayout>
+
+
+                </android.support.v7.widget.Toolbar>
+
+
+            </android.support.design.widget.AppBarLayout>
 
         </RelativeLayout>
 
@@ -192,14 +230,13 @@
             android:layout_alignParentBottom="true">
 
 
-            <android.support.design.widget.BottomNavigationView
+            <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/bottom"
                 android:background="@drawable/white_grey_border_top"
-                app:menu="@menu/navigation">
+                app:menu="@menu/navigation"/>
 
-            </android.support.design.widget.BottomNavigationView>
 
 
         </RelativeLayout>
