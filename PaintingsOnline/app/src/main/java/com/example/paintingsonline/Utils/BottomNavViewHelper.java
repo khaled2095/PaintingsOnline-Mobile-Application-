@@ -13,16 +13,17 @@ import com.example.paintingsonline.Home.HomeActivity;
 import com.example.paintingsonline.Order.OrderActivity;
 import com.example.paintingsonline.Profile.ProfileActivity;
 import com.example.paintingsonline.R;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class BottomNavViewHelper
 {
 
-    public static void setupBottomNavView(BottomNavigationView bottomNavigationView)
+    public static void setupBottomNavView(BottomNavigationViewEx bottomNavigationView)
     {
 
     }
 
-    public static void enableNavigation(final Context context, final Activity callingActivity, BottomNavigationView view) {
+    public static void enableNavigation(final Context context, final Activity callingActivity, BottomNavigationViewEx view) {
         view.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
