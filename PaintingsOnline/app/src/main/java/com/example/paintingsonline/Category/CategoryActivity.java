@@ -25,7 +25,7 @@ public class CategoryActivity extends AppCompatActivity {
     {
         SectionPagerAdapter spa = new SectionPagerAdapter(getSupportFragmentManager());
         spa.addFragment(new CategoryFragment());
-        spa.addFragment(new ArtistFragment());
+        spa.addFragment(new RoomFragment());
 
         ViewPager vp = findViewById(R.id.cont);
         vp.setAdapter(spa);
@@ -34,7 +34,7 @@ public class CategoryActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(vp);
 
         tabLayout.getTabAt(0).setText("CATEGORY");
-        tabLayout.getTabAt(1).setText("ARTIST");
+        tabLayout.getTabAt(1).setText("ROOM");
 
     }
 
