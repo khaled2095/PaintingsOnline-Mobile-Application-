@@ -1,9 +1,270 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Profile.ProfileActivity">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Top Toolbar -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rel1">
+
+            <android.support.design.widget.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+
+                <android.support.v7.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/profiletoolbar">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Profile"
+                            android:textSize="24sp"
+                            android:layout_marginStart="10dp"
+                            android:id="@+id/profile"/>
+
+
+                    </RelativeLayout>
+
+
+                </android.support.v7.widget.Toolbar>
+
+
+            </android.support.design.widget.AppBarLayout>
+
+
+        </RelativeLayout>
+
+        <!-- Middle Section -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rel2"
+            android:layout_below="@id/rel1"
+            android:layout_above="@id/rel3">
+
+            <!--<include layout="@layout/center_viewpager"/>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relLayout1"
+                android:padding="10dp"
+                android:layout_marginTop="40dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_profile"
+                    android:id="@+id/ivPerson"
+                    android:layout_centerVertical="true"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/ivPerson"
+                    android:inputType="textNoSuggestions"
+                    android:textSize="16sp"
+                    android:textColor="@color/Black"
+                    android:id="@+id/editfullName"
+                    android:layout_marginStart="10dp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relLayout2"
+                android:layout_below="@+id/relLayout1"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_add"
+                    android:id="@+id/address"
+                    android:layout_centerVertical="true"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/address"
+                    android:inputType="textNoSuggestions"
+                    android:textSize="16sp"
+                    android:textColor="@color/Black"
+                    android:id="@+id/editaddr"
+                    android:layout_marginStart="10dp"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relLayout3"
+                android:layout_below="@+id/relLayout2"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_email"
+                    android:id="@+id/email"
+                    android:layout_centerVertical="true"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/email"
+                    android:inputType="textNoSuggestions"
+                    android:textSize="16sp"
+                    android:textColor="@color/Black"
+                    android:id="@+id/editemail"
+                    android:layout_marginStart="10dp"/>
+
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/updatedetails"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relLayout3"
+                android:layout_marginTop="20dp"
+                android:layout_centerHorizontal="true"
+                android:text="Update"
+                android:background="@drawable/onclick_grey"/>
+
+
+            <View
+                android:id="@+id/line"
+                android:layout_marginTop="40dp"
+                android:layout_width="fill_parent"
+                android:layout_height="2dp"
+                android:background="#c0c0c0"
+                android:layout_below="@+id/updatedetails"/>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relLayout4"
+                android:layout_below="@+id/line"
+                android:layout_marginTop="40dp"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_pass"
+                    android:id="@+id/pass"
+                    android:layout_centerVertical="true"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/pass"
+                    android:inputType="textNoSuggestions"
+                    android:textSize="16sp"
+                    android:textColor="@color/Black"
+                    android:id="@+id/editpass"
+                    android:hint="New Password"
+                    android:layout_marginStart="10dp"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/relLayout5"
+                android:layout_below="@+id/relLayout4"
+                android:padding="10dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_pass"
+                    android:id="@+id/conpass"
+                    android:layout_centerVertical="true"/>
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/conpass"
+                    android:inputType="textNoSuggestions"
+                    android:textSize="16sp"
+                    android:textColor="@color/Black"
+                    android:id="@+id/editconpass"
+                    android:hint="Confirm Password"
+                    android:layout_marginStart="10dp"/>
+
+            </RelativeLayout>
+
+
+
+            <Button
+                android:id="@+id/updatepass"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/relLayout5"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:text="Update"
+                android:background="@drawable/onclick_grey"/>
+
+            <Button
+                android:id="@+id/logout"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/updatepass"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:text="Logout"
+                android:background="@drawable/onclick_grey"/>
+
+        </RelativeLayout>
+
+        <!-- Bottom Navigation -->
+
+        <RelativeLayout
+            android:id="@+id/rel3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true">
+
+
+            <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/bottom"
+                android:background="@drawable/white_grey_border_top"
+                app:menu="@menu/navigation">
+
+            </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
+
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
 
 </android.support.constraint.ConstraintLayout>
