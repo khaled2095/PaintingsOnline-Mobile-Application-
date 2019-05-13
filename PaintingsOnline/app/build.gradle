@@ -44,7 +44,6 @@ dependencies {
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'
 
-    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'com.nex3z:notification-badge:1.0.2'
 
     // glide image library
