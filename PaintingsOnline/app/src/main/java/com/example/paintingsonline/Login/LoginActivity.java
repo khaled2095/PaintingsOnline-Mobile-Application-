@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         username = findViewById(R.id.loguname);
         pass = findViewById(R.id.logpass);
         login = findViewById(R.id.login);
-        register = findViewById(R.id.regis);
+        register = findViewById(R.id.signup);
 
         login.setOnClickListener(this);
         register.setOnClickListener(this);

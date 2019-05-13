@@ -72,7 +72,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
         signUp = findViewById(R.id.btn_signup);
-        signIn = findViewById(R.id.tvSignIn);
+        signIn = findViewById(R.id.signin);
 
         signUp.setOnClickListener(this);
         signIn.setOnClickListener(this);
