@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.BottomNavViewHelper;
 import com.example.paintingsonline.Utils.SectionPagerAdapter;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 public class CategoryActivity extends AppCompatActivity {
 
@@ -42,7 +43,7 @@ public class CategoryActivity extends AppCompatActivity {
     /* bottom navigation view setup */
     private void setupBottomnavView()
     {
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom);
+        BottomNavigationViewEx bottomNavigationView = findViewById(R.id.bottom);
         BottomNavViewHelper.enableNavigation(CategoryActivity.this, this , bottomNavigationView);
 
         Menu menu = bottomNavigationView.getMenu();

@@ -15,6 +15,7 @@ import com.example.paintingsonline.Model.Paintings;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.BottomNavViewHelper;
 import com.example.paintingsonline.Utils.MySingleton;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -45,7 +46,7 @@ public class HomeActivity extends AppCompatActivity {
     /* bottom navigation view setup */
     private void setupBottomnavView()
     {
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom);
+        BottomNavigationViewEx bottomNavigationView = findViewById(R.id.bottom);
         BottomNavViewHelper.enableNavigation(HomeActivity.this, this ,bottomNavigationView);
 
         Menu menu = bottomNavigationView.getMenu();
