@@ -9,6 +9,8 @@ public class SharedPrefManager
     private static Context ctx;
     private String SHARED_PREF_NAME = "my1";
     private String KEY_FULLNAME = "fullname";
+    private String KEY_USER = "usertype";
+    private String KEY_VERIFIED = "verify";
     private String KEY_PASSWORD = "pass";
     private String KEY_ADDRESS = "address";
     private String KEY_USERNAME = "username";
@@ -28,7 +30,7 @@ public class SharedPrefManager
         return instance;
     }
 
-    public boolean userlogin(int id, String username, String password ,String email, String address, String fullname)
+    public boolean userlogin(int id, String username, String password ,String email, String address, String fullname, int usertype, int verify)
     {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -39,6 +41,8 @@ public class SharedPrefManager
         editor.putString(KEY_PASSWORD, password);
         editor.putString(KEY_FULLNAME, fullname);
         editor.putString(KEY_ADDRESS, address);
+        editor.putInt(KEY_USER, usertype);
+        editor.putInt(KEY_VERIFIED, verify);
         editor.apply();
         return true;
     }
@@ -67,6 +71,12 @@ public class SharedPrefManager
     {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getInt(KEY_ID, 0);
+    }
+
+    public int getVerifiedUser()
+    {
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        return sharedPreferences.getInt(KEY_VERIFIED, 0);
     }
 
     public String getUserName()
