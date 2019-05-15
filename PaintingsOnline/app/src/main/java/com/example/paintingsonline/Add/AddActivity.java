@@ -9,6 +9,8 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +18,8 @@ import android.widget.Spinner;
 
 import com.example.paintingsonline.Model.Category;
 import com.example.paintingsonline.R;
+import com.example.paintingsonline.Utils.BottomNavViewHelper;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.List;
 
@@ -62,6 +66,22 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+    }
+
+
+
+
+    /* bottom navigation view setup */
+    private void setupBottomnavView()
+    {
+        BottomNavigationViewEx bottomNavigationView = findViewById(R.id.bottom);
+        BottomNavViewHelper.enableNavigation(AddActivity.this, this , bottomNavigationView);
+        BottomNavViewHelper.setupBottomNavView(bottomNavigationView);
+
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(2);
+        menuItem.setChecked(true);
+
     }
 
 
