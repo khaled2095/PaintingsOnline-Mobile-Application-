@@ -70,6 +70,17 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
 
 
 
+    public void resetFields()
+    {
+        paintingtitle.setText("");
+        paintingprice.setText("");
+        paintingdesc.setText("");
+    }
+
+    private boolean isEmpty(String string){
+        return string.equals("");
+    }
+
 
     /* bottom navigation view setup */
     private void setupBottomnavView()
