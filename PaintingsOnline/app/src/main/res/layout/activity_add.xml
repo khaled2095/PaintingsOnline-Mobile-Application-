@@ -25,20 +25,12 @@
                 <android.support.v7.widget.Toolbar
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/paintingtoolbar">
+                    android:id="@+id/paintingtoolbarhome">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
 
-                        <ImageView
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_marginStart="5dp"
-                            android:layout_marginEnd="20dp"
-                            android:layout_centerVertical="true"
-                            android:id="@+id/backarrow"
-                            android:src="@drawable/ic_back"/>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -46,7 +38,6 @@
                             android:layout_centerVertical="true"
                             android:text="Upload Paintings"
                             android:textSize="24sp"
-                            android:layout_marginStart="50dp"
                             android:id="@+id/paintingname"/>
 
 
@@ -74,14 +65,13 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:id="@+id/relLayout1"
-                        android:background="@color/lightGrey">
+                        android:background="@color/white">
 
 
                         <ImageView
@@ -96,24 +86,28 @@
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="60dp"
+                            android:layout_height="wrap_content"
                             android:layout_below="@+id/post_image"
                             android:id="@+id/relLayout2"
-                            android:layout_marginTop="30dp"
-                            android:background="@color/White">
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp">
 
 
-                            <EditText
+                            <android.support.design.widget.TextInputLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/input_title"
-                                android:layout_centerVertical="true"
-                                android:layout_marginStart="10dp"
-                                android:background="@null"
-                                android:maxLines="2"
                                 android:hint="Title"
-                                android:textColor="@color/Black"
-                                android:padding="10dp"/>
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+
+                                <EditText
+                                    android:id="@+id/input_title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textPersonName"/>
+
+                            </android.support.design.widget.TextInputLayout>
 
                         </RelativeLayout>
 
@@ -122,16 +116,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@+id/relLayout2"
-                            android:id="@+id/relLayout9">
+                            android:id="@+id/relLayout9"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp">
 
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="150dp"
-                                android:background="@color/White"
+                                android:background="@drawable/onclick_grey"
+                                android:backgroundTint="@color/grey1"
                                 android:id="@+id/relLayout3"
                                 android:layout_marginTop="10dp"
                                 android:padding="10dp">
+
 
 
                                 <EditText
@@ -154,62 +152,155 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_below="@+id/relLayout3"
-                                android:background="@color/White"
                                 android:id="@+id/relLayout4"
-                                android:padding="10dp"
                                 android:layout_marginTop="10dp">
 
 
-                                <EditText
+                                <android.support.design.widget.TextInputLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/input_price"
-                                    android:layout_centerVertical="true"
-                                    android:background="@null"
-                                    android:inputType="numberDecimal"
                                     android:hint="Price"
-                                    android:textColor="@color/Black"/>
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+
+                                    <EditText
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/input_price"
+                                        android:inputType="number"
+                                        android:textColor="@color/Black"/>
+
+
+
+                                </android.support.design.widget.TextInputLayout>
+
 
                             </RelativeLayout>
 
-                            <RelativeLayout
+
+                            <LinearLayout
+                                android:id="@+id/linear"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/relLayout4"
-                                android:background="@color/White"
-                                android:id="@+id/relLayoutspin"
-                                android:padding="10dp"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:layout_below="@+id/relLayout4">
+
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/onclick_grey"
+                                    android:backgroundTint="@color/grey1"
+                                    android:id="@+id/relLayoutspin"
+                                    android:padding="10dp"
+                                    android:layout_weight="2"
+                                    android:layout_marginEnd="2dp">
+
+
+
+                                    <Spinner
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/spinner1">
+                                    </Spinner>
+
+
+                                </RelativeLayout>
+
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/onclick_grey"
+                                    android:backgroundTint="@color/grey1"
+                                    android:id="@+id/relLayoutspin2"
+                                    android:layout_weight="2"
+                                    android:layout_marginStart="2dp"
+                                    android:padding="10dp">
+
+
+                                    <Spinner
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/spinner2">
+                                    </Spinner>
+
+
+                                </RelativeLayout>
+
+
+                            </LinearLayout>
+
+
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/size"
+                                android:orientation="horizontal"
+                                android:layout_below="@+id/linear"
                                 android:layout_marginTop="15dp">
 
 
-                                <Spinner
+
+                                <android.support.design.widget.TextInputLayout
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:id="@+id/spinner1"
-                                    android:layout_centerHorizontal="true">
-                                </Spinner>
+                                    android:hint="Length"
+                                    android:layout_weight="2"
+                                    android:layout_marginEnd="2dp"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
 
-                            </RelativeLayout>
+                                    <EditText
+                                        android:id="@+id/length"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:inputType="number"
+                                        android:textColor="@color/Black"/>
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_below="@+id/relLayoutspin"
-                                android:background="@color/White"
-                                android:layout_marginTop="30dp">
 
-                                <Button
-                                    android:id="@+id/btn_post"
-                                    android:layout_width="wrap_content"
+                                </android.support.design.widget.TextInputLayout>
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="55dp"
-                                    android:layout_marginBottom="35dp"
-                                    android:text="UPLOAD"
-                                    android:background="@drawable/onclick_grey"
-                                    android:layout_centerHorizontal="true"/>
+                                    android:hint="Width"
+                                    android:layout_weight="2"
+                                    android:layout_marginStart="2dp"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
 
-                            </RelativeLayout>
+
+                                    <EditText
+                                        android:id="@+id/width"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:inputType="number"
+                                        android:textColor="@color/Black"/>
+
+
+                                </android.support.design.widget.TextInputLayout>
+
+
+                            </LinearLayout>
+
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/btn_post"
+                                android:layout_below="@+id/size"
+                                android:layout_marginTop="30dp"
+                                android:layout_marginBottom="35dp"
+                                android:text="UPLOAD"
+                                android:textSize="15sp"
+                                android:layout_centerHorizontal="true"
+                                android:background="@drawable/onclick_grey"/>
+
+
+
 
                         </RelativeLayout>
 
@@ -235,11 +326,14 @@
                 android:layout_height="match_parent"
                 android:id="@+id/bottom"
                 android:background="@drawable/white_grey_border_top"
-                app:menu="@menu/navigation"/>
+                app:menu="@menu/navigation">
 
+            </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
 
 
         </RelativeLayout>
+
+
 
 
     </RelativeLayout>
