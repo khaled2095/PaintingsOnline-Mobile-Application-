@@ -29,7 +29,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaintingActivity extends AppCompatActivity implements PaintingsAdapterView.OnPaintListener
+public class PaintingActivity extends AppCompatActivity
 {
 
     private List<Paintings> paintingsList2;
