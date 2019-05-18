@@ -9,42 +9,108 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp">
+        android:layout_margin="8dp"
+        android:id="@+id/homecard"
+        android:minHeight="200dp">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/owner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Admin"
+                    android:textSize="25sp"
+                    android:textColor="@color/Black"
+                    android:layout_marginStart="10dp"/>
+
+            </LinearLayout>
+
+
             <com.android.volley.toolbox.NetworkImageView
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="250dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
+                android:layout_marginTop="5dp"
                 android:id="@+id/imgpaintings"/>
 
-            <TextView
-                android:id="@+id/painting_Name"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_gravity="center"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:layout_weight="1"
-                android:textSize="24sp" />
 
-            <TextView
-                android:id="@+id/price"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:textColor="@color/colorAccent"
-                android:textSize="20sp" />
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp">
+
+
+                <TextView
+                    android:id="@+id/painting_Name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textStart"
+                    android:layout_weight="2"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/Black"
+                    android:text="Subtitle"
+                    android:textSize="25sp" />
+
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="20sp"
+                    android:layout_weight="2"
+                    android:layout_marginEnd="10dp"
+                    android:textAlignment="textEnd"
+                    android:text="$ 500"/>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/paintdescription"
+                    android:layout_marginTop="5dp"
+                    android:lineSpacingMultiplier="1.1"
+                    android:padding="10dp"
+                    android:textSize="15sp"/>
+
+            </LinearLayout>
+
+
+            <Button
+                android:id="@+id/c"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="15dp"
+                android:text="ADD TO CART"
+                android:textColor="@color/White"
+                android:background="@drawable/onclick_grey"
+                android:backgroundTint="@color/blue1"/>
+
 
 
         </LinearLayout>
+
+
 
     </android.support.v7.widget.CardView>
 
