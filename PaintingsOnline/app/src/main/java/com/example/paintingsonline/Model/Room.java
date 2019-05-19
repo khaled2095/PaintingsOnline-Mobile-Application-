@@ -38,4 +38,11 @@ public class Room
     public void setRoomimageURL(String roomimageURL) {
         this.roomimageURL = roomimageURL;
     }
+
+
+    @Override
+    public String toString()
+    {
+        return roomName;
+    }
 }
