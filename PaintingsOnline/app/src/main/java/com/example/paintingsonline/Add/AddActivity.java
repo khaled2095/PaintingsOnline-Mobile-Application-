@@ -94,6 +94,49 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
 
 
 
+
+    private void JSONrequestCategory()
+    {
+        JsonArrayRequest request = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response)
+            {
+                JSONObject jsonObject = null;
+
+                for (int i=0; i < response.length(); i++)
+                {
+                    try
+                    {
+                        jsonObject = response.getJSONObject(i);
+
+                        int id = jsonObject.getInt("ID");
+                        String title = jsonObject.getString("Name");
+
+                        Category category = new Category(id, title);
+                        categoryList.add(category);
+                        initSpinner();
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        MySingleton.getInstance(this).addToRequestQueue(request);
+    }
+
+
+
     private void JSONrequestRoom()
     {
         JsonArrayRequest request = new JsonArrayRequest(URL_ROOM, new Response.Listener<JSONArray>() {
