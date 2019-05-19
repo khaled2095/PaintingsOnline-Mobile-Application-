@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.paintingsonline.Model.Category;
 import com.example.paintingsonline.Model.Room;
@@ -39,6 +40,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.List;
 
@@ -85,6 +90,48 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+    }
+
+
+
+    private void JSONrequestRoom()
+    {
+        JsonArrayRequest request = new JsonArrayRequest(URL_ROOM, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response)
+            {
+                JSONObject jsonObject = null;
+
+                for (int i=0; i < response.length(); i++)
+                {
+                    try
+                    {
+                        jsonObject = response.getJSONObject(i);
+
+                        int id = jsonObject.getInt("ID");
+                        String title = jsonObject.getString("Name");
+
+                        Room room = new Room(id, title);
+                        roomList.add(room);
+                        initSpinner2();
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+
+            }
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+
+        MySingleton.getInstance(this).addToRequestQueue(request);
     }
 
 
