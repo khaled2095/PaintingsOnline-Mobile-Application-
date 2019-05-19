@@ -45,6 +45,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.OnPhotoSelectedListener
@@ -90,6 +91,22 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+
+
+
+
+        categoryList = new ArrayList<>();
+
+        roomList = new ArrayList<>();
+
+        JSONrequestCategory();
+
+        JSONrequestRoom();
+
+        initialize();
+
+        setupBottomnavView();
+
     }
 
 
