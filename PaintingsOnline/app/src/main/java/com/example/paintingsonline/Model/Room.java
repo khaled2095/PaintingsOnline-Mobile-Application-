@@ -7,6 +7,12 @@ public class Room
     private String roomimageURL;
 
 
+    public Room(int roomid, String roomName)
+    {
+        this.roomid = roomid;
+        this.roomName = roomName;
+    }
+
     public Room(int roomid, String roomName, String roomimageURL)
     {
         this.roomid = roomid;
