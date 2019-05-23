@@ -1,12 +1,15 @@
 package com.example.paintingsonline.Add;
 
 import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,8 +28,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.paintingsonline.Login.LoginActivity;
 import com.example.paintingsonline.Model.Category;
 import com.example.paintingsonline.Model.Room;
+import com.example.paintingsonline.Profile.ProfileActivity;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.BottomNavViewHelper;
 import com.example.paintingsonline.Utils.MySingleton;
@@ -60,32 +65,30 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
         mselectedURI = imagepath;
     }
 
-
-    //Image Base 64 string From Gallery
     @Override
-    public void getimageBase64String(String image64)
-    {
+    public void getBytes(byte[] imgBytes) {
         mselectedBitmap = null;
-        mselectedImage64 = image64;
+        mUploadBytes = imgBytes;
     }
 
-
-
     private String URL = "https://jrnan.info/Painting/ShowCategory.php";
+    private String URL_ROOM = "https://jrnan.info/Painting/ShowRoom.php";
     private String UPLOAD_URL = "https://jrnan.info/Painting/testUpload.php";
     private static final int REQUEST_CODE = 1;
     private ImageView uploadimage;
-    private EditText paintingtitle, paintingprice, paintingdesc;
+    private EditText paintingtitle, paintingprice, paintingdesc, length, width, qty;
     private Button uploadButton;
-    private Spinner s1;
+    private Spinner s1, s2;
     List<Category> categoryList;
+    List<Room> roomList;
     int usertype = -1;
     int verifieduser = -1;
 
 
     private Bitmap mselectedBitmap;
     private Uri mselectedURI;
-    private String mselectedImage64;
+    private byte[] mUploadBytes;
+    String emptyimage = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,99 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
         setContentView(R.layout.activity_add);
 
 
+
+        uploadimage = findViewById(R.id.post_image);
+        paintingtitle = findViewById(R.id.input_title);
+        paintingprice = findViewById(R.id.input_price);
+        paintingdesc = findViewById(R.id.input_description);
+        length = findViewById(R.id.length);
+        width = findViewById(R.id.width);
+        qty = findViewById(R.id.quantity);
+        s1 = findViewById(R.id.spinner1);
+        s2 = findViewById(R.id.spinner2);
+        uploadButton = findViewById(R.id.btn_post);
+
+
+        if (!SharedPrefManager.getInstance(this).isLoggedIn())
+        {
+            finish();
+            startActivity(new Intent(AddActivity.this, LoginActivity.class));
+            Toast.makeText(this, "You are Not Logged In", Toast.LENGTH_SHORT).show();
+        }
+
+        usertype = SharedPrefManager.getInstance(this).getUserType();
+        verifieduser = SharedPrefManager.getInstance(this).getVerifiedUser();
+
+
+        if (!SharedPrefManager.getInstance(this).isLoggedIn())
+        {
+
+            AlertDialog.Builder builder1 = new AlertDialog.Builder(AddActivity.this);
+            builder1.setMessage("You are not an Logged in. Click ok to Log In");
+            builder1.setCancelable(true);
+
+            builder1.setPositiveButton(
+                    "OK",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            dialog.cancel();
+                            finish();
+                            startActivity(new Intent(AddActivity.this, LoginActivity.class));
+                        }
+                    });
+
+            AlertDialog alert11 = builder1.create();
+            alert11.show();
+
+        }
+        else {
+            if(usertype == 0)
+            {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(AddActivity.this);
+                builder1.setMessage("You are not an artist. Click ok to Continue as an User");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                                finish();
+                                startActivity(new Intent(AddActivity.this, ProfileActivity.class));
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
+                //Toast.makeText(this, "You have to be logged in as an artist", Toast.LENGTH_SHORT).show();
+            }
+            else if  (usertype == 1 )
+            {
+                if (verifieduser == 0)
+                {
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(AddActivity.this);
+                    builder1.setMessage("You are not a verified artist yet. Click ok to Continue as an User");
+                    builder1.setCancelable(true);
+
+                    builder1.setPositiveButton(
+                            "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                    finish();
+                                    startActivity(new Intent(AddActivity.this, ProfileActivity.class));
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                    //Toast.makeText(this, "Oops, we havent vertified you yet!", Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    Toast.makeText(this, "Welcome, we are excited to see what you made!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
 
 
         categoryList = new ArrayList<>();
