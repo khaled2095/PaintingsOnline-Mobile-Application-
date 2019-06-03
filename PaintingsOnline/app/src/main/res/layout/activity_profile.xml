@@ -20,7 +20,8 @@
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:background="@drawable/white_grey_border_bottom">
 
                 <android.support.v7.widget.Toolbar
                     android:layout_width="match_parent"
@@ -37,7 +38,8 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="Profile"
-                            android:textSize="24sp"
+                            android:textSize="20sp"
+                            android:textColor="@color/Black"
                             android:layout_marginStart="10dp"
                             android:id="@+id/profile"/>
 
@@ -68,7 +70,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/relLayout1"
                 android:padding="10dp"
-                android:layout_marginTop="40dp">
+                android:layout_marginTop="35dp">
 
                 <ImageView
                     android:layout_width="30dp"
@@ -154,7 +156,7 @@
 
             <View
                 android:id="@+id/line"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:layout_width="fill_parent"
                 android:layout_height="2dp"
                 android:background="#c0c0c0"
@@ -166,7 +168,7 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/relLayout4"
                 android:layout_below="@+id/line"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="30dp"
                 android:padding="10dp">
 
                 <ImageView
@@ -180,7 +182,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/pass"
-                    android:inputType="textNoSuggestions"
+                    android:inputType="textPassword"
                     android:textSize="16sp"
                     android:textColor="@color/Black"
                     android:id="@+id/editpass"
@@ -208,7 +210,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@+id/conpass"
-                    android:inputType="textNoSuggestions"
+                    android:inputType="textPassword"
                     android:textSize="16sp"
                     android:textColor="@color/Black"
                     android:id="@+id/editconpass"
@@ -261,6 +263,7 @@
 
 
         </RelativeLayout>
+
 
 
 
