@@ -1,0 +1,13 @@
+# Uncomment the next line to define a global platform for your project
+#platform :ios, '8.0'
+
+target 'PaintingsOnline' do
+use_frameworks!
+pod 'BBBadgeBarButtonItem'
+pod 'Alamofire', '~> 4.4'
+pod 'iOSDropDown'
+pod 'SkyFloatingLabelTextField', '~> 3.0'
+pod 'AlamofireImage', '~> 3.3'
+pod 'MaterialComponents/Buttons'
+pod 'MaterialComponents/TextFields'
+end
