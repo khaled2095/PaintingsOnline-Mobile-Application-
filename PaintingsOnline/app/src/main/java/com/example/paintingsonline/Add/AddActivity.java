@@ -91,12 +91,11 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
     String emptyimage = "";
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
+        loginUser();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
-
-
-
         uploadimage = findViewById(R.id.post_image);
         paintingtitle = findViewById(R.id.input_title);
         paintingprice = findViewById(R.id.input_price);
@@ -109,8 +108,7 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
         uploadButton = findViewById(R.id.btn_post);
 
 
-        if (!SharedPrefManager.getInstance(this).isLoggedIn())
-        {
+        if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
             finish();
             startActivity(new Intent(AddActivity.this, LoginActivity.class));
             Toast.makeText(this, "You are Not Logged In", Toast.LENGTH_SHORT).show();
@@ -120,8 +118,7 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
         verifieduser = SharedPrefManager.getInstance(this).getVerifiedUser();
 
 
-        if (!SharedPrefManager.getInstance(this).isLoggedIn())
-        {
+        if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(AddActivity.this);
             builder1.setMessage("You are not an Logged in. Click ok to Log In");
@@ -140,10 +137,8 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
             AlertDialog alert11 = builder1.create();
             alert11.show();
 
-        }
-        else {
-            if(usertype == 0)
-            {
+        } else {
+            if (usertype == 0) {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(AddActivity.this);
                 builder1.setMessage("You are not an artist. Click ok to Continue as an User");
                 builder1.setCancelable(true);
@@ -161,11 +156,8 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
                 AlertDialog alert11 = builder1.create();
                 alert11.show();
                 //Toast.makeText(this, "You have to be logged in as an artist", Toast.LENGTH_SHORT).show();
-            }
-            else if  (usertype == 1 )
-            {
-                if (verifieduser == 0)
-                {
+            } else if (usertype == 1) {
+                if (verifieduser == 0) {
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(AddActivity.this);
                     builder1.setMessage("You are not a verified artist yet. Click ok to Continue as an User");
                     builder1.setCancelable(true);
@@ -183,8 +175,7 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
                     AlertDialog alert11 = builder1.create();
                     alert11.show();
                     //Toast.makeText(this, "Oops, we havent vertified you yet!", Toast.LENGTH_SHORT).show();
-                }
-                else {
+                } else {
                     Toast.makeText(this, "Welcome, we are excited to see what you made!!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -204,6 +195,7 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
         setupBottomnavView();
 
     }
+
 
 
 
@@ -249,7 +241,6 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
     }
 
 
-
     private void JSONrequestRoom()
     {
         JsonArrayRequest request = new JsonArrayRequest(URL_ROOM, new Response.Listener<JSONArray>() {
@@ -291,7 +282,6 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
     }
 
 
-
     public void initSpinner2()
     {
         ArrayAdapter<Room> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, roomList);
@@ -312,7 +302,6 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
             }
         });
     }
-
 
 
     public void initSpinner()
@@ -359,89 +348,84 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
             public void onClick(View view)
             {
 
-
-
-                FirebaseApp.initializeApp(AddActivity.this);
-
-                final String postID = FirebaseDatabase.getInstance().getReference().push().getKey();
-
-                final StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("posts/" + postID);
-
-                UploadTask uploadTask = storageReference.putFile(mselectedURI);
-
-
-
-
-                final Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                    @Override
-                    public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                        if (!task.isSuccessful()) {
-                            throw task.getException();
-                        }
-                        return storageReference.getDownloadUrl();
-                    }
-                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Uri> task) {
-                        if (task.isSuccessful()) {
-                            Uri downloadUri = task.getResult();
-
-                            String title = paintingtitle.getText().toString().trim();
-                            String desc = paintingdesc.getText().toString().trim();
-                            String price = paintingprice.getText().toString().trim();
-                            String len = length.getText().toString().trim();
-                            String wid = width.getText().toString().trim();
-                            String quantity = qty.getText().toString().trim();
-                            long id = s1.getSelectedItemId();
-                            long id2 = s2.getSelectedItemId();
-
-
-                            UPLOAD_URL += "?painting_url=" + downloadUri;
-                            UPLOAD_URL += "&painting_name=" + title;
-                            UPLOAD_URL += "&painting_price=" + price;
-                            UPLOAD_URL += "&painting_description=" + desc;
-                            UPLOAD_URL += "&painting_artist=" + SharedPrefManager.getInstance(AddActivity.this).getUserName();
-                            UPLOAD_URL += "&Painting_category=" + id;
-                            UPLOAD_URL += "&Password=" + SharedPrefManager.getInstance(AddActivity.this).password();
-                            UPLOAD_URL += "&Room=" + id2;
-                            UPLOAD_URL += "&Size=" + len + "x" + wid ;
-                            UPLOAD_URL += "&Quantity="+ quantity ;
-
-                            Log.d("u", "url: " + UPLOAD_URL);
-
-                            StringRequest uploadrequest = new StringRequest(UPLOAD_URL, new Response.Listener<String>()
-                            {
-                                @Override
-                                public void onResponse(String response)
-                                {
-
-                                }
-                            }, new Response.ErrorListener() {
-                                @Override
-                                public void onErrorResponse(VolleyError error) {
-                                    Toast.makeText(AddActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                            MySingleton.getInstance(AddActivity.this).addToRequestQueue(uploadrequest);
-
-                        } else {
-                            // Handle failures
-                            // ...
-                        }
-
-                    }
-                });
-
-
-
                 if (!isEmpty(paintingtitle.getText().toString())
                         && !isEmpty(paintingdesc.getText().toString())
                         && !isEmpty(paintingprice.getText().toString()))
                 {
-                    if (mselectedURI != null && mselectedBitmap == null)
+                    if (mselectedURI != null)
                     {
 
+                        FirebaseApp.initializeApp(AddActivity.this);
+
+                        final String postID = FirebaseDatabase.getInstance().getReference().push().getKey();
+
+                        final StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("posts/" + postID);
+
+                        UploadTask uploadTask = storageReference.putBytes(mUploadBytes);
+
+
+
+                        final Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                            @Override
+                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                if (!task.isSuccessful()) {
+                                    throw task.getException();
+                                }
+                                return storageReference.getDownloadUrl();
+                            }
+                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Uri> task) {
+                                if (task.isSuccessful()) {
+                                    Uri downloadUri = task.getResult();
+
+                                    String title = paintingtitle.getText().toString().trim();
+                                    String desc = paintingdesc.getText().toString().trim();
+                                    String price = paintingprice.getText().toString().trim();
+                                    String len = length.getText().toString().trim();
+                                    String wid = width.getText().toString().trim();
+                                    String quantity = qty.getText().toString().trim();
+                                    long id = s1.getSelectedItemId();
+                                    long id2 = s2.getSelectedItemId();
+
+
+                                    UPLOAD_URL += "?painting_url=" + downloadUri;
+                                    UPLOAD_URL += "&painting_name=" + title;
+                                    UPLOAD_URL += "&painting_price=" + price;
+                                    UPLOAD_URL += "&painting_description=" + desc;
+                                    UPLOAD_URL += "&painting_artist=" + SharedPrefManager.getInstance(AddActivity.this).getUserName();
+                                    UPLOAD_URL += "&Painting_category=" + id;
+                                    UPLOAD_URL += "&Password=" + SharedPrefManager.getInstance(AddActivity.this).password();
+                                    UPLOAD_URL += "&Room=" + id2;
+                                    UPLOAD_URL += "&Size=" + len + "x" + wid ;
+                                    UPLOAD_URL += "&Quantity="+ quantity ;
+
+                                    Log.d("u", "url: " + UPLOAD_URL);
+
+                                    StringRequest uploadrequest = new StringRequest(UPLOAD_URL, new Response.Listener<String>()
+                                    {
+                                        @Override
+                                        public void onResponse(String response)
+                                        {
+                                            Toast.makeText(AddActivity.this, "Painting Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Toast.makeText(AddActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+
+                                    MySingleton.getInstance(AddActivity.this).addToRequestQueue(uploadrequest);
+                                    resetFields();
+
+                                } else {
+                                    // Handle failures
+                                    // ...
+                                }
+
+                            }
+                        });
                     }
                 }
                 else
@@ -458,6 +442,9 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
         paintingtitle.setText("");
         paintingprice.setText("");
         paintingdesc.setText("");
+        length.setText("");
+        width.setText("");
+        qty.setText("");
     }
 
     private boolean isEmpty(String string){
@@ -477,7 +464,6 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
         menuItem.setChecked(true);
 
     }
-
 
 
     private void verifyPermissions()
@@ -500,5 +486,70 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         verifyPermissions();
+    }
+
+
+
+    public void loginUser()
+    {
+
+        String URL_LOGIN = "https://jrnan.info/Painting/Login.php";
+
+
+        String e = SharedPrefManager.getInstance(this).getUserName();
+        final String p = SharedPrefManager.getInstance(this).password();
+
+
+        URL_LOGIN += "?Username=" + e;
+        URL_LOGIN += "&Password=" + p;
+
+
+        StringRequest stringRequest = new StringRequest(URL_LOGIN, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response)
+            {
+
+                try
+                {
+                    JSONArray jsonArray = new JSONArray(response);
+                    if(jsonArray.length() < 1){
+                        Toast.makeText(AddActivity.this, "Authontication failed" , Toast.LENGTH_SHORT).show();
+                    }
+                    else {
+                        JSONObject jsonObject = jsonArray.getJSONObject(0);
+                        String uname = jsonObject.getString("username");
+                        int userType = jsonObject.getInt("usertype");
+                        int verifyUser = jsonObject.getInt("verified");
+
+
+                        if (uname != null) {
+                            SharedPrefManager.getInstance(getApplicationContext()).SetVerify(verifyUser);
+                            Log.d("test", "test " + userType + verifyUser);
+//                            }
+//                            else
+//                            {
+//                                Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+//                            }
+                        }
+                    }
+                }
+                catch (JSONException e)
+                {
+                    e.printStackTrace();
+                }
+
+            }
+        },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error)
+                    {
+                        Toast.makeText(AddActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                    }
+                }){
+
+        };
+
+        MySingleton.getInstance(AddActivity.this).addToRequestQueue(stringRequest);
     }
 }

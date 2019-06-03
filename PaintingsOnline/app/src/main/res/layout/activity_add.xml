@@ -20,7 +20,8 @@
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:background="@drawable/white_grey_border_bottom">
 
                 <android.support.v7.widget.Toolbar
                     android:layout_width="match_parent"
@@ -37,7 +38,8 @@
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
                             android:text="Upload Paintings"
-                            android:textSize="24sp"
+                            android:textSize="20sp"
+                            android:textColor="@color/Black"
                             android:id="@+id/paintingname"/>
 
 
@@ -121,37 +123,10 @@
                             android:layout_marginEnd="20dp">
 
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="150dp"
-                                android:background="@drawable/onclick_grey"
-                                android:backgroundTint="@color/grey1"
-                                android:id="@+id/relLayout3"
-                                android:layout_marginTop="10dp"
-                                android:padding="10dp">
-
-
-
-                                <EditText
-                                    android:layout_width="match_parent"
-                                    android:layout_height="100dp"
-                                    android:id="@+id/input_description"
-                                    android:layout_centerVertical="true"
-                                    android:maxLines="20"
-                                    android:background="@null"
-                                    android:hint="Description"
-                                    android:textColor="@color/Black"
-                                    android:gravity="start"/>
-
-
-                            </RelativeLayout>
-
-
 
                             <RelativeLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_below="@+id/relLayout3"
                                 android:id="@+id/relLayout4"
                                 android:layout_marginTop="10dp">
 
@@ -178,13 +153,88 @@
                             </RelativeLayout>
 
 
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/size"
+                                android:orientation="horizontal"
+                                android:layout_below="@+id/relLayout4"
+                                android:layout_marginTop="15dp">
+
+
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Length"
+                                    android:layout_weight="2"
+                                    android:layout_marginEnd="2dp"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+
+                                    <EditText
+                                        android:id="@+id/length"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:inputType="number"
+                                        android:textColor="@color/Black"/>
+
+
+                                </android.support.design.widget.TextInputLayout>
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Width"
+                                    android:layout_weight="2"
+                                    android:layout_marginStart="2dp"
+                                    android:layout_marginEnd="2dp"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+
+                                    <EditText
+                                        android:id="@+id/width"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:inputType="number"
+                                        android:textColor="@color/Black"/>
+
+
+                                </android.support.design.widget.TextInputLayout>
+
+
+                                <android.support.design.widget.TextInputLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:hint="Quantity"
+                                    android:layout_weight="2"
+                                    android:layout_marginStart="2dp"
+                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+
+                                    <EditText
+                                        android:id="@+id/quantity"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:inputType="number"
+                                        android:textColor="@color/Black"/>
+
+
+                                </android.support.design.widget.TextInputLayout>
+
+
+                            </LinearLayout>
+
+
+
                             <LinearLayout
                                 android:id="@+id/linear"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:orientation="horizontal"
                                 android:layout_marginTop="15dp"
-                                android:layout_below="@+id/relLayout4">
+                                android:layout_below="@+id/size">
 
 
                                 <RelativeLayout
@@ -232,66 +282,38 @@
 
                             </LinearLayout>
 
-
-
-
-                            <LinearLayout
+                            <RelativeLayout
                                 android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/size"
-                                android:orientation="horizontal"
+                                android:layout_height="150dp"
+                                android:background="@drawable/onclick_grey"
+                                android:backgroundTint="@color/grey1"
+                                android:id="@+id/relLayout3"
                                 android:layout_below="@+id/linear"
-                                android:layout_marginTop="15dp">
+                                android:layout_marginTop="10dp"
+                                android:padding="10dp">
 
 
 
-                                <android.support.design.widget.TextInputLayout
+                                <EditText
                                     android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Length"
-                                    android:layout_weight="2"
-                                    android:layout_marginEnd="2dp"
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+                                    android:layout_height="100dp"
+                                    android:id="@+id/input_description"
+                                    android:layout_centerVertical="true"
+                                    android:maxLines="20"
+                                    android:background="@null"
+                                    android:hint="Description"
+                                    android:textColor="@color/Black"
+                                    android:gravity="start"/>
 
 
-                                    <EditText
-                                        android:id="@+id/length"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:inputType="number"
-                                        android:textColor="@color/Black"/>
-
-
-                                </android.support.design.widget.TextInputLayout>
-
-                                <android.support.design.widget.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Width"
-                                    android:layout_weight="2"
-                                    android:layout_marginStart="2dp"
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-
-                                    <EditText
-                                        android:id="@+id/width"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:inputType="number"
-                                        android:textColor="@color/Black"/>
-
-
-                                </android.support.design.widget.TextInputLayout>
-
-
-                            </LinearLayout>
+                            </RelativeLayout>
 
 
                             <Button
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/btn_post"
-                                android:layout_below="@+id/size"
+                                android:layout_below="@+id/relLayout3"
                                 android:layout_marginTop="30dp"
                                 android:layout_marginBottom="35dp"
                                 android:text="UPLOAD"

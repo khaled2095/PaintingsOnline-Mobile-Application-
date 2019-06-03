@@ -29,7 +29,7 @@ public class PhotoDialogueBox extends DialogFragment
     public interface OnPhotoSelectedListener
     {
         void getimagepath(Uri imagepath);
-        void getimageBase64String(String image64);
+        void getBytes(byte[] imgBytes);
     }
     OnPhotoSelectedListener monPhotoSelectedListener;
 
@@ -37,7 +37,7 @@ public class PhotoDialogueBox extends DialogFragment
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.imagedialog, container, false);
+        View view = inflater.inflate(R.layout.imagedialogbox, container, false);
 
         TextView selectPhoto = view.findViewById(R.id.dialogChoosePhoto);
 
@@ -53,14 +53,13 @@ public class PhotoDialogueBox extends DialogFragment
         return view;
     }
 
-
-    public String imagetoString(Bitmap bitmap)
+    public static byte[] getBytesFromBitmap(Bitmap bitmap)
     {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-        byte[] imageBytes = byteArrayOutputStream.toByteArray();
-        return Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, byteArrayOutputStream);
+        return byteArrayOutputStream.toByteArray();
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data)
@@ -74,10 +73,9 @@ public class PhotoDialogueBox extends DialogFragment
             try {
                 final InputStream imageStream = getContext().getContentResolver().openInputStream(selectedimageURI);
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                String encodedImage = imagetoString(selectedImage);
+                byte [] mUploadBytes = getBytesFromBitmap(selectedImage);
 
-                //send the URI to Add activity and dismiss dialog
-                monPhotoSelectedListener.getimageBase64String(encodedImage);
+                monPhotoSelectedListener.getBytes(mUploadBytes);
                 monPhotoSelectedListener.getimagepath(selectedimageURI);
             } catch (Exception e) {
                 e.printStackTrace();
