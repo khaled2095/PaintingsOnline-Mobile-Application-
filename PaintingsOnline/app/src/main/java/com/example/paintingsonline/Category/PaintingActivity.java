@@ -3,11 +3,15 @@ package com.example.paintingsonline.Category;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -19,7 +23,9 @@ import com.example.paintingsonline.Database.Local.CartDataSource;
 import com.example.paintingsonline.Database.Local.CartDatabase;
 import com.example.paintingsonline.Model.Paintings;
 import com.example.paintingsonline.R;
+import com.example.paintingsonline.Utils.BottomNavViewHelper;
 import com.example.paintingsonline.Utils.MySingleton;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.nex3z.notificationbadge.NotificationBadge;
 
 import org.json.JSONArray;
@@ -29,64 +35,92 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaintingActivity extends AppCompatActivity
+public class PaintingActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener
 {
 
     private List<Paintings> paintingsList2;
-    private String URL = "https://jrnan.info/Painting/ShowPaintings.php?Category=";
+    private String URL = "https://jrnan.info/Painting/ShowPaintings.php";
     public static CartDatabase cartd;
     public static CartRepository cr;
+    private PaintingsAdapterView pav;
     NotificationBadge nb;
+    SwipeRefreshLayout refreshPaintings;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_painting);
 
+
         nb = findViewById(R.id.badge);
+        cartd = CartDatabase.getInstance(this);
+        cr = CartRepository.getInstance(CartDataSource.getInstance(cartd.cartDAO()));
+        refreshPaintings = findViewById(R.id.swipePaintings);
 
         /*setup backarrow for NAVIGATION */
         ImageView backarrow = findViewById(R.id.backarrow);
-        backarrow.setOnClickListener(new View.OnClickListener()
-        {
+        backarrow.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 finish();
             }
         });
 
         setupToolbar();
 
-        initDB();
+        setupBottomnavView();
 
-        loadPaintings();
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        URL = sp.getString("url", "");
+        URL += sp.getInt("Selec", 0);
+        Log.d("url", URL);
+
 
         paintingsList2 = new ArrayList<>();
 
-        JSONrequest();
+        refreshPaintings.setOnRefreshListener(this);
+        refreshPaintings.setColorSchemeResources(R.color.colorPrimary,
+                android.R.color.holo_green_dark,
+                android.R.color.holo_orange_dark,
+                android.R.color.holo_blue_dark);
+
+        /**
+         * Showing Swipe Refresh animation on activity create
+         * As animation won't start on onCreate, post runnable is used
+         */
+        refreshPaintings.post(new Runnable() {
+
+            @Override
+            public void run() {
+
+                refreshPaintings.setRefreshing(true);
+
+                // Fetching data from server
+                JSONrequest();
+            }
+        });
+
 
         updateCart();
 
     }
 
-    public void updateCart()
-    {
-        if (nb == null)
-        {
+
+    public void updateCart() {
+
+
+        if (nb == null) {
             return;
         }
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (cr.CountCartItems() == 0)
-                {
+                if (cr.CountCartItems() == 0) {
                     nb.setVisibility(View.INVISIBLE);
-                }
-                else
-                {
+                } else {
                     nb.setVisibility(View.VISIBLE);
                     nb.setText(String.valueOf(cr.CountCartItems()));
                 }
@@ -95,11 +129,8 @@ public class PaintingActivity extends AppCompatActivity
     }
 
 
-    private void initDB()
-    {
-        cartd = CartDatabase.getInstance(this);
-        cr = CartRepository.getInstance(CartDataSource.getInstance(cartd.cartDAO()));
-    }
+
+
 
     private void setupToolbar()
     {
@@ -119,29 +150,18 @@ public class PaintingActivity extends AppCompatActivity
     }
 
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu)
-//    {
-//        getMenuInflater().inflate(R.menu.cart, menu);
-//        View view = menu.findItem(R.id.cartmenu).getActionView();
-////        bg = view.findViewById(R.id.badge);
-//        return true;
-//    }
-
-    /*load paintings by Category*/
-    private void loadPaintings()
-    {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        int Category = sp.getInt("Selected",0);
-        URL += Category;
-    }
 
     private void JSONrequest()
     {
+
+        // Showing refresh animation before making http call
+        refreshPaintings.setRefreshing(true);
+
         JsonArrayRequest request = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response)
             {
+                paintingsList2.clear();
                 JSONObject jsonObject = null;
 
                 for (int i=0; i < response.length(); i++)
@@ -153,10 +173,13 @@ public class PaintingActivity extends AppCompatActivity
                         int id = jsonObject.getInt("painting_id");
                         String title = jsonObject.getString("painting_name");
                         String image = jsonObject.getString("painting_url");
+                        String paintingOwner = jsonObject.getString("painting_artist");
+                        String paintingSize = jsonObject.getString("Size");
                         int price = jsonObject.getInt("painting_price");
+                        int quantity = jsonObject.getInt("Quantity");
                         String desc = jsonObject.getString("painting_description");
 
-                        Paintings paintings = new Paintings(id, title, desc, image, price);
+                        Paintings paintings = new Paintings(id, title, desc, image, price, quantity, paintingOwner, paintingSize);
                         paintingsList2.add(paintings);
                     }
                     catch (JSONException e)
@@ -166,12 +189,17 @@ public class PaintingActivity extends AppCompatActivity
                 }
 
                 initrecyclerView(paintingsList2);
+
+                // Stopping swipe refresh
+                refreshPaintings.setRefreshing(false);
             }
         }, new Response.ErrorListener()
         {
             @Override
-            public void onErrorResponse(VolleyError error) {
-
+            public void onErrorResponse(VolleyError error)
+            {
+                // Stopping swipe refresh
+                refreshPaintings.setRefreshing(false);
             }
         });
 
@@ -183,27 +211,39 @@ public class PaintingActivity extends AppCompatActivity
     private void initrecyclerView(List<Paintings> paintingsList2)
     {
         RecyclerView recyclerView = findViewById(R.id.recycler_view_painting);
-        PaintingsAdapterView pav = new PaintingsAdapterView(this, paintingsList2 , this);
+        pav = new PaintingsAdapterView(getApplicationContext(), paintingsList2,this);
         recyclerView.setAdapter(pav);
+        pav.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
     }
 
-//    @Override
-//    public void onPaintClick(int pos)
-//    {
-//        Intent intent = new Intent(this, PaintingDetail.class);
-//          intent.putExtra("img", paintingsList2.get(pos).getImage());
-//        intent.putExtra("paintname", paintingsList2.get(pos).getName());
-//        intent.putExtra("paintprice", paintingsList2.get(pos).getPrice());
-//        intent.putExtra("paintdesc", paintingsList2.get(pos).getDescription());
-//        intent.putExtra("paint", paintingsList2.get(pos));
-//        startActivity(intent);
-//    }
+
+
+
+    /* bottom navigation view setup */
+    private void setupBottomnavView()
+    {
+        BottomNavigationViewEx bottomNavigationView = findViewById(R.id.bottom);
+        BottomNavViewHelper.enableNavigation(getApplicationContext(), this , bottomNavigationView);
+        BottomNavViewHelper.setupBottomNavView(bottomNavigationView);
+
+        Menu menu = bottomNavigationView.getMenu();
+        MenuItem menuItem = menu.getItem(1);
+        menuItem.setChecked(true);
+
+    }
 
     @Override
     protected void onResume() {
         super.onResume();
         updateCart();
+
+    }
+
+    @Override
+    public void onRefresh() {
+        JSONrequest();
     }
 
 }
