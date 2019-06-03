@@ -20,14 +20,20 @@ public class BottomNavViewHelper
 
     public static void setupBottomNavView(BottomNavigationViewEx bottomNavigationView)
     {
-
+        bottomNavigationView.enableAnimation(false);
+        bottomNavigationView.enableItemShiftingMode(false);
+        bottomNavigationView.enableShiftingMode(false);
+        bottomNavigationView.setTextVisibility(true);
     }
 
-    public static void enableNavigation(final Context context, final Activity callingActivity, BottomNavigationViewEx view) {
+    public static void enableNavigation(final Context context, final Activity callingActivity, BottomNavigationViewEx view)
+    {
         view.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                switch (menuItem.getItemId()) {
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem)
+            {
+                switch (menuItem.getItemId())
+                {
                     case R.id.home:
                         Intent i1 = new Intent(context, HomeActivity.class); //0
                         context.startActivity(i1);
@@ -62,7 +68,6 @@ public class BottomNavViewHelper
                 return false;
             }
         });
-
     }
 
 }
