@@ -1,45 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardElevation="8dp"
-    android:layout_margin="1dp">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
 
-    <LinearLayout
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="8dp">
+        app:cardElevation="8dp"
+        android:layout_margin="1dp">
 
-        <com.android.volley.toolbox.NetworkImageView
-            android:layout_width="200dp"
-            android:layout_height="150dp"
-            android:id="@+id/orderimg"/>
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="15dp">
+            android:layout_marginTop="8dp">
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_height="wrap_content"
+                android:id="@+id/relimg"
+                android:layout_marginTop="8dp">
 
+                <com.android.volley.toolbox.NetworkImageView
+                    android:layout_width="190dp"
+                    android:layout_height="140dp"
+                    android:id="@+id/orderimg"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/boughtorsold"
+                android:layout_toEndOf="@+id/relimg"
+                android:layout_marginStart="2dp">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/paintingbuyingmethod"
+                    android:layout_marginTop="8dp"
+                    android:text=""
+                    android:textColor="@color/Black"
+                    android:textSize="15sp"/>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/artistnames"
+                android:layout_toEndOf="@+id/relimg"
+                android:layout_below="@+id/boughtorsold"
+                android:layout_marginStart="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/artist"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:text="Artist: "
-                    android:layout_weight="4"
-                    android:textSize="20sp"/>
+                    android:textColor="@color/Black"
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -47,65 +74,99 @@
                     android:id="@+id/showowner"
                     android:layout_marginTop="8dp"
                     android:text=""
-                    android:textSize="20sp"/>
+                    android:textSize="15sp"
+                    android:layout_toEndOf="@+id/artist"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
 
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/paintingprices"
+                android:layout_below="@+id/artistnames"
+                android:layout_toEndOf="@+id/relimg"
+                android:layout_marginStart="2dp">
 
                 <TextView
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/productprice"
-                    android:layout_marginStart="8dp"
                     android:layout_marginTop="8dp"
                     android:text="Price: "
-                    android:layout_weight="4"
-                    android:textSize="20sp"/>
+                    android:textColor="@color/Black"
+                    android:textSize="15sp"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/showPrice"
+                    android:layout_toEndOf="@+id/productprice"
                     android:layout_marginTop="8dp"
                     android:text=""
-                    android:textSize="20sp"/>
+                    android:textSize="15sp"/>
 
-            </LinearLayout>
+            </RelativeLayout>
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/paintingstatus"
+                android:layout_toEndOf="@+id/relimg"
+                android:layout_below="@+id/paintingprices"
+                android:layout_marginStart="2dp">
 
                 <TextView
                     android:id="@+id/status"
                     android:layout_marginTop="8dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Status: "
-                    android:textSize="20sp"/>
+                    android:textColor="@color/Black"
+                    android:textSize="15sp"/>
 
                 <TextView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/showstatus"
+                    android:layout_toEndOf="@+id/status"
                     android:layout_marginTop="8dp"
-                    android:textSize="20sp"
+                    android:textSize="15sp"
                     android:text=""/>
 
+            </RelativeLayout>
 
-            </LinearLayout>
 
 
-        </LinearLayout>
 
-    </LinearLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/relimg"
+                android:layout_below="@+id/paintingstatus"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="4dp">
+
+                <TextView
+                    android:id="@+id/feedback"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:layout_marginBottom="5dp"
+                    android:textSize="18sp"
+                    android:text="Feed back"
+                    android:textColor="@color/blue1"
+                    android:layout_alignParentEnd="true"/>
+
+            </RelativeLayout>
+
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
 
 
 

@@ -21,7 +21,8 @@
 
             <android.support.design.widget.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="50dp">
+                android:layout_height="50dp"
+                android:background="@drawable/white_grey_border_bottom">
 
                 <android.support.v7.widget.Toolbar
                     android:layout_width="match_parent"
@@ -37,9 +38,10 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_centerVertical="true"
-                            android:text="Orders"
-                            android:textSize="24sp"
-                            android:id="@+id/orders"/>
+                            android:text="Order"
+                            android:textSize="20sp"
+                            android:textColor="@color/Black"
+                            android:id="@+id/order"/>
 
 
                     </RelativeLayout>
@@ -49,6 +51,7 @@
 
 
             </android.support.design.widget.AppBarLayout>
+
 
         </RelativeLayout>
 
@@ -60,7 +63,6 @@
             android:layout_below="@id/rel1"
             android:layout_above="@id/rel3">
 
-            <!--<include layout="@layout/center_viewpager"/>-->
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -69,6 +71,7 @@
                 android:clipToPadding="false"
                 android:scrollbars="vertical"
                 android:layout_marginTop="10dp"/>
+
 
         </RelativeLayout>
 
@@ -86,11 +89,13 @@
                 android:layout_height="match_parent"
                 android:id="@+id/bottom"
                 android:background="@drawable/white_grey_border_top"
-                app:menu="@menu/navigation"/>
+                app:menu="@menu/navigation">
 
+            </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
 
 
         </RelativeLayout>
+
 
 
     </RelativeLayout>

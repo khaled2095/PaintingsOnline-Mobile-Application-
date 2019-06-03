@@ -1,8 +1,8 @@
-package com.example.paintingsonline.Order;
+package com.example.paintingsonline.Model;
 
 public class Order
 {
-    private String UserName;
+    private String PaintingOwner;
     private int PaintingID;
     private int OrderId;
     private String OrderStatus;
@@ -12,27 +12,28 @@ public class Order
     private String OrderImage;
 
 
+
     public Order()
     {
 
     }
 
-
-    public Order(int orderId, String orderStatus, int orderPrice, String orderImage)
+    public Order(int orderId, String orderStatus, int orderPrice, String orderImage, String paintingowner)
     {
         OrderId = orderId;
         OrderStatus = orderStatus;
         OrderPrice = orderPrice;
         OrderImage = orderImage;
+        PaintingOwner = paintingowner;
+
     }
 
-
-    public String getUserName() {
-        return UserName;
+    public String getPaintingOwner() {
+        return PaintingOwner;
     }
 
-    public void setUserName(String userName) {
-        UserName = userName;
+    public void setPaintingOwner(String paintingowner) {
+        PaintingOwner = paintingowner;
     }
 
     public int getPaintingID() {
