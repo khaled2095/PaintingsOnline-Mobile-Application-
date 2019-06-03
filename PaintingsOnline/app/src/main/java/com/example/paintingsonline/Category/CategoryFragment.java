@@ -47,10 +47,12 @@ public class CategoryFragment extends Fragment
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
             {
-                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putInt("Selected", i);
+                editor.putString("url","https://jrnan.info/Painting/ShowPaintings.php?Category=");
+                editor.putInt("Selec", i);
                 editor.apply();
+                //sp.edit().commit();
                 Intent paintingActivity = new Intent(getActivity(), PaintingActivity.class);
                 startActivity(paintingActivity);
             }

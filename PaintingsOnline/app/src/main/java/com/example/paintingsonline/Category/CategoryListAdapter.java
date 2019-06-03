@@ -38,6 +38,7 @@ public class CategoryListAdapter extends ArrayAdapter<Category>
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
+        // setupImageLoader();
 
         String categoryName = getItem(position).getCategoryName();
         String categoryImage = getItem(position).getImageURL();
@@ -59,6 +60,7 @@ public class CategoryListAdapter extends ArrayAdapter<Category>
         {
             holder = (ViewHolder)convertView.getTag();
         }
+
 
         holder.catimage.setImageUrl(categoryImage, MySingleton.getInstance(mcontext).getImageLoader());
         holder.catname.setText(categoryName);
