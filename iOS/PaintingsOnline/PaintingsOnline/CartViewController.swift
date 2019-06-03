@@ -67,30 +67,46 @@ class CartViewController: UIViewController , UITableViewDataSource, UITableViewD
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if (editingStyle == .delete) {
-            ListOfPAintings.remove(at: indexPath.row)
-           UserDefaults.standard.set(ListOfPAintings, forKey: "ListofPaintings")
-            reload(tableView: TableView2)
+            let alert = UIAlertController(title: "Are you sure?", message: "Are you sure you want to remove product from cart?", preferredStyle: .alert)
+            let clearAction = UIAlertAction(title: "Remove", style: .destructive) { (alert: UIAlertAction!) -> Void in
+                
+                self.ListOfPAintings.remove(at: indexPath.row)
+                UserDefaults.standard.set(self.ListOfPAintings, forKey: "ListofPaintings")
+                self.reload(tableView: self.TableView2)
+            }
+            let cancelAction = UIAlertAction(title: "Cancel", style: .default) { (alert: UIAlertAction!) -> Void in
+                //print("You pressed Cancel")
+            }
+            
+            alert.addAction(clearAction)
+            alert.addAction(cancelAction)
+            
+            present(alert, animated: true, completion:nil)
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+     
+        }
+    
+    override func viewWillAppear(_ animated: Bool) {
         if(isKeyPresentInUserDefaults(key: "ListofPaintings")){
             ListOfPAintings = UserDefaults.standard.array(forKey: "ListofPaintings") as! [[String]]
         }
-            for str in self.ListOfPAintings{
-                self.CartImages.append(UIImage(named:"empty-image")!)
-            }
+        for str in self.ListOfPAintings{
+            self.CartImages.append(UIImage(named:"empty-image")!)
+        }
         
-            for (index, str) in self.ListOfPAintings.enumerated() {
-                Alamofire.request(str[3]).responseImage { response in
-                    if let image = response.result.value {
-                        self.CartImages[index] = image
-                        DispatchQueue.main.async(execute: {self.reload(tableView: self.TableView2)})
-                    }
+        for (index, str) in self.ListOfPAintings.enumerated() {
+            Alamofire.request(str[3]).responseImage { response in
+                if let image = response.result.value {
+                    self.CartImages[index] = image
+                    DispatchQueue.main.async(execute: {self.reload(tableView: self.TableView2)})
                 }
             }
         }
+    }
     
 
     @IBAction func CheckOut(_ sender: Any) {
@@ -112,7 +128,16 @@ class CartViewController: UIViewController , UITableViewDataSource, UITableViewD
                 strQuantity += "," + s[7]
             }
         }
+        if (ListOfPAintings.count == 0 ) {
+            let alert = UIAlertView()
+            alert.title = "Error"
+            alert.message = "You do not have any products in cart"
+            alert.addButton(withTitle: "Understood")
+            alert.show()
+        }
+        else {
         if(isKeyPresentInUserDefaults(key: "username")){
+            UserDefaults.standard.removeObject(forKey: "ListofPaintings")
         var Username : String = UserDefaults.standard.value(forKey: "username") as! String
         var tempurl : String = "https://jrnan.info/Painting/Payment/index.php"
         tempurl.append(IDs + "&Quantity=" + strQuantity + "&Username=" + Username)
@@ -125,6 +150,7 @@ class CartViewController: UIViewController , UITableViewDataSource, UITableViewD
             alert.addButton(withTitle: "Understood")
             alert.show()
     }
+        }
     }
     
     func reload(tableView: UITableView) {

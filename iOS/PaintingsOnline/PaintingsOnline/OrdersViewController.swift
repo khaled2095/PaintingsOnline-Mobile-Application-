@@ -230,7 +230,7 @@ class OrdersViewController:UIViewController,UITableViewDataSource,UITableViewDel
         let composeVC = MFMailComposeViewController()
         composeVC.mailComposeDelegate = self
         // Configure the fields of the interface.
-        composeVC.setToRecipients(["admin@shit.com"])
+        composeVC.setToRecipients(["admin@jrnan.info"])
         composeVC.setSubject("Refrence Order Number:" + OrderNumber)
         composeVC.setMessageBody("To whom it matters, I bought a painting from " + Artist + " and this is my feedback", isHTML: false)
         // Present the view controller modally.

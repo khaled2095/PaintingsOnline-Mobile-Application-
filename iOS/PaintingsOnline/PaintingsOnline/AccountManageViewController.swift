@@ -8,7 +8,10 @@
 
 import UIKit
 import Alamofire
-class AccountManageViewController: UIViewController {
+import Foundation
+import MessageUI
+
+class AccountManageViewController: UIViewController , MFMailComposeViewControllerDelegate {
 
     @IBOutlet weak var NameFireld: UITextField!
     
@@ -147,6 +150,16 @@ class AccountManageViewController: UIViewController {
         }
     }
     
+    @IBAction func SendMail(_ sender: Any) {
+        let email = "admin@jrnan.info"
+        if let url = URL(string: "mailto:\(email)") {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(url)
+            } else {
+                UIApplication.shared.openURL(url)
+            }
+        }
+    }
     
     func isKeyPresentInUserDefaults(key: String) -> Bool {
         return UserDefaults.standard.object(forKey: key) != nil

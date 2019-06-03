@@ -19,14 +19,12 @@ import AlamofireImage
 import Alamofire
 
 
-class ArtTableViewCell: UITableViewCell {
+class Category1TableViewCell: UITableViewCell {
     
     @IBOutlet weak var CImage: UIImageView!
-    var Daddy : HomeViewController = HomeViewController()
     @IBOutlet weak var Title: UILabel!
     @IBOutlet weak var Artist: UILabel!
     @IBOutlet weak var Price: UILabel!
-    @IBOutlet weak var Size: UILabel!
     @IBOutlet weak var Description: UILabel!
     var tmpCarts = [[String]]()
     var ID : String = ""
@@ -37,10 +35,11 @@ class ArtTableViewCell: UITableViewCell {
     @IBOutlet weak var ImageView1: UIImageView!
     
     @IBOutlet weak var PriceB: UIButton!
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-
-       contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
+        
+        contentView.frame = contentView.frame.inset(by: UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10))
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -49,7 +48,6 @@ class ArtTableViewCell: UITableViewCell {
     }
     
     @IBAction func SelectedMe(_ sender: Any) {
-      
         if(isKeyPresentInUserDefaults(key: "ListofPaintings")){
             tmpCarts = UserDefaults.standard.array(forKey: "ListofPaintings") as! [[String]]
         }
@@ -65,20 +63,19 @@ class ArtTableViewCell: UITableViewCell {
             }
         }
         if (count == 0 ){
-        var tmpCart = [String]()
-        tmpCart.append(Title.text!)
-        tmpCart.append(PriceB.titleLabel!.text!)
-        tmpCart.append(Artist.text!)
-        tmpCart.append(thisUrl)
-        tmpCart.append(String(MaxQuantity))
-        tmpCart.append(Description.text!)
-        tmpCart.append(ID)
-        tmpCart.append(String(Quanitity))
-        tmpCarts.append(tmpCart)
-        UserDefaults.standard.set(tmpCarts, forKey: "ListofPaintings")
-    
+            var tmpCart = [String]()
+            tmpCart.append(Title.text!)
+            tmpCart.append(PriceB.titleLabel!.text!)
+            tmpCart.append(Artist.text!)
+            tmpCart.append(thisUrl)
+            tmpCart.append(String(MaxQuantity))
+            tmpCart.append(Description.text!)
+            tmpCart.append(ID)
+            tmpCart.append(String(Quanitity))
+            tmpCarts.append(tmpCart)
+            UserDefaults.standard.set(tmpCarts, forKey: "ListofPaintings")
+            
         }
-          Daddy.UpdateCart()
     }
     
     func isKeyPresentInUserDefaults(key: String) -> Bool {
