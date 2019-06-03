@@ -2,53 +2,52 @@ package com.example.paintingsonline.Model;
 
 public class Room
 {
-    private int roomid;
-    private String roomName;
-    private String roomimageURL;
+
+    private int RoomID;
+    private String RoomName;
+    private String imageURL;
 
 
-    public Room(int roomid, String roomName)
+    public Room(int roomID, String roomName)
     {
-        this.roomid = roomid;
-        this.roomName = roomName;
+        RoomID = roomID;
+        RoomName = roomName;
     }
 
-    public Room(int roomid, String roomName, String roomimageURL)
+    public Room(int roomID, String roomName, String imageURL)
     {
-        this.roomid = roomid;
-        this.roomName = roomName;
-        this.roomimageURL = roomimageURL;
+        RoomID = roomID;
+        RoomName = roomName;
+        this.imageURL = imageURL;
     }
 
 
-    public int getRoomid() {
-        return roomid;
+    public int getRoomID() {
+        return RoomID;
     }
 
-    public void setRoomid(int roomid) {
-        this.roomid = roomid;
+    public void setRoomID(int roomID) {
+        RoomID = roomID;
     }
 
     public String getRoomName() {
-        return roomName;
+        return RoomName;
     }
 
     public void setRoomName(String roomName) {
-        this.roomName = roomName;
+        RoomName = roomName;
     }
 
-    public String getRoomimageURL() {
-        return roomimageURL;
+    public String getImageURL() {
+        return imageURL;
     }
 
-    public void setRoomimageURL(String roomimageURL) {
-        this.roomimageURL = roomimageURL;
+    public void setImageURL(String imageURL) {
+        this.imageURL = imageURL;
     }
-
 
     @Override
-    public String toString()
-    {
-        return roomName;
+    public String toString() {
+        return RoomName;
     }
 }
