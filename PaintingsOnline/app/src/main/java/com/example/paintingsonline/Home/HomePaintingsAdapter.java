@@ -26,11 +26,11 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePaintingsAdapter extends RecyclerView.Adapter<HomePaintingsAdapter.PaintingViewHolder> implements Filterable
+public class HomePaintingsAdapter extends RecyclerView.Adapter<HomePaintingsAdapter.PaintingViewHolder>
 {
     private Context mctx;
     private List<Paintings> paintingsList;
-    private List<Paintings> paintingsListFull;
+    //private List<Paintings> paintingsListFull;
     private HomeActivity mParentClass;
 
 
@@ -38,7 +38,7 @@ public class HomePaintingsAdapter extends RecyclerView.Adapter<HomePaintingsAdap
     {
         this.mctx = mctx;
         this.paintingsList = paintingsList;
-        paintingsListFull = new ArrayList<>(paintingsList);
+        //paintingsListFull = new ArrayList<>(paintingsList);
         this.mParentClass = pclass;
     }
 
@@ -126,49 +126,7 @@ public class HomePaintingsAdapter extends RecyclerView.Adapter<HomePaintingsAdap
         return paintingsList.size();
     }
 
-    @Override
-    public Filter getFilter() {
-        return paintingFilter;
-    }
-
-
-    private Filter paintingFilter = new Filter() {
-        @Override
-        protected FilterResults performFiltering(CharSequence constraint) {
-            List<Paintings> filteredList = new ArrayList<>();
-
-            if (constraint == null || constraint.length() == 0)
-            {
-                filteredList.addAll(paintingsListFull);
-            }
-            else
-            {
-                String filterPattern = constraint.toString().toLowerCase().trim();
-
-                for (Paintings p : paintingsListFull)
-                {
-                    if (p.getName().toLowerCase().contains(filterPattern) || p.getDescription().toLowerCase().contains(filterPattern) || p.getpOwner().toLowerCase().contains(filterPattern))
-                    {
-                        filteredList.add(p);
-                    }
-                }
-            }
-
-            FilterResults results = new FilterResults();
-            results.values = filteredList;
-
-            return results;
-        }
-
-        @Override
-        protected void publishResults(CharSequence constraint, FilterResults results)
-        {
-            paintingsList.clear();
-            paintingsList.addAll((List) results.values);
-            notifyDataSetChanged();
-
-        }
-    };
+    
 
     /*View Holder*/
     class PaintingViewHolder extends RecyclerView.ViewHolder
