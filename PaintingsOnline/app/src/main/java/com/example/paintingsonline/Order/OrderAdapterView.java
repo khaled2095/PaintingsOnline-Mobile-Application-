@@ -61,17 +61,17 @@ public class OrderAdapterView extends RecyclerView.Adapter<OrderAdapterView.Orde
 
         orderViewHolder.orderimg.setImageUrl(o1.getOrderImage(), MySingleton.getInstance(ordercontext).getImageLoader());
 
-//        orderViewHolder.feedback.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent emailintent = new Intent(Intent.ACTION_SEND);
-//                emailintent.setType("plain/text");
-//                emailintent.putExtra(Intent.EXTRA_EMAIL, new String[] {"info@paintingsonline.com.au"});
-//                emailintent.putExtra(Intent.EXTRA_SUBJECT, "Order Reference Number: " + String.valueOf(o1.getOrderId()));
-//                emailintent.putExtra(Intent.EXTRA_TEXT, "To Whom it may concern, I bought this Painting from " + o1.getPaintingOwner() + ".");
-//                v.getContext().startActivity(emailintent);
-//            }
-//        });
+        orderViewHolder.feedback.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailintent = new Intent(Intent.ACTION_SEND);
+                emailintent.setType("plain/text");
+                emailintent.putExtra(Intent.EXTRA_EMAIL, new String[] {"info@paintingsonline.com.au"});
+                emailintent.putExtra(Intent.EXTRA_SUBJECT, "Order Reference Number: " + String.valueOf(o1.getOrderId()));
+                emailintent.putExtra(Intent.EXTRA_TEXT, "To Whom it may concern, I bought this Painting from " + o1.getPaintingOwner() + ".");
+                v.getContext().startActivity(emailintent);
+            }
+        });
     }
 
     @Override

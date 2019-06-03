@@ -126,7 +126,7 @@ public class HomePaintingsAdapter extends RecyclerView.Adapter<HomePaintingsAdap
         return paintingsList.size();
     }
 
-    
+
 
     /*View Holder*/
     class PaintingViewHolder extends RecyclerView.ViewHolder
