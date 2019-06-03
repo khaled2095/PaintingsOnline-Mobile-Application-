@@ -3,6 +3,7 @@ package com.example.paintingsonline.Login;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.example.paintingsonline.Home.HomeActivity;
 import com.example.paintingsonline.Profile.ProfileActivity;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Registration.RegistrationActivity;
@@ -22,15 +24,13 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener
-{
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static String URL_LOGIN = "https://jrnan.info/Painting/Login.php";
 
     EditText username, pass;
     Button login;
     TextView register;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -52,7 +52,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         login.setOnClickListener(this);
         register.setOnClickListener(this);
-
     }
 
 
@@ -79,7 +78,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 {
                     JSONArray jsonArray = new JSONArray(response);
                     if(jsonArray.length() < 1){
-                        Toast.makeText(LoginActivity.this, "Authontication failed" , Toast.LENGTH_SHORT).show();
+                        Toast.makeText(LoginActivity.this, "Wrong Password or Username" , Toast.LENGTH_SHORT).show();
                     }
                     else {
                         JSONObject jsonObject = jsonArray.getJSONObject(0);
@@ -88,18 +87,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         String email = jsonObject.getString("Email");
                         String address = jsonObject.getString("Address");
                         String fname = jsonObject.getString("name");
+                        int userType = jsonObject.getInt("usertype");
+                        int verifyUser = jsonObject.getInt("verified");
+
+
                         if (uname != null) {
                             Toast.makeText(LoginActivity.this, uname + " Logged in", Toast.LENGTH_SHORT).show();
 //                            if (!jsonObject.getBoolean("error"))
 //                            {
-                            SharedPrefManager.getInstance(getApplicationContext()).userlogin(id, uname, pass.getText().toString() ,email, address, fname);
+                            SharedPrefManager.getInstance(getApplicationContext()).userlogin(id, uname, pass.getText().toString() ,email, address, fname, userType, verifyUser);
+                            Log.d("test", "test " + userType + verifyUser);
                             startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
                             finish();
-//                            }
-//                            else
-//                            {
-//                                Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
-//                            }
+
                         }
                     }
                 }
@@ -125,19 +125,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
 
     @Override
-    public void onClick(View view)
+    public void onClick(View v)
     {
-        if (view == login)
+        if (v == login)
         {
             loginUser();
         }
 
-        if (view == register)
+        if (v == register)
         {
             Intent intent2 = new Intent(LoginActivity.this, RegistrationActivity.class);
             startActivity(intent2);
         }
+    }
 
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP); // To clean up all activities
+        startActivity(intent);
+        finish();
     }
 
 }

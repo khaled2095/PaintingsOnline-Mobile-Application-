@@ -9,11 +9,9 @@
     tools:context=".Registration.RegistrationActivity">
 
 
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="10dp">
+        android:layout_height="match_parent">
 
 
         <LinearLayout
@@ -27,13 +25,11 @@
             <ImageView
                 android:id="@+id/ivRegLogo"
                 android:layout_width="wrap_content"
-                android:layout_height="160dp"
-
-                android:layout_marginBottom="30dp"
-                android:layout_marginTop="18dp"
-                android:contentDescription="TODO"
-                android:scaleType="fitCenter"
-                android:src="@drawable/logo" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="25dp"
+                android:layout_gravity="center"
+                android:src="@drawable/paintings" />
 
 
 
@@ -122,32 +118,36 @@
             </android.support.design.widget.TextInputLayout>
 
 
+
             <LinearLayout
+                android:id="@+id/select"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="20dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal"
                 android:layout_weight="4">
 
                 <Button
+                    android:id="@+id/user"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:text="USER"
+                    android:textSize="16sp"
                     android:layout_weight="2"
-                    android:id="@+id/user"
-                    android:text="User"
-                    android:textSize="15sp"
-                    android:textColor="@color/Black"/>
+                    android:onClick="buttonPressed"/>
 
                 <Button
+                    android:id="@+id/artist1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
-                    android:id="@+id/artist1"
                     android:text="Artist"
-                    android:textSize="15sp"
-                    android:textColor="@color/Black"/>
+                    android:textSize="16sp"
+                    android:layout_weight="2"
+                    android:onClick="buttonPressed"/>
 
             </LinearLayout>
+
+
 
 
             <android.support.v7.widget.AppCompatButton
@@ -161,42 +161,59 @@
                 android:background="@drawable/onclick_grey"/>
 
 
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/useragg"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center">
+
+                <TextView
+                    android:id="@+id/agreement"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User Agreement"
+                    android:textSize="18sp"
+                    android:textColor="@color/blue1"/>
+
+            </RelativeLayout>
+
+
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:layout_marginStart="50dp">
+                android:layout_gravity="center"
+                android:layout_marginBottom="10dp">
 
                 <TextView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="6dp"
                     android:text="Already a Member? "
                     android:textColor="@color/Black"
-                    android:textSize="18sp"/>
+                    android:textSize="15sp"/>
 
 
                 <TextView
                     android:id="@+id/signin"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:layout_marginTop="4dp"
+                    android:layout_marginTop="6dp"
                     android:text="Sign In"
                     android:textColor="@color/blue5"
-                    android:textSize="18sp"/>
+                    android:textSize="15sp"/>
 
 
             </LinearLayout>
 
 
-
         </LinearLayout>
 
 
-
-    </ScrollView>
+    </RelativeLayout>
 
 
 </RelativeLayout>
