@@ -1,7 +1,9 @@
 package com.example.paintingsonline.Category;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +18,7 @@ import com.example.paintingsonline.Database.DataSource.CartRepository;
 import com.example.paintingsonline.Database.Local.CartDataSource;
 import com.example.paintingsonline.Database.Local.CartDatabase;
 import com.example.paintingsonline.Database.ModelDB.Cart;
+import com.example.paintingsonline.Login.LoginActivity;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.SharedPrefManager;
 
@@ -29,7 +32,7 @@ import io.reactivex.schedulers.Schedulers;
 
 public class CartActivity extends AppCompatActivity {
 
-    private String URL = "https://jrnan.info/Painting/checkout.php?";
+    private String URL = "https://jrnan.info/Painting/Payment/index.php?";
     TextView totalPrice;
     public static CartDatabase cartd;
     public static CartRepository cr;
@@ -41,10 +44,10 @@ public class CartActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
-
 
         ImageView backarrow2 = findViewById(R.id.backarrow2);
         backarrow2.setOnClickListener(new View.OnClickListener() {
@@ -57,83 +60,136 @@ public class CartActivity extends AppCompatActivity {
         initDB();
 
         placeorder = findViewById(R.id.placeorder);
-        placeorder.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                // placeOrder();
-                String paintingIDs = "";
-                String paintingQunatity = "";
 
-                for (Cart cart : cartsList)
-                {
-                    if (paintingIDs.isEmpty())
-                    {
-                        paintingIDs = String.valueOf(cart.paintingid);
-                    }
-                    else
-                    {
-                        paintingIDs += "," + cart.paintingid;
-                    }
 
-                    if (paintingQunatity.isEmpty())
-                    {
-                        paintingQunatity = String.valueOf(cart.qty);
-                    }
-                    else
-                    {
-                        paintingQunatity += "," + cart.qty;
-                    }
-
-                    Log.d("hhhhhhhh", "pid: " + cart.paintingid);
-                    Log.d("hhhhhhhh", "pid: " + cart.qty);
-                }
-
-                String requestURL = URL +
-                        "Username=" +  SharedPrefManager.getInstance(CartActivity.this).getUserName() +
-                        "&Password=" + SharedPrefManager.getInstance(CartActivity.this).password() +
-                        "&Paintings=" + paintingIDs + "&Quantity=" + paintingQunatity;
-                //Log.d("url", "finalURL = " + requestURL);
-
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(requestURL));
-                startActivity(i);
-
-//                Log.d("car", "username: " + SharedPrefManager.getInstance(CartActivity.this).getUserName());
-//                Log.d("car", "password: " + SharedPrefManager.getInstance(CartActivity.this).password());
-
-            }
-        });
 
         recyclerView = findViewById(R.id.recyclercart);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        loadCartItems();
+
+        sendOrderToServer();
 
     }
 
 
-
-    private void placeOrder()
-    {
-        //submit Order
-        compositeDisposable.add(
-                cr.getCartItems()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe(new Consumer<List<Cart>>() {
-                            @Override
-                            public void accept(List<Cart> carts) throws Exception
-                            {
-                                // sendOrderToServer(cr.sumPrice(), cartsList);
-                            }
-                        })
-        );
-
-    }
-
-//    private void sendOrderToServer(int sumPrice, List<Cart> cartsList)
+//    private void placeOrder()
 //    {
+//        //submit Order
+//        compositeDisposable.add(
+//                cr.getCartItems()
+//                        .observeOn(AndroidSchedulers.mainThread())
+//                        .subscribeOn(Schedulers.io())
+//                        .subscribe(new Consumer<List<Cart>>() {
+//                            @Override
+//                            public void accept(List<Cart> carts) throws Exception
+//                            {
+//                                // sendOrderToServer(cartsList);
+//                            }
+//                        })
+//        );
+//
+//    }
+
+
+    private void sendOrderToServer()
+    {
+        placeorder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                if (!SharedPrefManager.getInstance(CartActivity.this).isLoggedIn())
+                {
+                    AlertDialog.Builder builder1 = new AlertDialog.Builder(CartActivity.this);
+                    builder1.setMessage("You are not an Logged in. Click ok to Log In");
+                    builder1.setCancelable(true);
+
+                    builder1.setPositiveButton(
+                            "OK",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.cancel();
+                                    finish();
+                                    startActivity(new Intent(CartActivity.this, LoginActivity.class));
+                                }
+                            });
+
+                    AlertDialog alert11 = builder1.create();
+                    alert11.show();
+                }
+                else
+                {
+                    if (cartsList.size() > 0)
+                    {
+                        // placeOrder();
+                        String paintingIDs = "";
+                        String paintingQunatity = "";
+
+                        for (Cart cart : cartsList)
+                        {
+                            if (paintingIDs.isEmpty())
+                            {
+                                paintingIDs = String.valueOf(cart.paintingid);
+                            }
+                            else
+                            {
+                                paintingIDs += "," + cart.paintingid;
+                            }
+
+                            if (paintingQunatity.isEmpty())
+                            {
+                                paintingQunatity = String.valueOf(cart.qty);
+                            }
+                            else
+                            {
+                                paintingQunatity += "," + cart.qty;
+                            }
+
+                            Log.d("hhhhhhhh", "pid: " + cart.paintingid);
+                            Log.d("hhhhhhhh", "pid: " + cart.qty);
+                        }
+
+                        String requestURL = URL +
+                                "Username=" +  SharedPrefManager.getInstance(CartActivity.this).getUserName() +
+                                "&Password=" + SharedPrefManager.getInstance(CartActivity.this).password() +
+                                "&Paintings=" + paintingIDs + "&Quantity=" + paintingQunatity;
+                        //Log.d("url", "finalURL = " + requestURL);
+                        cr.emptycart();
+
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setData(Uri.parse(requestURL));
+                        startActivity(i);
+
+                    }
+                    else
+                    {
+                        AlertDialog.Builder builder1 = new AlertDialog.Builder(CartActivity.this);
+                        builder1.setMessage("No Items in the cart to be checked out");
+                        builder1.setCancelable(true);
+
+                        builder1.setPositiveButton(
+                                "OK",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        dialog.cancel();
+                                        finish();
+                                        startActivity(new Intent(CartActivity.this, LoginActivity.class));
+                                    }
+                                });
+
+                        AlertDialog alert11 = builder1.create();
+                        alert11.show();
+                    }
+
+                }
+
+
+            }
+        });
+
+
+
+
 //        if (cartsList.size() > 0)
 //        {
 //            mService.placeOrder("new", 1).enqueue(new Callback<String>() {
@@ -152,7 +208,7 @@ public class CartActivity extends AppCompatActivity {
 //            });
 //        }
 //
-//    }
+    }
 
 
     private void initDB()
@@ -169,7 +225,8 @@ public class CartActivity extends AppCompatActivity {
         compositeDisposable.add(
                 cr.getCartItems()
                         .observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-                        .subscribe(new Consumer<List<Cart>>() {
+                        .subscribe(new Consumer<List<Cart>>()
+                        {
                             @Override
                             public void accept(List<Cart> carts) throws Exception {
                                 displayCartItems(carts);
@@ -184,15 +241,39 @@ public class CartActivity extends AppCompatActivity {
         cartsList = carts;
         cartAdapterView =  new CartAdapterView(this, carts, new CartAdapterView.OnCartListener() {
             @Override
-            public void OnDeleteClick(int pos) {
-                CartDatabase cartd = CartDatabase.getInstance(getApplicationContext());
-                CartRepository cartRepository = CartRepository.getInstance(CartDataSource.getInstance(cartd.cartDAO()));
-                cartRepository.deleteCartItem(cartsList.get(pos));
+            public void OnDeleteClick(final int pos)
+            {
+                AlertDialog.Builder builder1 = new AlertDialog.Builder(CartActivity.this);
+                builder1.setMessage("Are you sure, you want to remove this Painting?.");
+                builder1.setCancelable(true);
+
+                builder1.setPositiveButton(
+                        "Yes",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                CartDatabase cartd = CartDatabase.getInstance(getApplicationContext());
+                                CartRepository cartRepository = CartRepository.getInstance(CartDataSource.getInstance(cartd.cartDAO()));
+                                cartRepository.deleteCartItem(cartsList.get(pos));
+                                dialog.cancel();
+                            }
+                        });
+
+                builder1.setNegativeButton(
+                        "No",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
+
+                AlertDialog alert11 = builder1.create();
+                alert11.show();
             }
         });
         recyclerView.setAdapter(cartAdapterView);
         cartAdapterView.notifyDataSetChanged();
     }
+
 
     @Override
     protected void onDestroy()
