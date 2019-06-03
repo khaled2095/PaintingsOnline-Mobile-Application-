@@ -24,6 +24,9 @@ public interface CartDAO
     @Query("SELECT COUNT(*) FROM Cart")
     int CountCartItems();
 
+    @Query("SELECT COUNT(*) FROM Cart WHERE paintingId=:paintingId")
+    int checkIfPaintingExists(int paintingId);
+
     @Query("SELECT SUM(paintingPrice) FROM Cart")
     int sumPrice();
 
@@ -31,10 +34,10 @@ public interface CartDAO
     void emptycart();
 
     @Insert
-    void insertToCart(Cart... carts);
+    void insertToCart(Cart...carts);
 
     @Update
-    void updateCart(Cart... carts);
+    void updateCart(Cart...carts);
 
     @Delete
     void deleteCartItem(Cart cart);

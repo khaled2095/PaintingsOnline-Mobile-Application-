@@ -44,6 +44,11 @@ public class CartRepository implements ICartDataSource
     }
 
     @Override
+    public int checkIfPaintingExists(int paintingId) {
+        return iCartDataSource.checkIfPaintingExists(paintingId);
+    }
+
+    @Override
     public int sumPrice() {
         return iCartDataSource.sumPrice();
     }

@@ -34,6 +34,9 @@ public class Cart
     @ColumnInfo(name = "quantity")
     public int qty;
 
+    @ColumnInfo(name = "paintingstock")
+    public int stock;
+
 
 
 
