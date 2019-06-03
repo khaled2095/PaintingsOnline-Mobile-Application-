@@ -28,7 +28,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Admin"
-                    android:textSize="25sp"
+                    android:textSize="22sp"
                     android:textColor="@color/Black"
                     android:layout_marginStart="10dp"/>
 
@@ -37,7 +37,7 @@
 
             <com.android.volley.toolbox.NetworkImageView
                 android:layout_width="match_parent"
-                android:layout_height="250dp"
+                android:layout_height="220dp"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
                 android:layout_marginTop="5dp"
@@ -56,25 +56,34 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="textStart"
-                    android:layout_weight="2"
                     android:layout_marginStart="10dp"
                     android:textColor="@color/Black"
                     android:text="Subtitle"
-                    android:textSize="25sp" />
-
-                <TextView
-                    android:id="@+id/price"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorAccent"
-                    android:textSize="20sp"
-                    android:layout_weight="2"
-                    android:layout_marginEnd="10dp"
-                    android:textAlignment="textEnd"
-                    android:text="$ 500"/>
+                    android:textSize="18sp" />
 
 
             </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+
+
+                <TextView
+                    android:id="@+id/painting_Size"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textStart"
+                    android:layout_marginStart="10dp"
+                    android:textColor="@color/Black"
+                    android:textSize="15sp" />
+
+
+            </LinearLayout>
+
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -101,7 +110,7 @@
                 android:layout_marginEnd="10dp"
                 android:layout_marginTop="5dp"
                 android:layout_marginBottom="15dp"
-                android:text="ADD TO CART"
+                android:text=""
                 android:textColor="@color/White"
                 android:background="@drawable/onclick_grey"
                 android:backgroundTint="@color/blue1"/>

@@ -5,9 +5,8 @@ import android.os.Parcelable;
 
 public class Paintings
 {
-
     private int id;
-    private String name, description, image;
+    private String name, description, image, pOwner, pSize;
     private int price;
     private int quantity;
 
@@ -15,6 +14,16 @@ public class Paintings
     public Paintings()
     {
 
+    }
+
+    public Paintings(int id, String name, String description, String image, int price, String pOwner)
+    {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.image = image;
+        this.price = price;
+        this.pOwner = pOwner;
     }
 
     public Paintings(int id, String name, String image, int price)
@@ -25,31 +34,26 @@ public class Paintings
         this.price = price;
     }
 
-    public Paintings(int id, String name, String description, String image, int price)
+    public Paintings(int id, String name, String description, String image, int price, int quantity, String pOwner, String size)
     {
         this.id = id;
         this.name = name;
         this.description = description;
         this.image = image;
         this.price = price;
+        this.quantity = quantity;
+        this.pOwner = pOwner;
+        this.pSize = size;
     }
 
-    public Paintings(String name, String image, int quantity , int price)
+    public Paintings(String name, String image, int price, int quantity)
     {
-        this.image = image;
         this.name = name;
+        this.image = image;
         this.price = price;
         this.quantity = quantity;
     }
 
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
 
     public int getId() {
         return id;
@@ -89,6 +93,30 @@ public class Paintings
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public String getpOwner() {
+        return pOwner;
+    }
+
+    public void setpOwner(String pOwner) {
+        this.pOwner = pOwner;
+    }
+
+    public String getpSize() {
+        return pSize;
+    }
+
+    public void setpSize(String pSize) {
+        this.pSize = pSize;
     }
 
 
