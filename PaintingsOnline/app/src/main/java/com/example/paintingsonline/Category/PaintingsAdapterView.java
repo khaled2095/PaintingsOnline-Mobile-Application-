@@ -1,19 +1,17 @@
 package com.example.paintingsonline.Category;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.toolbox.NetworkImageView;
-import com.bumptech.glide.Glide;
 import com.example.paintingsonline.Database.DataSource.CartRepository;
 import com.example.paintingsonline.Database.Local.CartDataSource;
 import com.example.paintingsonline.Database.Local.CartDatabase;
@@ -22,7 +20,6 @@ import com.example.paintingsonline.Model.Paintings;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.MySingleton;
 import com.google.gson.Gson;
-import com.nex3z.notificationbadge.NotificationBadge;
 
 import java.util.List;
 
