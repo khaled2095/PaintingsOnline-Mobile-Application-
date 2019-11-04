@@ -29,8 +29,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.paintingsonline.Login.LoginActivity;
-import com.example.paintingsonline.Model.Category;
-import com.example.paintingsonline.Model.Room;
 import com.example.paintingsonline.Profile.ProfileActivity;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.BottomNavViewHelper;

@@ -3,13 +3,17 @@ package com.example.paintingsonline.Model;
 public class Order
 {
     private String PaintingOwner;
-    private int PaintingID;
+    private String PaintingID;
+    private String PaintingName;
     private int OrderId;
     private String OrderStatus;
     private int OrderPrice;
+    private int OrderQty;
     private String OrderDeatils;
     private String OrderAddressx;
     private String OrderImage;
+    private String Rating;
+    private String Comment;
 
 
 
@@ -18,13 +22,24 @@ public class Order
 
     }
 
-    public Order(int orderId, String orderStatus, int orderPrice, String orderImage, String paintingowner)
+    //To mark painting shipment status in selling panel
+    public Order(String paintingID, String paintingName, int orderId, String orderStatus, int orderPrice, int orderqty) {
+        PaintingID = paintingID;
+        PaintingName = paintingName;
+        OrderId = orderId;
+        OrderStatus = orderStatus;
+        OrderPrice = orderPrice;
+        OrderQty = orderqty;
+    }
+
+    public Order(int orderId, String orderStatus, int orderPrice, String orderImage, String paintingowner, String rating)
     {
         OrderId = orderId;
         OrderStatus = orderStatus;
         OrderPrice = orderPrice;
         OrderImage = orderImage;
         PaintingOwner = paintingowner;
+        Rating = rating;
 
     }
 
@@ -36,11 +51,11 @@ public class Order
         PaintingOwner = paintingowner;
     }
 
-    public int getPaintingID() {
+    public String getPaintingID() {
         return PaintingID;
     }
 
-    public void setPaintingID(int paintingID) {
+    public void setPaintingID(String paintingID) {
         PaintingID = paintingID;
     }
 
@@ -90,5 +105,37 @@ public class Order
 
     public void setOrderImage(String orderImage) {
         OrderImage = orderImage;
+    }
+
+    public String getRating() {
+        return Rating;
+    }
+
+    public void setRating(String rating) {
+        Rating = rating;
+    }
+
+    public String getComment() {
+        return Comment;
+    }
+
+    public void setComment(String comment) {
+        Comment = comment;
+    }
+
+    public String getPaintingName() {
+        return PaintingName;
+    }
+
+    public void setPaintingName(String paintingName) {
+        PaintingName = paintingName;
+    }
+
+    public int getOrderQty() {
+        return OrderQty;
+    }
+
+    public void setOrderQty(int orderQty) {
+        OrderQty = orderQty;
     }
 }

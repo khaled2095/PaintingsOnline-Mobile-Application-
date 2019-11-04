@@ -73,6 +73,9 @@ dependencies {
     // CardView
     implementation 'androidx.cardview:cardview:1.0.0'
 
+    //Material Rating Bar
+    implementation 'com.stepstone.apprating:app-rating:2.0.0'
+
     // volley http library
     implementation 'com.android.volley:volley:1.1.1'
     implementation 'com.cepheuen.elegant-number-button:lib:1.0.2'

@@ -16,7 +16,6 @@ import android.widget.ListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
-import com.example.paintingsonline.Model.Category;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.MySingleton;
 

@@ -18,7 +18,6 @@ import com.example.paintingsonline.Database.DataSource.CartRepository;
 import com.example.paintingsonline.Database.Local.CartDataSource;
 import com.example.paintingsonline.Database.Local.CartDatabase;
 import com.example.paintingsonline.Database.ModelDB.Cart;
-import com.example.paintingsonline.Model.Paintings;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.MySingleton;
 import com.google.gson.Gson;

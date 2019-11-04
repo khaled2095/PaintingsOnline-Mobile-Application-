@@ -21,7 +21,6 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.paintingsonline.Database.DataSource.CartRepository;
 import com.example.paintingsonline.Database.Local.CartDataSource;
 import com.example.paintingsonline.Database.Local.CartDatabase;
-import com.example.paintingsonline.Model.Paintings;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.BottomNavViewHelper;
 import com.example.paintingsonline.Utils.MySingleton;

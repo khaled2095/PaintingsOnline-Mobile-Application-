@@ -3,20 +3,40 @@ package com.example.paintingsonline.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Paintings
+public class Paintings implements Parcelable
 {
-    private int id;
+    private String id;
     private String name, description, image, pOwner, pSize;
     private int price;
     private int quantity;
 
+
+    //Constructor for Featured Products and Best Selling
+    public Paintings(String id, String name, String image, String pOwner, int price) {
+        this.id = id;
+        this.name = name;
+        this.image = image;
+        this.pOwner = pOwner;
+        this.price = price;
+    }
 
     public Paintings()
     {
 
     }
 
-    public Paintings(int id, String name, String description, String image, int price, String pOwner)
+
+    //For Search Activity
+    public Paintings(String id, String name, String description, String pOwner, String image)
+    {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.pOwner = pOwner;
+        this.image = image;
+    }
+
+    public Paintings(String id, String name, String description, String image, int price, String pOwner)
     {
         this.id = id;
         this.name = name;
@@ -26,7 +46,7 @@ public class Paintings
         this.pOwner = pOwner;
     }
 
-    public Paintings(int id, String name, String image, int price)
+    public Paintings(String id, String name, String image, int price)
     {
         this.id = id;
         this.name = name;
@@ -34,7 +54,7 @@ public class Paintings
         this.price = price;
     }
 
-    public Paintings(int id, String name, String description, String image, int price, int quantity, String pOwner, String size)
+    public Paintings(String id, String name, String description, String image, int price, int quantity, String pOwner, String size)
     {
         this.id = id;
         this.name = name;
@@ -55,11 +75,34 @@ public class Paintings
     }
 
 
-    public int getId() {
+    protected Paintings(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        description = in.readString();
+        image = in.readString();
+        pOwner = in.readString();
+        pSize = in.readString();
+        price = in.readInt();
+        quantity = in.readInt();
+    }
+
+    public static final Creator<Paintings> CREATOR = new Creator<Paintings>() {
+        @Override
+        public Paintings createFromParcel(Parcel in) {
+            return new Paintings(in);
+        }
+
+        @Override
+        public Paintings[] newArray(int size) {
+            return new Paintings[size];
+        }
+    };
+
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -120,4 +163,22 @@ public class Paintings
     }
 
 
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(description);
+        dest.writeString(image);
+        dest.writeString(pOwner);
+        dest.writeString(pSize);
+        dest.writeInt(price);
+        dest.writeInt(quantity);
+    }
 }

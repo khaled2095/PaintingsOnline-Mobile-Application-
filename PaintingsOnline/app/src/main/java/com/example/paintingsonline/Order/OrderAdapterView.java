@@ -7,10 +7,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
 import com.example.paintingsonline.Model.Order;
+import com.example.paintingsonline.Model.UserRating;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.MySingleton;
 import com.example.paintingsonline.Utils.SharedPrefManager;
@@ -21,13 +24,17 @@ public class OrderAdapterView extends RecyclerView.Adapter<OrderAdapterView.Orde
 {
     private Context ordercontext;
     private List<Order> orderList;
+    private List<UserRating> userRatings;
+    private OnRatingListener onRateListener;
 
 
-    public OrderAdapterView(Context ordercontext, List<Order> orderList)
+    public OrderAdapterView(Context ordercontext, List<Order> orderList, OnRatingListener onRateListener)
     {
         this.ordercontext = ordercontext;
         this.orderList = orderList;
+        this.onRateListener = onRateListener;
     }
+
 
 
     @NonNull
@@ -36,11 +43,11 @@ public class OrderAdapterView extends RecyclerView.Adapter<OrderAdapterView.Orde
     {
         LayoutInflater layoutInflater = LayoutInflater.from(ordercontext);
         View view = layoutInflater.inflate(R.layout.row_order, viewGroup, false);
-        return new OrderViewHolder(view);
+        return new OrderViewHolder(view, onRateListener);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull OrderViewHolder orderViewHolder, int i)
+    public void onBindViewHolder(@NonNull final OrderViewHolder orderViewHolder, int i)
     {
         final Order o1 = orderList.get(i);
         orderViewHolder.orderprice.setText(String.valueOf(o1.getOrderPrice()));
@@ -72,7 +79,10 @@ public class OrderAdapterView extends RecyclerView.Adapter<OrderAdapterView.Orde
                 v.getContext().startActivity(emailintent);
             }
         });
+
     }
+
+
 
     @Override
     public int getItemCount() {
@@ -81,13 +91,15 @@ public class OrderAdapterView extends RecyclerView.Adapter<OrderAdapterView.Orde
 
 
 
-
-    class OrderViewHolder extends RecyclerView.ViewHolder
+    class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
+        RatingBar ratingBar;
         NetworkImageView orderimg;
-        TextView orderstatus, orderprice, productowner, paintingBoughtSold, feedback;
+        TextView orderstatus, orderprice, productowner, paintingBoughtSold;
+        Button feedback, rate;
+        OnRatingListener monRatingListener;
 
-        public OrderViewHolder(@NonNull View itemView)
+        public OrderViewHolder(@NonNull View itemView, OnRatingListener onRatingListener)
         {
             super(itemView);
 
@@ -97,6 +109,22 @@ public class OrderAdapterView extends RecyclerView.Adapter<OrderAdapterView.Orde
             orderprice = itemView.findViewById(R.id.showPrice);
             orderstatus = itemView.findViewById(R.id.showstatus);
             feedback = itemView.findViewById(R.id.feedback);
+            rate = itemView.findViewById(R.id.rating);
+            this.monRatingListener = onRatingListener;
+
+            rate.setOnClickListener(this);
+
         }
+
+        @Override
+        public void onClick(View v)
+        {
+            monRatingListener.ratingSystem(userRatings, getAdapterPosition());
+        }
+    }
+
+    public interface OnRatingListener
+    {
+        void ratingSystem(List<UserRating> userRatings, int position);
     }
 }
