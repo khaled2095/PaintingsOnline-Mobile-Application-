@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="8dp"
+        android:layout_margin="5dp">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rimg">
+
+                <ImageView
+                    android:layout_width="195dp"
+                    android:layout_height="130dp"
+                    android:scaleType="fitXY"
+                    android:id="@+id/favimg"/>
+
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rproductname"
+                android:layout_toEndOf="@+id/rimg"
+                android:layout_marginStart="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/favname"
+                    android:text="nature"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/Black"/>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rPrice"
+                android:layout_toEndOf="@+id/rimg"
+                android:layout_below="@+id/rproductname"
+                android:layout_marginStart="2dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/favprice"
+                    android:text="300"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/Black"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rsize"
+                android:layout_toEndOf="@+id/rimg"
+                android:layout_below="@+id/rPrice"
+                android:layout_marginStart="2dp">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/favsize"
+                    android:text="300"
+                    android:layout_marginTop="5dp"
+                    android:textSize="15sp"
+                    android:textColor="@color/Black"/>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/rBtn"
+                android:layout_toEndOf="@+id/rimg"
+                android:layout_below="@id/rsize"
+                android:layout_marginStart="2dp"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp"
+                android:layout_marginTop="10dp"
+                android:paddingBottom="10dp">
+
+                <Button
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:text="remove"
+                    android:id="@+id/favremove"
+                    android:background="@drawable/onclick_grey"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/red"
+                    android:layout_alignParentEnd="true"/>
+
+
+            </RelativeLayout>
+
+
+
+        </RelativeLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
