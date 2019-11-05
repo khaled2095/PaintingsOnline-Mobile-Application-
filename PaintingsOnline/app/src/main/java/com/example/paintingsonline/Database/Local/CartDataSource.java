@@ -44,7 +44,7 @@ public class CartDataSource implements ICartDataSource
     }
 
     @Override
-    public int checkIfPaintingExists(int paintingId) {
+    public String checkIfPaintingExists(String paintingId) {
         return cartDAO.checkIfPaintingExists(paintingId);
     }
 
@@ -72,4 +72,30 @@ public class CartDataSource implements ICartDataSource
     public void deleteCartItem(Cart cart) {
         cartDAO.deleteCartItem(cart);
     }
+
+    @Override
+    public void updatePaintingName(String pname, String pID)
+    {
+        cartDAO.updatePaintingName(pname,pID);
+    }
+
+    @Override
+    public void updatePaintingSizeAndPrice(String pSize, int pPrice, String pID)
+    {
+        cartDAO.updatePaintingSizeAndPrice(pSize,pPrice,pID);
+    }
+
+    @Override
+    public void updatePaintingImage(String pImage, String pID)
+    {
+        cartDAO.updatePaintingImage(pImage,pID);
+    }
+
+    @Override
+    public void updatePaintingStock(int pStock, String pID)
+    {
+        cartDAO.updatePaintingStock(pStock,pID);
+    }
+
+
 }

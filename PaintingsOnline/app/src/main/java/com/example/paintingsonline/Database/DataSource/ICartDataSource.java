@@ -11,10 +11,14 @@ public interface ICartDataSource
     Flowable<List<Cart>> getCartItems();
     Flowable<List<Cart>> getCartItemById(int cartItemId);
     int CountCartItems();
-    int checkIfPaintingExists(int paintingId);
+    String checkIfPaintingExists(String paintingId);
     int sumPrice();
     void emptycart();
-    void insertToCart(Cart...carts);
-    void updateCart(Cart...carts);
+    void updatePaintingName(String pname, String pID);
+    void updatePaintingSizeAndPrice(String pSize, int pPrice, String pID);
+    void updatePaintingImage(String pImage, String pID);
+    void updatePaintingStock(int pStock, String pID);
+    void insertToCart(Cart... carts);
+    void updateCart(Cart... carts);
     void deleteCartItem(Cart cart);
 }

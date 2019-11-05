@@ -85,7 +85,7 @@
 
     </RelativeLayout>
 
-    
+
     <TextView
         android:id="@+id/tPrice"
         android:layout_width="match_parent"

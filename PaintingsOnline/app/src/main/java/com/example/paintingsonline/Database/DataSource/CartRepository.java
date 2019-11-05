@@ -1,5 +1,7 @@
 package com.example.paintingsonline.Database.DataSource;
 
+import android.util.Log;
+
 import com.example.paintingsonline.Database.ModelDB.Cart;
 
 import java.util.List;
@@ -44,12 +46,14 @@ public class CartRepository implements ICartDataSource
     }
 
     @Override
-    public int checkIfPaintingExists(int paintingId) {
+    public String checkIfPaintingExists(String paintingId) {
+        Log.d("id", "id" + iCartDataSource.checkIfPaintingExists(paintingId));
         return iCartDataSource.checkIfPaintingExists(paintingId);
     }
 
     @Override
     public int sumPrice() {
+        Log.d("ok", "sumPrice: " + iCartDataSource.sumPrice());
         return iCartDataSource.sumPrice();
     }
 
@@ -71,5 +75,29 @@ public class CartRepository implements ICartDataSource
     @Override
     public void deleteCartItem(Cart cart) {
         iCartDataSource.deleteCartItem(cart);
+    }
+
+    @Override
+    public void updatePaintingName(String pname, String pID)
+    {
+        iCartDataSource.updatePaintingName(pname,pID);
+    }
+
+    @Override
+    public void updatePaintingSizeAndPrice(String pSize, int pPrice, String pID)
+    {
+        iCartDataSource.updatePaintingSizeAndPrice(pSize,pPrice,pID);
+    }
+
+    @Override
+    public void updatePaintingImage(String pImage, String pID)
+    {
+        iCartDataSource.updatePaintingImage(pImage,pID);
+    }
+
+    @Override
+    public void updatePaintingStock(int pStock, String pID)
+    {
+        iCartDataSource.updatePaintingStock(pStock,pID);
     }
 }

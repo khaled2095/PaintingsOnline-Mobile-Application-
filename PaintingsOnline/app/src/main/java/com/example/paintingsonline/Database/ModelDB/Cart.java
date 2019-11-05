@@ -1,10 +1,10 @@
 package com.example.paintingsonline.Database.ModelDB;
 
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import androidx.annotation.NonNull;
 
 @Entity(tableName = "Cart")
 public class Cart
@@ -17,7 +17,7 @@ public class Cart
 
 
     @ColumnInfo(name = "paintingId")
-    public int paintingid;
+    public String paintingid;
 
     @ColumnInfo(name = "paintingName")
     public String paintingname;
@@ -27,6 +27,12 @@ public class Cart
 
     @ColumnInfo(name = "paintingDesc")
     public String paintingdesc;
+
+    @ColumnInfo(name = "paintingArtist")
+    public String paintingartist;
+
+    @ColumnInfo(name = "paintingSize")
+    public String paintingsize;
 
     @ColumnInfo(name = "paintingPrice")
     public int price;
