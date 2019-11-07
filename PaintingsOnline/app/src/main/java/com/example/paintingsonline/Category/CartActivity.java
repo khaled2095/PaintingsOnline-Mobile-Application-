@@ -316,7 +316,7 @@ public class CartActivity extends AppCompatActivity {
         }
     }
 
-    
+
 
     private void initDB()
     {
