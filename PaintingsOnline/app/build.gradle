@@ -38,6 +38,9 @@ dependencies {
     implementation 'com.nineoldandroids:library:2.4.0'
     implementation 'com.daimajia.slider:library:1.1.5@aar'
 
+    //Material Search Bar
+    implementation 'com.github.mancj:MaterialSearchBar:0.8.2'
+
     //Slider Layout
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'com.nineoldandroids:library:2.4.0'
