@@ -1,126 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="250dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    app:cardElevation="4dp"
+    android:layout_marginBottom="5dp">
 
 
-    <androidx.cardview.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:id="@+id/homecard"
-        android:minHeight="200dp">
+        android:layout_height="match_parent">
 
-        <LinearLayout
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/imgpaintings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+
+        <TextView
+            android:id="@+id/owner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent">
-
-                <TextView
-                    android:id="@+id/owner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="Admin"
-                    android:textSize="22sp"
-                    android:textColor="@color/Black"
-                    android:layout_marginStart="10dp"/>
-
-            </LinearLayout>
-
-
-            <com.android.volley.toolbox.NetworkImageView
-                android:layout_width="match_parent"
-                android:layout_height="220dp"
-                android:adjustViewBounds="true"
-                android:scaleType="centerCrop"
-                android:layout_marginTop="5dp"
-                android:id="@+id/imgpaintings"/>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp">
-
-
-                <TextView
-                    android:id="@+id/painting_Name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/Black"
-                    android:text="Subtitle"
-                    android:textSize="18sp" />
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="6dp">
-
-
-                <TextView
-                    android:id="@+id/painting_Size"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="textStart"
-                    android:layout_marginStart="10dp"
-                    android:textColor="@color/Black"
-                    android:textSize="15sp" />
-
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/paintdescription"
-                    android:layout_marginTop="5dp"
-                    android:lineSpacingMultiplier="1.1"
-                    android:padding="10dp"
-                    android:textSize="15sp"/>
-
-            </LinearLayout>
-
-
-            <Button
-                android:id="@+id/c"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="15dp"
-                android:text=""
-                android:textColor="@color/White"
-                android:background="@drawable/onclick_grey"
-                android:backgroundTint="@color/blue1"/>
+            android:text="Admin"
+            android:textAlignment="textStart"
+            android:textColor="@color/White"
+            android:layout_above="@+id/painting_Name"
+            android:background="#4f0e0d0e"
+            android:textSize="17sp" />
 
 
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/painting_Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subtitle"
+            android:textAlignment="textStart"
+            android:layout_above="@+id/painting_Price"
+            android:textColor="@color/White"
+            android:background="#4f0e0d0e"
+            android:textSize="17sp" />
 
 
 
-    </androidx.cardview.widget.CardView>
+        <TextView
+            android:id="@+id/painting_Price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="200"
+            android:textAlignment="textStart"
+            android:textColor="@color/White"
+            android:background="#4f0e0d0e"
+            android:layout_alignParentBottom="true"
+            android:textSize="17sp" />
 
-</LinearLayout>
+
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

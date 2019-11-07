@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="3dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        app:cardMaxElevation="2dp"
+        app:cardElevation="5dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="3dp"
+        android:layout_centerInParent="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.android.volley.toolbox.NetworkImageView
+                android:id="@+id/featuredImage"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:layout_centerHorizontal="true"/>
+
+
+            <LinearLayout
+                android:id="@+id/byOwner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_above="@id/artworkName">
+
+                <TextView
+                    android:id="@+id/by"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="By: "
+                    android:textAlignment="textStart"
+                    android:textColor="@color/White"
+                    android:background="#4f0e0d0e"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/featuredowner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Admin"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/White"
+                    android:background="#4f0e0d0e"
+                    android:textSize="14sp"/>
+
+            </LinearLayout>
+
+
+
+            <LinearLayout
+                android:id="@+id/artworkName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_above="@+id/artworkPrice">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Artwork Name: "
+                    android:textAlignment="textStart"
+                    android:textColor="@color/White"
+                    android:background="#4f0e0d0e"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:id="@+id/featuredName"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:text="Subtitle"
+                    android:textColor="@color/White"
+                    android:background="#4f0e0d0e" />
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/artworkPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_alignParentBottom="true">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Starting From: "
+                    android:textAlignment="textStart"
+                    android:textColor="@color/White"
+                    android:background="#4f0e0d0e"
+                    android:textSize="14sp"/>
+
+
+
+                <TextView
+                    android:id="@+id/featuredPrice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="200"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/White"
+                    android:background="#4f0e0d0e"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+</RelativeLayout>
