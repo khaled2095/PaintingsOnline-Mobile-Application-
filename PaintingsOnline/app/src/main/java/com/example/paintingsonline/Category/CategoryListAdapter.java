@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.android.volley.toolbox.NetworkImageView;
+import com.example.paintingsonline.Model.Category;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.MySingleton;
 
