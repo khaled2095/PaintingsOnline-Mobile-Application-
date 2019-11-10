@@ -1,37 +1,90 @@
 package com.example.paintingsonline.Registration;
 
+import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
 import android.os.Bundle;
+import android.os.Looper;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.example.paintingsonline.Login.LoginActivity;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.MySingleton;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
 
-    public  String URL_REGISTER = "https://jrnan.info/Painting/Register.php";
+    //public String URL_REGISTER = "https://paintingsonline.000webhostapp.com/Register.php";
 
+    private String url = "/Register.php";
+    private String URL = "";
+
+    private static final int REQUEST_LOCATIONCODE = 2000;
     private EditText username, address, email, password, conpass, fullname;
-    private Button signUp,  user, artist;
-    private TextView signIn, UserAgreement;
+    private Button signUp, user, artist;
+    private TextView signIn, UserAgreement, userDifference;
     int u = 0 ;
+    FusedLocationProviderClient fusedLocationProviderClient;
+    LocationRequest locationRequest;
+    LocationCallback locationCallback;
+    Geocoder geocoder;
+    private List<Address> addresses;
+
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults)
+    {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode)
+        {
+            case REQUEST_LOCATIONCODE:
+                if (grantResults.length > 0)
+                {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                    {
+
+                    }
+                    else if (grantResults[0] == PackageManager.PERMISSION_DENIED)
+                    {
+
+                    }
+                }
+        }
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -39,6 +92,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        SharedPreferences sp2 = PreferenceManager.getDefaultSharedPreferences(RegistrationActivity.this);
+        URL = sp2.getString("mainurl", "");
+        url = URL + url;
 
         fullname = findViewById(R.id.regfname);
         username = findViewById(R.id.reguname);
@@ -50,30 +106,53 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
 
-        user = findViewById(R.id.user);
-        artist = findViewById(R.id.artist1);
+//        user = findViewById(R.id.user);
+//        artist = findViewById(R.id.artist1);
+//
+//
+//
+//        user.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                buttonPressed(view);
+//                u = 0;
+//            }
+//        });
+//
+//        artist.setOnClickListener(new View.OnClickListener()
+//        {
+//            @Override
+//            public void onClick(View view)
+//            {
+//                buttonPressed(view);
+//                u = 1;
+//            }
+//        });
 
 
-
-        user.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                buttonPressed(view);
-                u = 0;
-            }
-        });
-
-        artist.setOnClickListener(new View.OnClickListener()
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION))
         {
-            @Override
-            public void onClick(View view)
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATIONCODE);
+        }
+        else
             {
-                buttonPressed(view);
-                u = 1;
-            }
-        });
+            //if permission is granted
+            BuildLocationRequest();
+            BuildLocationCallBack();
 
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+            //Set Event for button
+            if (ActivityCompat.checkSelfPermission(RegistrationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            {
+                ActivityCompat.requestPermissions(RegistrationActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATIONCODE);
+                return;
+            }
+
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+
+        }
 
 
 
@@ -158,98 +237,133 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
 
-
-
-    public boolean buttonPressed(View v)
+    private void BuildLocationCallBack()
     {
-        switch(v.getId()) {
-            case R.id.user:
-                user.setTextColor(Color.parseColor("White"));
-                artist.setTextColor(Color.parseColor("Black"));
-                break;
-            case R.id.artist1:
-                user.setTextColor(Color.parseColor("Black"));
-                artist.setTextColor(Color.parseColor("White"));
-                break;
-        }
+        geocoder = new Geocoder(this, Locale.getDefault());
 
-        return false;
+        locationCallback = new LocationCallback()
+        {
+            @Override
+            public void onLocationResult(LocationResult locationResult)
+            {
+                for (Location location: locationResult.getLocations())
+                {
+//                    String latitude = String.valueOf(location.getLatitude());
+//                    String longitude = String.valueOf(location.getLongitude());
+
+                    try {
+
+                        addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
+                        String address1 = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+
+                        address.setText(address1);
+
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        };
+
+    }
+
+
+    private void BuildLocationRequest()
+    {
+        locationRequest = new LocationRequest();
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setInterval(5000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setSmallestDisplacement(10);
     }
 
 
 
-    private void registerUser(View v)
-    {
+//    public boolean buttonPressed(View v)
+//    {
+//        switch(v.getId()) {
+//            case R.id.user:
+//                user.setTextColor(Color.parseColor("White"));
+//                artist.setTextColor(Color.parseColor("Black"));
+//                userDifference.setText("Users can buy and rate Paintings after a purchase but they cant sell their paintings. You can Switch to artist later.");
+//                break;
+//            case R.id.artist1:
+//                user.setTextColor(Color.parseColor("Black"));
+//                artist.setTextColor(Color.parseColor("White"));
+//                userDifference.setText("Artists Can sell and buy paintings, track their sales and create their mini store.");
+//                break;
+//        }
+//
+//        return false;
+//    }
 
-        URL_REGISTER = "https://jrnan.info/Painting/Register.php";
+
+    private void registerUser(View v) {
+
+        //URL_REGISTER = "https://paintingsonline.000webhostapp.com/Register.php";
 
 
-        String fname = fullname.getText().toString().trim();
-        String uname = username.getText().toString().trim();
-        String addr = address.getText().toString().trim();
-        String em = email.getText().toString().trim();
-        String pass = password.getText().toString().trim();
+        final String fname = fullname.getText().toString().trim();
+        final String uname = username.getText().toString().trim();
+        final String addr = address.getText().toString().trim();
+        final String em = email.getText().toString().trim();
+        final String pass = password.getText().toString().trim();
         String conp = conpass.getText().toString().trim();
 
 
         if (!pass.equals(conp))
         {
-            Toast.makeText(this, "Passwords Do Not Match", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Passwords Do Not Match", Toast.LENGTH_SHORT).show();
+            password.setError("Passwords Do Not Match");
         }
-        else
+        else if (!Patterns.EMAIL_ADDRESS.matcher(em).matches())
         {
+            email.setError("Please enter a valid email address");
+        }
+        else {
             if (!fname.isEmpty() && !uname.isEmpty() && !addr.isEmpty() && !em.isEmpty())
             {
-                URL_REGISTER += "?Username=" + uname;
-                URL_REGISTER += "&Password=" + pass;
-                URL_REGISTER += "&Email=" + em;
-                URL_REGISTER += "&Name=" + fname;
-                URL_REGISTER += "&Usertype=" + u;
-                URL_REGISTER += "&Address=" + addr;
 
-
-
-                StringRequest stringRequest = new StringRequest(URL_REGISTER, new Response.Listener<String>() {
+                StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
                     @Override
-                    public void onResponse(String response)
-                    {
-
-                        try
-                        {
-                            JSONArray jsonArray = new JSONArray(response);
-                            JSONObject jsonObject = jsonArray.getJSONObject(0);
-                            String res = jsonObject.getString("username");
-                            if (res.equals("Null")){
-                                Toast.makeText(RegistrationActivity.this, "The username or email already exists", Toast.LENGTH_SHORT).show();
-                            }
-                            else
-                            {
-                                Toast.makeText(RegistrationActivity.this, res + " Registered Successfully", Toast.LENGTH_SHORT).show();
-                                startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
-                                Log.d("url", "url: " + URL_REGISTER);
-                            }
-                        }
-                        catch (JSONException e)
-                        {
-                            e.printStackTrace();
-                        }
+                    public void onResponse(String response) {
+                        Toast.makeText(RegistrationActivity.this, " Registered Successfully", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
 
                     }
                 },
                         new Response.ErrorListener() {
                             @Override
-                            public void onErrorResponse(VolleyError error)
-                            {
+                            public void onErrorResponse(VolleyError error) {
                                 Toast.makeText(RegistrationActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                Log.d("try", "try " + error.getMessage());
                             }
-                        }){
+                        }) {
 
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<>();
+                        params.put("Username", uname);
+                        params.put("Password", pass);
+                        params.put("Address", addr);
+                        params.put("Email", em);
+                        params.put("Name", fname);
+                        params.put("Usertype", "0");
+                        return params;
+                    }
                 };
 
                 MySingleton.getInstance(RegistrationActivity.this).addToRequestQueue(stringRequest);
             }
             else {
-                Toast.makeText(this, "You Must Fill In the FIELDS", Toast.LENGTH_SHORT).show();
+                fullname.setError("Fields Cannot Be Empty");
+                username.setError("Fields Cannot Be Empty");
+                address.setError("Fields Cannot Be Empty");
+                email.setError("Fields Cannot Be Empty");
             }
         }
 
@@ -280,4 +394,32 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
     }
 
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION))
+        {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATIONCODE);
+        }
+        else
+        {
+            //if permission is granted
+            BuildLocationRequest();
+            BuildLocationCallBack();
+
+            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
+
+            //Set Event for button
+            if (ActivityCompat.checkSelfPermission(RegistrationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+            {
+                ActivityCompat.requestPermissions(RegistrationActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATIONCODE);
+                return;
+            }
+
+            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
+
+        }
+
+    }
 }

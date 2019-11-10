@@ -1,8 +1,12 @@
 package com.example.paintingsonline.Login;
 
+import android.content.Context;
 import android.content.Intent;
-import androidx.appcompat.app.AppCompatActivity;
+import android.content.SharedPreferences;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -10,6 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
@@ -24,13 +32,17 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private static String URL_LOGIN = "https://jrnan.info/Painting/Login.php";
+    private String URL_LOGIN = "/Login.php";
+    private String URL = "";
 
     EditText username, pass;
     Button login;
-    TextView register;
+    TextView register, forgetpassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -45,10 +57,24 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             return;
         }
 
+        SharedPreferences sp2 = PreferenceManager.getDefaultSharedPreferences(LoginActivity.this);
+        URL = sp2.getString("mainurl", "");
+        URL_LOGIN = URL + URL_LOGIN;
+
         username = findViewById(R.id.loguname);
         pass = findViewById(R.id.logpass);
         login = findViewById(R.id.login);
         register = findViewById(R.id.signup);
+        forgetpassword = findViewById(R.id.fpass);
+
+        forgetpassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent iforgetpass = new Intent(LoginActivity.this, forget_password.class);
+                startActivity(iforgetpass);
+                finish();
+            }
+        });
 
         login.setOnClickListener(this);
         register.setOnClickListener(this);
@@ -58,18 +84,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void loginUser()
     {
 
-        URL_LOGIN = "https://jrnan.info/Painting/Login.php";
+        //URL_LOGIN = "https://jrnan.info/Painting/Login.php";
 
 
-        String e = username.getText().toString().trim();
-        String p = pass.getText().toString().trim();
+        final String e = username.getText().toString().trim();
+        final String p = pass.getText().toString().trim();
+
+        WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+        WifiInfo info = manager.getConnectionInfo();
+        final String MacAddress = info.getMacAddress();
+
+//        URL_LOGIN += "?Username=" + e;
+//        URL_LOGIN += "&Password=" + p;
 
 
-        URL_LOGIN += "?Username=" + e;
-        URL_LOGIN += "&Password=" + p;
-
-
-        StringRequest stringRequest = new StringRequest(URL_LOGIN, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN, new Response.Listener<String>() {
             @Override
             public void onResponse(String response)
             {
@@ -90,13 +119,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         int userType = jsonObject.getInt("usertype");
                         int verifyUser = jsonObject.getInt("verified");
 
+                        Log.d("v","v" + verifyUser);
 
                         if (uname != null) {
                             Toast.makeText(LoginActivity.this, uname + " Logged in", Toast.LENGTH_SHORT).show();
 //                            if (!jsonObject.getBoolean("error"))
 //                            {
                             SharedPrefManager.getInstance(getApplicationContext()).userlogin(id, uname, pass.getText().toString() ,email, address, fname, userType, verifyUser);
-                            Log.d("test", "test " + userType + verifyUser);
+                            Log.d("test", "test " + response);
                             startActivity(new Intent(LoginActivity.this, ProfileActivity.class));
                             finish();
 
@@ -116,7 +146,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     {
                         Toast.makeText(LoginActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }){
+                })
+        {
+
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Username",e);
+                params.put("Password",p);
+                params.put("Mac",MacAddress);
+                return params;
+            }
 
         };
 
