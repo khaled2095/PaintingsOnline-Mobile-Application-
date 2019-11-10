@@ -7,6 +7,9 @@ public class SharedPrefManager
 {
     private static SharedPrefManager instance;
     private static Context ctx;
+
+
+
     private String SHARED_PREF_NAME = "my1";
     private String KEY_USER = "usertype";
     private String KEY_VERIFIED = "verify";
@@ -16,6 +19,8 @@ public class SharedPrefManager
     private String KEY_USERNAME = "username";
     private String KEY_EMAIL = "email";
     private String KEY_ID = "id";
+
+
 
 
     private SharedPrefManager(Context context) {
@@ -31,7 +36,7 @@ public class SharedPrefManager
         return instance;
     }
 
-    public boolean userlogin(int id, String username, String password ,String email, String address, String fullname, int usertype, int verify)
+    public void userlogin(int id, String username, String password , String email, String address, String fullname, int usertype, int verify)
     {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -45,7 +50,7 @@ public class SharedPrefManager
         editor.putInt(KEY_USER, usertype);
         editor.putInt(KEY_VERIFIED, verify);
         editor.apply();
-        return true;
+
     }
 
     public boolean isLoggedIn()
@@ -59,22 +64,22 @@ public class SharedPrefManager
         return false;
     }
 
-    public boolean logout()
+    public void logout()
     {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.clear();
         editor.apply();
-        return true;
     }
 
-    public void SetVerify(int Vertify) {
+    public void SetVerify(int Verify)
+    {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(KEY_VERIFIED, Vertify);
+        editor.putInt(KEY_VERIFIED, Verify);
         editor.apply();
-
     }
+
     public int getUserID()
     {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
