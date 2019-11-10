@@ -1,18 +1,19 @@
 package com.example.paintingsonline.Add;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,90 +22,138 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.example.paintingsonline.Home.HomeActivity;
 import com.example.paintingsonline.Login.LoginActivity;
+import com.example.paintingsonline.Model.Category;
+import com.example.paintingsonline.Model.MultipleSizePriceQuantity;
+import com.example.paintingsonline.Model.Room;
 import com.example.paintingsonline.Profile.ProfileActivity;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.BottomNavViewHelper;
 import com.example.paintingsonline.Utils.MySingleton;
 import com.example.paintingsonline.Utils.SharedPrefManager;
+import com.example.paintingsonline.Utils.ViewPagerAdapter;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.OnPhotoSelectedListener
+public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.OnPhotoSelectedListener, ViewPagerAdapter.OnImageClickListener
 {
 
-    //Image From Gallery
     @Override
-    public void getimagepath(Uri imagepath)
+    public void getBytes(List<byte[]> imgBytes)
     {
-        uploadimage.setImageURI(imagepath);
-        mselectedBitmap = null;
-        mselectedURI = imagepath;
-    }
-
-    @Override
-    public void getBytes(byte[] imgBytes) {
-        mselectedBitmap = null;
         mUploadBytes = imgBytes;
+        viewPagerAdapter = new ViewPagerAdapter(AddActivity.this, mUploadBytes, oldimages,this);
+        viewPager.setAdapter(viewPagerAdapter);
+        tablayout.setupWithViewPager(viewPager, true);
     }
 
-    private String URL = "https://jrnan.info/Painting/ShowCategory.php";
-    private String URL_ROOM = "https://jrnan.info/Painting/ShowRoom.php";
-    private String UPLOAD_URL = "https://jrnan.info/Painting/testUpload.php";
+
+    private String URL = "";
+    private String URL_Category = "/ShowCategory.php";
+    private String URL_ROOM = "/ShowRoom.php";
+    private String UPLOAD_URL = "/testUpload.php";
     private static final int REQUEST_CODE = 1;
     private ImageView uploadimage;
-    private EditText paintingtitle, paintingprice, paintingdesc, length, width, qty;
-    private Button uploadButton;
+    private EditText paintingtitle, paintingprice, paintingdesc, length, width, qty, width1, height1, multipleprice1, multipleQty1;
+    private Button uploadButton, addSizePrice, cancel1, ok1, addspq;
+    TextView len, wid, quantity1, price;
     private Spinner s1, s2;
     List<Category> categoryList;
     List<Room> roomList;
+    List<String> oldimages = new ArrayList<>();
     int usertype = -1;
     int verifieduser = -1;
+    ViewPager viewPager;
+    TabLayout tablayout;
+    ViewPagerAdapter viewPagerAdapter;
+    ArrayList<MultipleSizePriceQuantity> savedValues;
+    private ListView listView;
+    private multipleEntryListAdapter multipleEntryListAdapter;
+   // SharedPreferenceIntegerLiveData sharedPreferenceIntegerLiveData;
+    int MyCount = 0 ;
+    ProgressBar mProgressBar;
 
 
     private Bitmap mselectedBitmap;
     private Uri mselectedURI;
-    private byte[] mUploadBytes;
+    //private byte[] mUploadBytes;
+
+    //private ArrayList<Uri> mselectedURI;
+    private List<byte[]> mUploadBytes = new ArrayList<>();
     String emptyimage = "";
+    int count = 0;
+    String Urls = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
+
+        SharedPreferences sp2 = PreferenceManager.getDefaultSharedPreferences(AddActivity.this);
+        URL = sp2.getString("mainurl", "");
+        URL_Category = URL + URL_Category;
+        URL_ROOM = URL + URL_ROOM;
+        UPLOAD_URL = URL + UPLOAD_URL;
+
         loginUser();
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+
         uploadimage = findViewById(R.id.post_image);
         paintingtitle = findViewById(R.id.input_title);
-        paintingprice = findViewById(R.id.input_price);
+        //paintingprice = findViewById(R.id.input_price);
         paintingdesc = findViewById(R.id.input_description);
-        length = findViewById(R.id.length);
-        width = findViewById(R.id.width);
-        qty = findViewById(R.id.quantity);
+//        length = findViewById(R.id.length);
+//        width = findViewById(R.id.width);
+//        qty = findViewById(R.id.quantity);
         s1 = findViewById(R.id.spinner1);
         s2 = findViewById(R.id.spinner2);
         uploadButton = findViewById(R.id.btn_post);
-
+        viewPager = findViewById(R.id.vpager);
+        addSizePrice = findViewById(R.id.addSizes);
+        tablayout = findViewById(R.id.tab_layout);
+        mProgressBar = findViewById(R.id.progressBar);
+        //linearLayout = findViewById(R.id.size);
 
         if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
             finish();
@@ -112,15 +161,21 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
             Toast.makeText(this, "You are Not Logged In", Toast.LENGTH_SHORT).show();
         }
 
+
         usertype = SharedPrefManager.getInstance(this).getUserType();
         verifieduser = SharedPrefManager.getInstance(this).getVerifiedUser();
+
+//        sharedPreferenceIntegerLiveData = SharedPrefManager.getInstance(this).getSpInt();
+//        sharedPreferenceIntegerLiveData.getIntegerLiveData("verify", verifieduser).observe(this, verify -> {
+//            Toast.makeText(this, "v " + verifieduser, Toast.LENGTH_SHORT).show();
+//        });
 
 
         if (!SharedPrefManager.getInstance(this).isLoggedIn()) {
 
             AlertDialog.Builder builder1 = new AlertDialog.Builder(AddActivity.this);
             builder1.setMessage("You are not an Logged in. Click ok to Log In");
-            builder1.setCancelable(true);
+            builder1.setCancelable(false);
 
             builder1.setPositiveButton(
                     "OK",
@@ -139,7 +194,7 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
             if (usertype == 0) {
                 AlertDialog.Builder builder1 = new AlertDialog.Builder(AddActivity.this);
                 builder1.setMessage("You are not an artist. Click ok to Continue as an User");
-                builder1.setCancelable(true);
+                builder1.setCancelable(false);
 
                 builder1.setPositiveButton(
                         "OK",
@@ -158,7 +213,7 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
                 if (verifieduser == 0) {
                     AlertDialog.Builder builder1 = new AlertDialog.Builder(AddActivity.this);
                     builder1.setMessage("You are not a verified artist yet. Click ok to Continue as an User");
-                    builder1.setCancelable(true);
+                    builder1.setCancelable(false);
 
                     builder1.setPositiveButton(
                             "OK",
@@ -184,6 +239,8 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
 
         roomList = new ArrayList<>();
 
+        addMoreSizePriceQuantity();
+
         JSONrequestCategory();
 
         JSONrequestRoom();
@@ -192,15 +249,160 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
 
         setupBottomnavView();
 
+        //viewPager.setAdapter(viewPagerAdapter);
+
     }
 
 
+    private void addMoreSizePriceQuantity()
+    {
+        addSizePrice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                showAddingMultipleSizePriceQty();
+            }
+        });
+    }
+
+
+    private void showAddingMultipleSizePriceQty()
+    {
+
+
+
+
+//        Set<String> fetchWidhs = settings.getStringSet("Widths", null);
+//        Set<String> fetchHeight = settings.getStringSet("Height", null);
+//        Set<String> fetchPrices = settings.getStringSet("Prices", null);
+//        Set<String> fetchQuantity = settings.getStringSet("Quantity", null);
+
+
+        final AlertDialog.Builder alertDialog = new AlertDialog.Builder(AddActivity.this);
+        alertDialog.setTitle("Add Multiple Entries");
+
+        LayoutInflater layoutInflater = this.getLayoutInflater();
+        View add_menu_layout = layoutInflater.inflate(R.layout.add_size_price_qty, null);
+
+        //savedValues.clear();
+
+        listView = add_menu_layout.findViewById(R.id.size_price_quantity_list);
+
+        SharedPreferences settings = this.getSharedPreferences("packageName", Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String JSON = settings.getString("values", null);
+        Type type = new TypeToken<ArrayList<MultipleSizePriceQuantity>>(){}.getType();
+        savedValues = gson.fromJson(JSON, type);
+
+
+        if (savedValues == null)
+        {
+            savedValues = new ArrayList<>();
+        }
+        else
+        {
+            multipleEntryListAdapter = new multipleEntryListAdapter(getApplicationContext(), R.layout.multiple_entries_list, savedValues, new multipleEntryListAdapter.OnEntryListener() {
+                @Override
+                public void OnClickRemove(int pos)
+                {
+                    savedValues.remove(pos);
+                }
+            });
+            listView.setAdapter(multipleEntryListAdapter);
+        }
+
+//        if (fetchWidhs != null)
+//        {
+//            Object[] TempWidth = fetchWidhs.toArray();
+//            Object[] TempHeight = fetchHeight.toArray();
+//            Object[] TempPrices = fetchPrices.toArray();
+//            Object[] TempQuantity = fetchQuantity.toArray();
+//
+//            Toast.makeText(this, "w" + TempWidth, Toast.LENGTH_SHORT).show();
+//
+//            for(int l=0; l< fetchWidhs.size() ; l++)
+//            {
+//                Log.d("fetch", "fetch" + fetchWidhs);
+//                MultipleSizePriceQuantity temp = new MultipleSizePriceQuantity(TempHeight[l].toString(), TempWidth[l].toString() , TempQuantity[l].toString(), TempPrices[l].toString());
+//                savedValues.add(temp);
+//            }
+//
+//            multipleEntryListAdapter = new multipleEntryListAdapter(getApplicationContext(), R.layout.multiple_entries_list, savedValues);
+//            listView.setAdapter(multipleEntryListAdapter);
+//        }
+
+        addspq = add_menu_layout.findViewById(R.id.addSizes);
+        width1 = add_menu_layout.findViewById(R.id.multiplewidth);
+        length = add_menu_layout.findViewById(R.id.multiplelength);
+        multipleprice1 = add_menu_layout.findViewById(R.id.multiplePrices);
+        multipleQty1 = add_menu_layout.findViewById(R.id.multiplequantity);
+
+//        price = add_menu_layout.findViewById(R.id.t4);
+
+
+            addspq.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    if (!isEmpty(width1.getText().toString()) && !isEmpty(length.getText().toString()) && !isEmpty(multipleprice1.getText().toString()) && !isEmpty(multipleQty1.getText().toString()))
+                    {
+
+                        MultipleSizePriceQuantity mspq = new MultipleSizePriceQuantity(length.getText().toString(), width1.getText().toString(), multipleQty1.getText().toString(), multipleprice1.getText().toString());
+                        savedValues.add(mspq);
+
+                        multipleEntryListAdapter = new multipleEntryListAdapter(getApplicationContext(), R.layout.multiple_entries_list, savedValues, new multipleEntryListAdapter.OnEntryListener() {
+                            @Override
+                            public void OnClickRemove(int pos) {
+                                savedValues.remove(pos);
+                            }
+                        });
+                        listView.setAdapter(multipleEntryListAdapter);
+                    }
+                    else
+                    {
+                        Toast.makeText(AddActivity.this, "You Must Fill in all the Fields", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+
+            //setButton
+            alertDialog.setPositiveButton("SAVE", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which)
+                {
+                    SharedPreferences prefs = getSharedPreferences("packageName", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = prefs.edit();
+                    Gson gson = new Gson();
+                    String json = gson.toJson(savedValues);
+                    editor.putString("values", json);
+                    editor.apply();
+                    dialog.dismiss();
+                }
+            });
+
+
+        alertDialog.setNegativeButton("CANCEL", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which)
+            {
+                Toast.makeText(AddActivity.this, "No Entries are saved", Toast.LENGTH_SHORT).show();
+                Log.d("sv","sv" + savedValues.size());
+                dialog.dismiss();
+            }
+        });
+
+        alertDialog.setView(add_menu_layout);
+        alertDialog.show();
+
+    }
 
 
 
     private void JSONrequestCategory()
     {
-        JsonArrayRequest request = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest(URL_Category, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response)
             {
@@ -218,6 +420,7 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
                         Category category = new Category(id, title);
                         categoryList.add(category);
                         initSpinner();
+
                     }
                     catch (JSONException e)
                     {
@@ -259,6 +462,7 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
                         Room room = new Room(id, title);
                         roomList.add(room);
                         initSpinner2();
+
                     }
                     catch (JSONException e)
                     {
@@ -325,6 +529,16 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
     }
 
 
+    @Override
+    public void onGalleryClick(int position, View view)
+    {
+        verifyPermissions();
+        PhotoDialogueBox photoDialogueBox = new PhotoDialogueBox();
+        photoDialogueBox.show(getSupportFragmentManager(), getString(R.string.dialogue));
+    }
+
+    Integer CountOfUrl = 0;
+    Integer ImageCount = 0;
 
     public void initialize()
     {
@@ -334,11 +548,12 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
             public void onClick(View view)
             {
                 verifyPermissions();
-
                 PhotoDialogueBox photoDialogueBox = new PhotoDialogueBox();
                 photoDialogueBox.show(getSupportFragmentManager(), getString(R.string.dialogue));
+                uploadimage.setVisibility(View.INVISIBLE);
             }
         });
+
 
         uploadButton.setOnClickListener(new View.OnClickListener()
         {
@@ -347,83 +562,110 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
             {
 
                 if (!isEmpty(paintingtitle.getText().toString())
-                        && !isEmpty(paintingdesc.getText().toString())
-                        && !isEmpty(paintingprice.getText().toString()))
+                        && !isEmpty(paintingdesc.getText().toString()))
                 {
-                    if (mselectedURI != null)
+                    Urls = "";
+                    final int TotalCount = mUploadBytes.size();
+                    count = 0 ;
+
+                    UPLOAD_URL = URL + "/testUpload.php";
+                    if (mUploadBytes.size()>0)
                     {
+                        while (count < TotalCount)
+                        {
+                            showProgressBar();
 
-                        FirebaseApp.initializeApp(AddActivity.this);
+                            FirebaseApp.initializeApp(AddActivity.this);
 
-                        final String postID = FirebaseDatabase.getInstance().getReference().push().getKey();
+                            final String postID = FirebaseDatabase.getInstance().getReference().push().getKey();
 
-                        final StorageReference storageReference= FirebaseStorage.getInstance().getReference().child("posts/" + postID);
+                            final StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("posts/" + postID);
 
-                        UploadTask uploadTask = storageReference.putBytes(mUploadBytes);
-
-
-
-                        final Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
-                            @Override
-                            public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
-                                if (!task.isSuccessful()) {
-                                    throw task.getException();
-                                }
-                                return storageReference.getDownloadUrl();
-                            }
-                        }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Uri> task) {
-                                if (task.isSuccessful()) {
-                                    Uri downloadUri = task.getResult();
-
-                                    String title = paintingtitle.getText().toString().trim();
-                                    String desc = paintingdesc.getText().toString().trim();
-                                    String price = paintingprice.getText().toString().trim();
-                                    String len = length.getText().toString().trim();
-                                    String wid = width.getText().toString().trim();
-                                    String quantity = qty.getText().toString().trim();
-                                    long id = s1.getSelectedItemId();
-                                    long id2 = s2.getSelectedItemId();
+                            UploadTask uploadTask = storageReference.putBytes(mUploadBytes.get(count));
 
 
-                                    UPLOAD_URL += "?painting_url=" + downloadUri;
-                                    UPLOAD_URL += "&painting_name=" + title;
-                                    UPLOAD_URL += "&painting_price=" + price;
-                                    UPLOAD_URL += "&painting_description=" + desc;
-                                    UPLOAD_URL += "&painting_artist=" + SharedPrefManager.getInstance(AddActivity.this).getUserName();
-                                    UPLOAD_URL += "&Painting_category=" + id;
-                                    UPLOAD_URL += "&Password=" + SharedPrefManager.getInstance(AddActivity.this).password();
-                                    UPLOAD_URL += "&Room=" + id2;
-                                    UPLOAD_URL += "&Size=" + len + "x" + wid ;
-                                    UPLOAD_URL += "&Quantity="+ quantity ;
-
-                                    Log.d("u", "url: " + UPLOAD_URL);
-
-                                    StringRequest uploadrequest = new StringRequest(UPLOAD_URL, new Response.Listener<String>()
+                            final Task<Uri> urlTask = uploadTask.continueWithTask(new Continuation<UploadTask.TaskSnapshot, Task<Uri>>() {
+                                @Override
+                                public Task<Uri> then(@NonNull Task<UploadTask.TaskSnapshot> task) throws Exception {
+                                    if (!task.isSuccessful())
                                     {
-                                        @Override
-                                        public void onResponse(String response)
-                                        {
-                                            Toast.makeText(AddActivity.this, "Painting Uploaded Successfully", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }, new Response.ErrorListener() {
-                                        @Override
-                                        public void onErrorResponse(VolleyError error) {
-                                            Toast.makeText(AddActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
+                                        throw task.getException();
+                                    }
 
-                                    MySingleton.getInstance(AddActivity.this).addToRequestQueue(uploadrequest);
-                                    resetFields();
-
-                                } else {
-                                    // Handle failures
-                                    // ...
+                                    return storageReference.getDownloadUrl();
                                 }
+                            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
 
-                            }
-                        });
+                                    Urls += "Url" + String.valueOf(CountOfUrl) + "=" + task.getResult() + "&";
+                                    CountOfUrl += 1;
+                                    ImageCount += 1 ;
+                                    if (task.isSuccessful() && ImageCount == TotalCount) {
+                                        String title = paintingtitle.getText().toString().trim();
+                                        String desc = paintingdesc.getText().toString().trim();
+                                        String price = "";
+                                        String Size = "";
+                                        String quantity = "";
+                                        for (MultipleSizePriceQuantity mspq: savedValues)
+                                        {
+                                            price += mspq.getPrice() + ",";
+                                            quantity += mspq.getQuantity() + ",";
+                                            Size += mspq.getWidth() + "cm X" + mspq.getLength() + "cm,";
+                                        }
+
+
+                                        long id = s1.getSelectedItemId();
+                                        long id2 = s2.getSelectedItemId();
+                                        WifiManager manager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                                        WifiInfo info = manager.getConnectionInfo();
+                                        final String MacAddress = info.getMacAddress();
+
+
+
+                                        UPLOAD_URL = URL + "/testUpload.php";
+                                        UPLOAD_URL +=  "?" + Urls;
+                                        UPLOAD_URL += "&painting_name=" + title;
+                                        UPLOAD_URL += "&painting_price=" + price;
+                                        UPLOAD_URL += "&painting_description=" + desc;
+                                        UPLOAD_URL += "&painting_artist=" + SharedPrefManager.getInstance(AddActivity.this).getUserName();
+                                        UPLOAD_URL += "&Painting_category=" + id;
+                                        UPLOAD_URL += "&Password=" + SharedPrefManager.getInstance(AddActivity.this).password();
+                                        UPLOAD_URL += "&Room=" + id2;
+                                        UPLOAD_URL += "&Size=" + Size;
+                                        UPLOAD_URL += "&Quantity=" + quantity;
+                                        UPLOAD_URL += "&Email=" + SharedPrefManager.getInstance(AddActivity.this).getUserEmail();
+                                        UPLOAD_URL += "&CountOfImage=" + CountOfUrl;
+                                        UPLOAD_URL += "&Mac=" + MacAddress;
+
+                                        Log.d("u", "url: " + UPLOAD_URL);
+
+                                        StringRequest uploadrequest = new StringRequest(UPLOAD_URL, new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response)
+                                            {
+                                                hideProgressBar();
+                                                Toast.makeText(AddActivity.this, "Painting Uploaded Successfully", Toast.LENGTH_SHORT).show();
+                                                startActivity(new Intent(AddActivity.this, HomeActivity.class));
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Toast.makeText(AddActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
+                                            }
+                                        });
+
+                                        MySingleton.getInstance(AddActivity.this).addToRequestQueue(uploadrequest);
+                                        resetFields();
+                                    } else {
+                                        // Handle failures
+                                        // ...
+                                    }
+
+                                }
+                            });
+                            count += 1 ;
+                        }
                     }
                 }
                 else
@@ -437,16 +679,29 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
 
     public void resetFields()
     {
+        viewPager.setCurrentItem(0);
         paintingtitle.setText("");
-        paintingprice.setText("");
+//        paintingprice.setText("");
         paintingdesc.setText("");
-        length.setText("");
-        width.setText("");
-        qty.setText("");
+  //      length.setText("");
+   //     width.setText("");
+    //    qty.setText("");
     }
 
     private boolean isEmpty(String string){
         return string.equals("");
+    }
+
+
+    private void showProgressBar(){
+        mProgressBar.setVisibility(View.VISIBLE);
+
+    }
+
+    private void hideProgressBar(){
+        if(mProgressBar.getVisibility() == View.VISIBLE){
+            mProgressBar.setVisibility(View.INVISIBLE);
+        }
     }
 
 
@@ -490,19 +745,15 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
 
     public void loginUser()
     {
+        String URL_LOGIN = "/Login.php";
+        URL_LOGIN = URL + URL_LOGIN;
 
-        String URL_LOGIN = "https://jrnan.info/Painting/Login.php";
-
-
-        String e = SharedPrefManager.getInstance(this).getUserName();
+        final String e = SharedPrefManager.getInstance(this).getUserName();
         final String p = SharedPrefManager.getInstance(this).password();
 
 
-        URL_LOGIN += "?Username=" + e;
-        URL_LOGIN += "&Password=" + p;
 
-
-        StringRequest stringRequest = new StringRequest(URL_LOGIN, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, URL_LOGIN, new Response.Listener<String>() {
             @Override
             public void onResponse(String response)
             {
@@ -519,10 +770,13 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
                         int userType = jsonObject.getInt("usertype");
                         int verifyUser = jsonObject.getInt("verified");
 
+                        Log.d("test", "test1 " + verifyUser);
 
-                        if (uname != null) {
+                        if (uname != null)
+                        {
                             SharedPrefManager.getInstance(getApplicationContext()).SetVerify(verifyUser);
-                            Log.d("test", "test " + userType + verifyUser);
+                            Log.d("test", "test1" + userType + verifyUser);
+//                            Toast.makeText(AddActivity.this, verifyUser, Toast.LENGTH_SHORT).show();
 //                            }
 //                            else
 //                            {
@@ -544,10 +798,20 @@ public class AddActivity extends AppCompatActivity implements PhotoDialogueBox.O
                     {
                         Toast.makeText(AddActivity.this, error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }){
-
+                })
+        {
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String, String> params = new HashMap<>();
+                params.put("Username",e);
+                params.put("Password",p);
+                return params;
+            }
         };
 
+        Log.d("lu", "lu" + URL_LOGIN);
         MySingleton.getInstance(AddActivity.this).addToRequestQueue(stringRequest);
     }
+
+
 }

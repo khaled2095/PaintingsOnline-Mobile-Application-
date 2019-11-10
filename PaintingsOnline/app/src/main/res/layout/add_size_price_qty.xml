@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:cardElevation="6dp">
+
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/size"
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp">
+
+
+
+                <EditText
+                    android:id="@+id/multiplelength"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Length in cm"
+                    android:layout_weight="2"
+                    android:layout_marginEnd="2dp"
+                    android:inputType="number"
+                    android:textColor="@color/Black"/>
+
+
+
+                <EditText
+                    android:id="@+id/multiplewidth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Width in cm"
+                    android:layout_weight="2"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:inputType="number"
+                    android:textColor="@color/Black"/>
+
+
+
+
+                <EditText
+                    android:id="@+id/multiplequantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:hint="Quantity"
+                    android:layout_weight="2"
+                    android:layout_marginStart="2dp"
+                    android:textColor="@color/Black"/>
+
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/size"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/multiplePrices"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="2dp"
+                    android:layout_marginEnd="2dp"
+                    android:hint="Prices in A$"
+                    android:inputType="number"/>
+
+            </LinearLayout>
+
+
+
+            <Button
+                android:id="@+id/addSizes"
+                android:layout_below="@+id/price"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="ADD"/>
+
+
+            <ListView
+                android:id="@+id/size_price_quantity_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@id/addSizes"
+                android:layout_marginTop="15dp"/>
+
+
+
+        </RelativeLayout>
+
+
+
+
+</RelativeLayout>
