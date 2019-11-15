@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ArtistPanel.SellingPanel"></activity>
+        <activity android:name=".ArtistPanel.ModifyPaintings"></activity>
+        <activity android:name=".ArtistPanel.SellingPanel" />
         <activity android:name=".Category.PaintingDetails" />
         <activity android:name=".Login.forget_password" />
         <activity android:name=".Search.SearchActivity" />
