@@ -17,7 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.NetworkImageView;
-import com.example.paintingsonline.Category.PaintingsDetails;
+import com.example.paintingsonline.Category.PaintingDetails;
 import com.example.paintingsonline.Model.Paintings;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.MySingleton;
@@ -186,7 +186,7 @@ public class ArtistBio extends AppCompatActivity implements ArtistPaintingsView.
         editor.putString("painting_desc", artistPaintings.get(pos).getDescription());
         editor.putString("painting_artist", artistPaintings.get(pos).getpOwner());
         editor.apply();
-        Intent homeActivity = new Intent(ArtistBio.this, PaintingsDetails.class);
+        Intent homeActivity = new Intent(ArtistBio.this, PaintingDetails.class);
         startActivity(homeActivity);
     }
 }
