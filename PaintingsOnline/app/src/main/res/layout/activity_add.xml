@@ -76,12 +76,31 @@
                         android:background="@color/white">
 
 
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/vpager"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginTop="15dp">
+                        </androidx.viewpager.widget.ViewPager>
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tab_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/vpager"
+                            app:tabGravity="center"
+                            app:tabBackground="@drawable/tab_selector"
+                            app:tabIndicatorHeight="0dp"
+                            app:tabMaxWidth="10dp">
+
+                        </com.google.android.material.tabs.TabLayout>
+
                         <ImageView
                             android:layout_width="100dp"
                             android:layout_height="100dp"
                             android:id="@+id/post_image"
-                            android:layout_marginTop="15dp"
                             android:layout_centerHorizontal="true"
+                            android:layout_marginTop="15dp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_cam"/>
 
@@ -89,7 +108,7 @@
                         <RelativeLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_below="@+id/post_image"
+                            android:layout_below="@+id/tab_layout"
                             android:id="@+id/relLayout2"
                             android:layout_marginTop="20dp"
                             android:layout_marginStart="20dp"
@@ -124,108 +143,23 @@
 
 
 
-                            <RelativeLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/relLayout4"
-                                android:layout_marginTop="10dp">
-
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Price"
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-
-                                    <EditText
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:id="@+id/input_price"
-                                        android:inputType="number"
-                                        android:textColor="@color/Black"/>
-
-
-
-                                </com.google.android.material.textfield.TextInputLayout>
-
-
-                            </RelativeLayout>
-
-
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/size"
                                 android:orientation="horizontal"
-                                android:layout_below="@+id/relLayout4"
                                 android:layout_marginTop="15dp">
 
 
-
-                                <com.google.android.material.textfield.TextInputLayout
+                                <Button
+                                    android:id="@+id/addSizes"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:hint="Length"
-                                    android:layout_weight="2"
-                                    android:layout_marginEnd="2dp"
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-
-                                    <EditText
-                                        android:id="@+id/length"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:inputType="number"
-                                        android:textColor="@color/Black"/>
-
-
-                                </com.google.android.material.textfield.TextInputLayout>
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Width"
-                                    android:layout_weight="2"
-                                    android:layout_marginStart="2dp"
-                                    android:layout_marginEnd="2dp"
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-
-                                    <EditText
-                                        android:id="@+id/width"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:inputType="number"
-                                        android:textColor="@color/Black"/>
-
-
-                                </com.google.android.material.textfield.TextInputLayout>
-
-
-                                <com.google.android.material.textfield.TextInputLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:hint="Quantity"
-                                    android:layout_weight="2"
-                                    android:layout_marginStart="2dp"
-                                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-
-
-                                    <EditText
-                                        android:id="@+id/quantity"
-                                        android:layout_width="match_parent"
-                                        android:layout_height="wrap_content"
-                                        android:inputType="number"
-                                        android:textColor="@color/Black"/>
-
-
-                                </com.google.android.material.textfield.TextInputLayout>
+                                    android:text="ADD SIZE PRICE QUANTITY"
+                                    android:background="@drawable/onclick_grey"/>
 
 
                             </LinearLayout>
-
 
 
                             <LinearLayout
@@ -331,6 +265,13 @@
                 </RelativeLayout>
             </androidx.core.widget.NestedScrollView>
 
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/progressBar"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="120dp"
+                android:visibility="invisible"/>
 
         </RelativeLayout>
 
