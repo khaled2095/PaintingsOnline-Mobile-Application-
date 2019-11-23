@@ -35,7 +35,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.example.paintingsonline.Category.CartActivity;
-import com.example.paintingsonline.Category.PaintingsDetails;
+import com.example.paintingsonline.Category.PaintingDetails;
 import com.example.paintingsonline.Database.DataSource.CartRepository;
 import com.example.paintingsonline.Database.Local.CartDataSource;
 import com.example.paintingsonline.Database.Local.CartDatabase;
@@ -84,6 +84,9 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     SliderLayout sliderLayout;
     List<DiscountBanner> banners;
     CompositeDisposable compositeDisposable;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -151,6 +154,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
                     JSONrequest();
                 }
             });
+
 
 
             BestSellingJsonrequest();
@@ -646,11 +650,12 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         SharedPreferences spHomeActivity = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
         SharedPreferences.Editor editor = spHomeActivity.edit();
         editor.putString("painting_id", paintingsList.get(pos).getId());
+        editor.putString("painting_img", paintingsList.get(pos).getImage());
         editor.putString("painting_name", paintingsList.get(pos).getName());
         editor.putString("painting_desc", paintingsList.get(pos).getDescription());
         editor.putString("painting_artist", paintingsList.get(pos).getpOwner());
         editor.apply();
-        Intent homeActivity = new Intent(HomeActivity.this, PaintingsDetails.class);
+        Intent homeActivity = new Intent(HomeActivity.this, PaintingDetails.class);
         startActivity(homeActivity);
 
     }
@@ -661,11 +666,12 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         SharedPreferences spFeatured = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
         SharedPreferences.Editor editor = spFeatured.edit();
         editor.putString("painting_id", featuredList.get(pos).getId());
+        editor.putString("painting_img", featuredList.get(pos).getImage());
         editor.putString("painting_name", featuredList.get(pos).getName());
         editor.putString("painting_desc", featuredList.get(pos).getDescription());
         editor.putString("painting_artist", featuredList.get(pos).getpOwner());
         editor.apply();
-        Intent homeActivity = new Intent(HomeActivity.this, PaintingsDetails.class);
+        Intent homeActivity = new Intent(HomeActivity.this, PaintingDetails.class);
         startActivity(homeActivity);
     }
 
@@ -675,11 +681,12 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         SharedPreferences spBest = PreferenceManager.getDefaultSharedPreferences(HomeActivity.this);
         SharedPreferences.Editor editor = spBest.edit();
         editor.putString("painting_id", bestList.get(pos).getId());
+        editor.putString("painting_img", bestList.get(pos).getImage());
         editor.putString("painting_name", bestList.get(pos).getName());
         editor.putString("painting_desc", bestList.get(pos).getDescription());
         editor.putString("painting_artist", bestList.get(pos).getpOwner());
         editor.apply();
-        Intent homeActivity = new Intent(HomeActivity.this, PaintingsDetails.class);
+        Intent homeActivity = new Intent(HomeActivity.this, PaintingDetails.class);
         startActivity(homeActivity);
     }
 }

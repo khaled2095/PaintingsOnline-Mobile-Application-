@@ -2,25 +2,33 @@ package com.example.paintingsonline.Category;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.Toolbar;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.example.paintingsonline.Database.DataSource.CartRepository;
+import com.example.paintingsonline.Database.DataSource.FavoriteRepository;
 import com.example.paintingsonline.Database.Local.CartDataSource;
 import com.example.paintingsonline.Database.Local.CartDatabase;
+import com.example.paintingsonline.Database.Local.FavoriteDataSource;
+import com.example.paintingsonline.Database.Local.FavoriteDatabase;
+import com.example.paintingsonline.Favourite.FavouritePainting;
+import com.example.paintingsonline.Model.Paintings;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.BottomNavViewHelper;
 import com.example.paintingsonline.Utils.MySingleton;
@@ -34,16 +42,24 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PaintingActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener
+public class PaintingActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener,
+        PaintingsAdapterView.OnPaintingListener
 {
 
     private List<Paintings> paintingsList2;
-    private String URL = "https://jrnan.info/Painting/ShowPaintings.php";
+    private String URL = "";
     public static CartDatabase cartd;
     public static CartRepository cr;
+
+    public static FavoriteDatabase favd;
+    public static FavoriteRepository fr;
+
+
+
     private PaintingsAdapterView pav;
-    NotificationBadge nb;
+    NotificationBadge nb, nbFav;
     SwipeRefreshLayout refreshPaintings;
+    TextView emptyPainting;
 
 
     @Override
@@ -52,9 +68,16 @@ public class PaintingActivity extends AppCompatActivity implements SwipeRefreshL
         setContentView(R.layout.activity_painting);
 
 
-        nb = findViewById(R.id.badge);
+//        nb = findViewById(R.id.badge);
+//        nbFav = findViewById(R.id.badge2);
+        emptyPainting = findViewById(R.id.empty_view2);
+
         cartd = CartDatabase.getInstance(this);
         cr = CartRepository.getInstance(CartDataSource.getInstance(cartd.cartDAO()));
+
+        favd = FavoriteDatabase.getInstance(this);
+        fr = FavoriteRepository.getInstance(FavoriteDataSource.getInstance(favd.favoriteDAO()));
+
         refreshPaintings = findViewById(R.id.swipePaintings);
 
         /*setup backarrow for NAVIGATION */
@@ -79,6 +102,7 @@ public class PaintingActivity extends AppCompatActivity implements SwipeRefreshL
 
         paintingsList2 = new ArrayList<>();
 
+
         refreshPaintings.setOnRefreshListener(this);
         refreshPaintings.setColorSchemeResources(R.color.colorPrimary,
                 android.R.color.holo_green_dark,
@@ -102,6 +126,7 @@ public class PaintingActivity extends AppCompatActivity implements SwipeRefreshL
         });
 
 
+        updateFav();
         updateCart();
 
     }
@@ -127,36 +152,104 @@ public class PaintingActivity extends AppCompatActivity implements SwipeRefreshL
         });
     }
 
+    public void updateFav()
+    {
+        if (nbFav == null) {
+            return;
+        }
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (fr.CountFavouriteItems() == 0) {
+                    nbFav.setVisibility(View.INVISIBLE);
+                } else {
+                    nbFav.setVisibility(View.VISIBLE);
+                    nbFav.setText(String.valueOf(fr.CountFavouriteItems()));
+                }
+            }
+        });
+    }
 
 
 
 
-    private void setupToolbar()
+
+    public void setupToolbar()
     {
         Toolbar t1 = findViewById(R.id.paintingtoolbar);
         setSupportActionBar(t1);
 
-        ImageView CartPage = findViewById(R.id.cart);
+//        ImageView CartPage = findViewById(R.id.cart);
+//        ImageView FavouritePage = findViewById(R.id.fav);
+//
+//        CartPage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Intent intent = new Intent(PaintingActivity.this, CartActivity.class);
+//                startActivity(intent);
+//            }
+//        });
+//
+//        FavouritePage.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent = new Intent(PaintingActivity.this, FavouritePainting.class);
+//                startActivity(intent);
+//            }
+//        });
 
-        CartPage.setOnClickListener(new View.OnClickListener() {
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.menu_cart_fav, menu);
+
+        View cartview2 = menu.findItem(R.id.c1).getActionView();
+        View favview = menu.findItem(R.id.f1).getActionView();
+
+        nb = cartview2.findViewById(R.id.badge3);
+        nbFav = favview.findViewById(R.id.badge4);
+
+        updateCart();
+        updateFav();
+
+
+        cartview2.setOnClickListener(new View.OnClickListener()
+        {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(PaintingActivity.this, CartActivity.class);
-                startActivity(intent);
+            public void onClick(View v)
+            {
+                startActivity(new Intent(PaintingActivity.this, CartActivity.class));
             }
         });
+
+        favview.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                startActivity(new Intent(PaintingActivity.this, FavouritePainting.class));
+            }
+        });
+
+
+        return true;
 
     }
 
 
 
-    private void JSONrequest()
+    public void JSONrequest()
     {
-
         // Showing refresh animation before making http call
         refreshPaintings.setRefreshing(true);
 
-        JsonArrayRequest request = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest(URL , new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response)
             {
@@ -169,7 +262,7 @@ public class PaintingActivity extends AppCompatActivity implements SwipeRefreshL
                     {
                         jsonObject = response.getJSONObject(i);
 
-                        int id = jsonObject.getInt("painting_id");
+                        String id = jsonObject.getString("painting_id");
                         String title = jsonObject.getString("painting_name");
                         String image = jsonObject.getString("painting_url");
                         String paintingOwner = jsonObject.getString("painting_artist");
@@ -189,6 +282,7 @@ public class PaintingActivity extends AppCompatActivity implements SwipeRefreshL
 
                 initrecyclerView(paintingsList2);
 
+
                 // Stopping swipe refresh
                 refreshPaintings.setRefreshing(false);
             }
@@ -207,7 +301,7 @@ public class PaintingActivity extends AppCompatActivity implements SwipeRefreshL
 
 
 
-    private void initrecyclerView(List<Paintings> paintingsList2)
+    public void initrecyclerView(List<Paintings> paintingsList2)
     {
         RecyclerView recyclerView = findViewById(R.id.recycler_view_painting);
         pav = new PaintingsAdapterView(getApplicationContext(), paintingsList2,this);
@@ -215,13 +309,24 @@ public class PaintingActivity extends AppCompatActivity implements SwipeRefreshL
         pav.notifyDataSetChanged();
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
+        if (paintingsList2.size() == 0)
+        {
+            recyclerView.setVisibility(View.GONE);
+            emptyPainting.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyPainting.setVisibility(View.GONE);
+        }
+
     }
 
 
 
 
     /* bottom navigation view setup */
-    private void setupBottomnavView()
+    public void setupBottomnavView()
     {
         BottomNavigationViewEx bottomNavigationView = findViewById(R.id.bottom);
         BottomNavViewHelper.enableNavigation(getApplicationContext(), this , bottomNavigationView);
@@ -237,6 +342,7 @@ public class PaintingActivity extends AppCompatActivity implements SwipeRefreshL
     protected void onResume() {
         super.onResume();
         updateCart();
+        updateFav();
 
     }
 
@@ -245,4 +351,23 @@ public class PaintingActivity extends AppCompatActivity implements SwipeRefreshL
         JSONrequest();
     }
 
+    @Override
+    public void onPaintingClick(int position)
+    {
+//        Intent intent = new Intent(PaintingActivity.this, PaintingsDetails.class);
+//        intent.putExtra("selected_painting", paintingsList2.get(position));
+//        startActivity(intent);
+
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(PaintingActivity.this);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putString("painting_id", paintingsList2.get(position).getId());
+        editor.putString("painting_img", paintingsList2.get(position).getImage());
+        editor.putString("painting_name", paintingsList2.get(position).getName());
+        editor.putString("painting_desc", paintingsList2.get(position).getDescription());
+        editor.putString("painting_artist", paintingsList2.get(position).getpOwner());
+        editor.apply();
+        //sp.edit().commit();
+        Intent paintingActivity = new Intent(PaintingActivity.this, PaintingDetails.class);
+        startActivity(paintingActivity);
+    }
 }
