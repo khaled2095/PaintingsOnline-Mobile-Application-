@@ -27,6 +27,15 @@ import com.example.paintingsonline.R;
 import com.example.paintingsonline.Registration.RegistrationActivity;
 import com.example.paintingsonline.Utils.MySingleton;
 import com.example.paintingsonline.Utils.SharedPrefManager;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -43,6 +52,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     EditText username, pass;
     Button login;
     TextView register, forgetpassword;
+    LoginButton loginButton;
+    CallbackManager callbackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -66,6 +77,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         login = findViewById(R.id.login);
         register = findViewById(R.id.signup);
         forgetpassword = findViewById(R.id.fpass);
+        loginButton = findViewById(R.id.FBlogin_button);
 
         forgetpassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,7 +90,92 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         login.setOnClickListener(this);
         register.setOnClickListener(this);
+
+        callbackManager = CallbackManager.Factory.create();
+//        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
+
+        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
+            @Override
+            public void onSuccess(LoginResult loginResult)
+            {
+
+            }
+
+            @Override
+            public void onCancel()
+            {
+
+            }
+
+            @Override
+            public void onError(FacebookException error)
+            {
+
+            }
+        });
+
+        LoadFBUserProfile();
     }
+
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
+
+
+    public void LoadFBUserProfile()
+    {
+        AccessTokenTracker tokenTracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken)
+            {
+                if(currentAccessToken == null)
+                {
+                    Toast.makeText(LoginActivity.this, "User logged out", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    //LoadUserProfile(currentAccessToken);
+                    GraphRequest request = GraphRequest.newMeRequest(currentAccessToken, new GraphRequest.GraphJSONObjectCallback()
+                    {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response)
+                        {
+                            try
+                            {
+                                String FBfName = object.getString("first_name");
+                                String FBlName = object.getString("last_name");
+//                                String FBemail = object.getString("email");
+//                                String FBAdress = object.getString("address");
+
+                                SharedPrefManager.getInstance(getApplicationContext()).SetUserName(FBfName + " " + FBlName);
+                                //SharedPrefManager.getInstance(getApplicationContext()).SetUserEmail(FBemail);
+
+                                Intent i = new Intent(LoginActivity.this, ProfileActivity.class);
+                                startActivity(i);
+                            }
+                            catch (JSONException e)
+                            {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+
+                    Bundle parameters = new Bundle();
+                    parameters.putString("fields", "first_name, last_name, email, id");
+                    request.setParameters(parameters);
+                    request.executeAsync();
+                }
+            }
+        };
+    }
+
 
 
     private void loginUser()

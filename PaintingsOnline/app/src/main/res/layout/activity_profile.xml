@@ -70,11 +70,45 @@
                 android:id="@+id/rel2">
 
 
+                <LinearLayout
+                    android:id="@+id/linButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_marginTop="10dp">
+
+
+                    <Button
+                        android:id="@+id/SPanel"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:text="Selling Panel"
+                        android:background="@drawable/onclick_grey">
+                    </Button>
+
+                    <Button
+                        android:id="@+id/ModifyPaintingsButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="Modify Paintings"
+                        android:background="@drawable/onclick_grey">
+                    </Button>
+
+
+                </LinearLayout>
+
+
                 <RelativeLayout
                     android:id="@+id/pictureRelative"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="30dp">
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@+id/linButtons">
 
                     <ImageView
                         android:id="@+id/ArtistProfile"

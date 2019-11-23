@@ -16,7 +16,6 @@ import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -65,9 +64,9 @@ import java.util.regex.Pattern;
 
 public class ProfileActivity extends AppCompatActivity implements PhotoDialogueBox.OnPhotoSelectedListener {
 
-    private EditText fname, address, email, password, conpassword, bio;
+    private EditText fname, address, emailET, password, conpassword, bio;
     private ImageView artistImage, addressimg;
-    private Button updatepassword, updatedetails, logout, switchToArtist;
+    private Button updatepassword, updatedetails, logout, switchToArtist, sPanel, mPaintings;
     private String URL = "";
     private String updateDetails_url = "/UpdateAccount.php";
     private static final int REQUEST_CODE = 1;
@@ -118,7 +117,7 @@ public class ProfileActivity extends AppCompatActivity implements PhotoDialogueB
 
 
         logout = findViewById(R.id.logout);
-        email = findViewById(R.id.editemail);
+        emailET = findViewById(R.id.editemail);
         address = findViewById(R.id.editaddr);
         fname = findViewById(R.id.editfullName);
         updatepassword = findViewById(R.id.updatepass);
@@ -131,6 +130,8 @@ public class ProfileActivity extends AppCompatActivity implements PhotoDialogueB
         relForArtistBio = findViewById(R.id.relbio);
         switchToArtist = findViewById(R.id.switchtoartist);
         addressimg = findViewById(R.id.address);
+        sPanel = findViewById(R.id.SPanel);
+        mPaintings = findViewById(R.id.ModifyPaintingsButton);
 
         if (!SharedPrefManager.getInstance(this).isLoggedIn())
         {
@@ -148,9 +149,30 @@ public class ProfileActivity extends AppCompatActivity implements PhotoDialogueB
 
         //final String uname = SharedPrefManager.getInstance(this).getUserName();
         fname.setText(SharedPrefManager.getInstance(this).getFullName());
-        email.setText(SharedPrefManager.getInstance(this).getUserEmail());
+        emailET.setText(SharedPrefManager.getInstance(this).getUserEmail());
         address.setText(SharedPrefManager.getInstance(this).getUserAddress());
 
+
+        if (SharedPrefManager.getInstance(this).getUserType() == 1)
+        {
+            sPanel.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    startActivity(new Intent(ProfileActivity.this, SellingPanel.class));
+                }
+            });
+
+            mPaintings.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View v)
+                {
+                    startActivity(new Intent(ProfileActivity.this, ModifyPaintings.class));
+                }
+            });
+        }
 
 
 
@@ -226,10 +248,19 @@ public class ProfileActivity extends AppCompatActivity implements PhotoDialogueB
             }
 
 
-            SwitchToArtist();
-            setupBottomnavView();
-            logout();
+        fname.setText(SharedPrefManager.getInstance(this).getUserName());
+        emailET.setText(SharedPrefManager.getInstance(this).getUserEmail());
+        //address.setText(SharedPrefManager.getInstance(this).getUserAddress());
+
+
+
+        SwitchToArtist();
+        setupBottomnavView();
+        logout();
     }
+
+
+
 
 
     private void BuildLocationCallBack()
@@ -278,35 +309,35 @@ public class ProfileActivity extends AppCompatActivity implements PhotoDialogueB
 
 
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        if (SharedPrefManager.getInstance(this).getUserType() == 1)
-        {
-            MenuInflater menuInflater = getMenuInflater();
-            menuInflater.inflate(R.menu.menu_artist, menu);
-        }
-        return true;
-    }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu)
+//    {
+//        if (SharedPrefManager.getInstance(this).getUserType() == 1)
+//        {
+//            MenuInflater menuInflater = getMenuInflater();
+//            menuInflater.inflate(R.menu.menu_artist, menu);
+//        }
+//        return true;
+//    }
 
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-            switch (item.getItemId())
-            {
-                case R.id.spanel:
-                    startActivity(new Intent(ProfileActivity.this, SellingPanel.class));
-                    return true;
-
-                case R.id.mpaintings:
-                    startActivity(new Intent(ProfileActivity.this, ModifyPaintings.class));
-                    return true;
-
-                default:
-                    return super.onOptionsItemSelected(item);
-            }
-    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item)
+//    {
+//            switch (item.getItemId())
+//            {
+//                case R.id.spanel:
+//
+//                    return true;
+//
+//                case R.id.mpaintings:
+//
+//                    return true;
+//
+//                default:
+//                    return super.onOptionsItemSelected(item);
+//            }
+//    }
 
 
 
@@ -412,7 +443,7 @@ public class ProfileActivity extends AppCompatActivity implements PhotoDialogueB
         final String oldPass = SharedPrefManager.getInstance(this).password();
         final String updatefullname = fname.getText().toString().trim();
         final String updatedadd = address.getText().toString().trim();
-        final String updateemail = email.getText().toString().trim();
+        final String updateemail = emailET.getText().toString().trim();
 
         //URL += "?Username=" + uname + "&Password=" + password.getText() + "&Email=" + updateemail + "&Address=" + updatedadd + "&Name=" + updatefullname;
 
@@ -521,7 +552,7 @@ public class ProfileActivity extends AppCompatActivity implements PhotoDialogueB
                     params.put("Username",uname);
                     params.put("Password", SharedPrefManager.getInstance(getApplication()).password());
                     params.put("Address", String.valueOf(address));
-                    params.put("Email", String.valueOf(email));
+                    params.put("Email", String.valueOf(emailET));
                     params.put("Name", String.valueOf(fname));
                     params.put("NewPassword",newpass);
                     params.put("Mac",MacAddress);
