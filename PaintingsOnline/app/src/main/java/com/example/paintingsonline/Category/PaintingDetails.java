@@ -33,6 +33,7 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.paintingsonline.ArtistPanel.ArtistBio;
 import com.example.paintingsonline.Database.DataSource.CartRepository;
 import com.example.paintingsonline.Database.DataSource.FavoriteRepository;
 import com.example.paintingsonline.Database.Local.CartDataSource;
@@ -166,7 +167,7 @@ public class PaintingDetails extends AppCompatActivity implements RelativePainti
             @Override
             public void onClick(View v)
             {
-                SharedPreferences sp1 = PreferenceManager.getDefaultSharedPreferences(PaintingsDetails.this);
+                SharedPreferences sp1 = PreferenceManager.getDefaultSharedPreferences(PaintingDetails.this);
                 SharedPreferences.Editor editor = sp1.edit();
                 editor.putString("paintingArtist", paintOwner.getText().toString());
                 editor.apply();
