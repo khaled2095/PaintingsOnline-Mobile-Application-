@@ -1,21 +1,26 @@
 package com.example.paintingsonline.ArtistPanel;
 
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -23,6 +28,7 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.example.paintingsonline.Model.Order;
 import com.example.paintingsonline.Model.SellingPanelChart;
+import com.example.paintingsonline.NotificationSystem;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.BottomNavViewHelper;
 import com.example.paintingsonline.Utils.MySingleton;
@@ -41,6 +47,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.paintingsonline.NotificationSystem.CHANNEL_1_ID;
+
 public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter.OnModifyMarkListener {
 
 
@@ -56,6 +64,7 @@ public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter
     int totalSales = 0;
     double totalRevenue = 0;
     TextView Sales, Revenue;
+    Button test;
 
     //Capital Y-axis(Sum) and X-axis(Month)
 
@@ -83,6 +92,7 @@ public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter
         bc = findViewById(R.id.BarChart);
         Sales = findViewById(R.id.tSales);
         Revenue = findViewById(R.id.tRevenue);
+
 
         sp = new ArrayList<>();
 
@@ -289,4 +299,6 @@ public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter
 //        int qunatity = markPaintings.get(pos).getOrderQty();
 //        String paintingStatus = markPaintings.get(pos).getOrderStatus();
     }
+
+
 }

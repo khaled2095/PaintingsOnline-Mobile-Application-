@@ -1,17 +1,23 @@
 package com.example.paintingsonline.Order;
 
+import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.CountDownTimer;
+import android.os.Handler;
+import android.os.Looper;
+import android.preference.PreferenceManager;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,6 +52,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.paintingsonline.NotificationSystem.CHANNEL_1_ID;
+
 public class OrderActivity extends AppCompatActivity implements RatingDialogListener
 {
 
@@ -58,10 +66,13 @@ public class OrderActivity extends AppCompatActivity implements RatingDialogList
     //private RatingDialogListener ratingDialogListener;
     private RatingBar ratingBar;
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
+
 
         SharedPreferences sp2 = PreferenceManager.getDefaultSharedPreferences(OrderActivity.this);
         URL = sp2.getString("mainurl", "");
@@ -79,6 +90,7 @@ public class OrderActivity extends AppCompatActivity implements RatingDialogList
         JSONrequest();
         setupBottomnavView();
     }
+
 
 
 
@@ -133,6 +145,7 @@ public class OrderActivity extends AppCompatActivity implements RatingDialogList
                             Order orders = new Order(OrderId, OrderStatus, OrderPrice ,OrderImage, POwner, Rating);
                             orderList1.add(orders);
 
+
                         }
                         catch (JSONException e)
                         {
@@ -141,7 +154,6 @@ public class OrderActivity extends AppCompatActivity implements RatingDialogList
                     }
 
                     initrecyclerView(orderList1);
-
 
                 }
             }, new Response.ErrorListener()
@@ -187,6 +199,8 @@ public class OrderActivity extends AppCompatActivity implements RatingDialogList
                 positionSetting = position;
             }
         });
+
+        //orderAdapterView.notifyDataSetChanged();
         recyclerView.setAdapter(orderAdapterView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -232,10 +246,10 @@ public class OrderActivity extends AppCompatActivity implements RatingDialogList
             protected Map<String, String> getParams() throws AuthFailureError
             {
                 Map<String, String> params = new HashMap<>();
-                params.put("purchase_id", String.valueOf(orderList1.get(positionSetting).getOrderId()));
-                params.put("Rating", String.valueOf(ratingValue));
-                params.put("Comment", Comments);
-                return params;
+                    params.put("purchase_id", String.valueOf(orderList1.get(positionSetting).getOrderId()));
+                    params.put("Rating", String.valueOf(ratingValue));
+                    params.put("Comment", Comments);
+                    return params;
             }
         };
 

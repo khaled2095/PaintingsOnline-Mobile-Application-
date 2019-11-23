@@ -7,8 +7,8 @@
             <solid
                 android:color="@color/Grey"/>
             <stroke
-                android:color="@color/Black"
-                android:width="0.5dp"/>
+                android:color="@color/blue1"
+                android:width="2dp"/>
             <corners
                 android:radius="5dp"/>
         </shape>
@@ -18,8 +18,8 @@
             <solid
                 android:color="@color/White"/>
             <stroke
-                android:color="@color/Black"
-                android:width="0.5dp"/>
+                android:color="@color/blue1"
+                android:width="2dp"/>
             <corners
                 android:radius="5dp"/>
         </shape>

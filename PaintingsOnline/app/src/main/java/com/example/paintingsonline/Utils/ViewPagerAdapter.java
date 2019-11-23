@@ -1,15 +1,15 @@
 package com.example.paintingsonline.Utils;
 
 import android.content.Context;
+
+import androidx.annotation.NonNull;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import androidx.annotation.NonNull;
-import androidx.viewpager.widget.PagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
@@ -28,7 +28,7 @@ public class ViewPagerAdapter extends PagerAdapter
     OnImageClickListener monImageClickListener;
 
 
-    public ViewPagerAdapter(Context context, List<byte[]> images, List<String> oldimage , OnImageClickListener onImageClickListener)
+    public ViewPagerAdapter(Context context, List<byte[]> images, List<String> oldimage ,OnImageClickListener onImageClickListener)
     {
         Log.d("ol", "ol" + oldimage.size());
 

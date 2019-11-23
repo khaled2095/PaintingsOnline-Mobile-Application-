@@ -6,7 +6,6 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
 import androidx.room.Update;
-
 import com.example.paintingsonline.Database.ModelDB.Cart;
 
 import java.util.List;
@@ -47,10 +46,10 @@ public interface CartDAO
     void emptycart();
 
     @Insert
-    void insertToCart(Cart... carts);
+    void insertToCart(Cart...carts);
 
     @Update
-    void updateCart(Cart... carts);
+    void updateCart(Cart...carts);
 
     @Delete
     void deleteCartItem(Cart cart);

@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.example.paintingsonline.Model.Room;
 import com.example.paintingsonline.R;
 import com.example.paintingsonline.Utils.MySingleton;
 
@@ -29,7 +30,8 @@ public class RoomFragment extends Fragment
 {
 
     final ArrayList<Room> rooms = new ArrayList<>();
-    private String URL = "https://jrnan.info/Painting/ShowRoom.php";
+    private String URL = "";
+    private String URL1 = "/ShowRoom.php";
     private ListView listView;
     private RoomListAdapter roomadapter;
 
@@ -37,6 +39,11 @@ public class RoomFragment extends Fragment
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_room, container, false);
+
+        SharedPreferences sp2 = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        URL = sp2.getString("mainurl", "");
+        URL1 = URL + URL1;
+
 
         JSONrequest(view);
 
@@ -48,7 +55,7 @@ public class RoomFragment extends Fragment
             {
                 SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
                 SharedPreferences.Editor editor = sp.edit();
-                editor.putString("url","https://jrnan.info/Painting/ShowPaintings.php?Room=");
+                editor.putString("url", URL + "/ShowPaintings.php?Room=");
                 editor.putInt("Selec", i);
                 editor.apply();
                 //sp.edit().commit();
@@ -63,7 +70,7 @@ public class RoomFragment extends Fragment
 
     private void JSONrequest(final View view)
     {
-        JsonArrayRequest request = new JsonArrayRequest(URL, new Response.Listener<JSONArray>() {
+        JsonArrayRequest request = new JsonArrayRequest(URL1, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response)
             {

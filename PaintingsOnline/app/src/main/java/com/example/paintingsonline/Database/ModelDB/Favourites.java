@@ -1,8 +1,9 @@
 package com.example.paintingsonline.Database.ModelDB;
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
+import androidx.annotation.NonNull;
 
 @Entity(tableName = "Favourite" , primaryKeys = {"paintingId","username"})
 public class Favourites

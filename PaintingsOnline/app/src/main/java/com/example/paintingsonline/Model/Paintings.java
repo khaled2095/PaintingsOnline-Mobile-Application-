@@ -6,9 +6,17 @@ import android.os.Parcelable;
 public class Paintings implements Parcelable
 {
     private String id;
-    private String name, description, image, pOwner, pSize;
+    private String name;
+    private String description;
+    private String image;
+    private String pOwner;
+    private String pSize;
+
+
+    private String small;
     private int price;
     private int quantity;
+    private int distance;
 
 
     //Constructor for Featured Products and Best Selling
@@ -18,6 +26,15 @@ public class Paintings implements Parcelable
         this.image = image;
         this.pOwner = pOwner;
         this.price = price;
+    }
+
+
+    public Paintings(String id, String small, int distance)
+    {
+        this.id = id;
+        this.small = small;
+        this.distance = distance;
+
     }
 
     public Paintings()
@@ -73,6 +90,16 @@ public class Paintings implements Parcelable
         this.price = price;
         this.quantity = quantity;
     }
+
+
+    public String getSmall() {
+        return small;
+    }
+
+    public int getDistance() {
+        return distance;
+    }
+
 
 
     protected Paintings(Parcel in) {

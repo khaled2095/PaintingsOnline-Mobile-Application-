@@ -1,10 +1,17 @@
 package com.example.paintingsonline.Registration;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.Instrumentation;
+import android.os.Build;
+import android.widget.Button;
 import android.widget.Toast;
 
+import androidx.test.espresso.Espresso;
 import androidx.test.rule.ActivityTestRule;
+import androidx.test.rule.GrantPermissionRule;
 
+import com.example.paintingsonline.Home.HomeActivity;
 import com.example.paintingsonline.Login.LoginActivity;
 import com.example.paintingsonline.R;
 
@@ -18,7 +25,9 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static androidx.test.platform.app.InstrumentationRegistry.getInstrumentation;
+import static org.junit.Assert.*;
 
 public class RegistrationActivityTest
 {

@@ -8,7 +8,9 @@ public class SharedPrefManager
     private static SharedPrefManager instance;
     private static Context ctx;
 
-
+    private SharedPreferenceBooleanLiveData spbool;
+    private SharedPreferenceStringLiveData spString;
+    private SharedPreferenceIntegerLiveData spInt;
 
     private String SHARED_PREF_NAME = "my1";
     private String KEY_USER = "usertype";
@@ -28,6 +30,17 @@ public class SharedPrefManager
 
     }
 
+    public SharedPreferenceBooleanLiveData getSpbool() {
+        return spbool;
+    }
+
+    public SharedPreferenceStringLiveData getSpString() {
+        return spString;
+    }
+
+    public SharedPreferenceIntegerLiveData getSpInt() {
+        return spInt;
+    }
 
     public static synchronized SharedPrefManager getInstance(Context context) {
         if (instance == null) {
@@ -36,7 +49,7 @@ public class SharedPrefManager
         return instance;
     }
 
-    public void userlogin(int id, String username, String password , String email, String address, String fullname, int usertype, int verify)
+    public void userlogin(int id, String username, String password ,String email, String address, String fullname, int usertype, int verify)
     {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -51,6 +64,7 @@ public class SharedPrefManager
         editor.putInt(KEY_VERIFIED, verify);
         editor.apply();
 
+        spInt = new SharedPreferenceIntegerLiveData(sharedPreferences, KEY_VERIFIED, verify);
     }
 
     public boolean isLoggedIn()
@@ -98,17 +112,40 @@ public class SharedPrefManager
         return sharedPreferences.getInt(KEY_VERIFIED, 0);
     }
 
+
+    //This method only stores User name from facebook to use it as a USERNAME for login process
+    public void SetUserName(String FBUserName)
+    {
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_USERNAME, FBUserName);
+        editor.apply();
+    }
+
+
     public String getUserName()
     {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString(KEY_USERNAME, null);
     }
 
+
+    //This method only stores User email from facebook to use it as a USERNAME for login process
+    public void SetUserEmail(String FBUserEmail)
+    {
+        SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(KEY_EMAIL, FBUserEmail);
+        editor.apply();
+    }
+
+
     public String getUserEmail()
     {
         SharedPreferences sharedPreferences = ctx.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getString(KEY_EMAIL, null);
     }
+
 
     public String getUserAddress()
     {

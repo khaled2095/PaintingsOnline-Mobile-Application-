@@ -18,10 +18,13 @@ public class CategoryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category);
+
+        setupBottomnavView();
+        setupTabs();
     }
 
     /* Responsible for Category and Artist Tabs*/
-    private void setupTabs()
+    public void setupTabs()
     {
         SectionPagerAdapter spa = new SectionPagerAdapter(getSupportFragmentManager());
         spa.addFragment(new CategoryFragment());
@@ -40,10 +43,11 @@ public class CategoryActivity extends AppCompatActivity {
 
 
     /* bottom navigation view setup */
-    private void setupBottomnavView()
+    public void setupBottomnavView()
     {
         BottomNavigationViewEx bottomNavigationView = findViewById(R.id.bottom);
         BottomNavViewHelper.enableNavigation(CategoryActivity.this, this , bottomNavigationView);
+        BottomNavViewHelper.setupBottomNavView(bottomNavigationView);
 
         Menu menu = bottomNavigationView.getMenu();
         MenuItem menuItem = menu.getItem(1);

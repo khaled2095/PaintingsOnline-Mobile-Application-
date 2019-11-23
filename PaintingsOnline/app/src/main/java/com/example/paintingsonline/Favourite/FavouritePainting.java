@@ -2,16 +2,15 @@ package com.example.paintingsonline.Favourite;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.paintingsonline.Database.DataSource.FavoriteRepository;
 import com.example.paintingsonline.Database.Local.FavoriteDataSource;
@@ -67,16 +66,16 @@ public class FavouritePainting extends AppCompatActivity
         favrecyclerView.setLayoutManager(new LinearLayoutManager(this));
         favrecyclerView.setHasFixedSize(true);
 
-        if(favoriteRepository.CountFavouriteItems() == 0)
-        {
-            favrecyclerView.setVisibility(View.GONE);
-            emptyFav.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            favrecyclerView.setVisibility(View.VISIBLE);
-            emptyFav.setVisibility(View.GONE);
-        }
+//        if(favoriteRepository.CountFavouriteItems() == 0)
+//        {
+//            favrecyclerView.setVisibility(View.GONE);
+//            emptyFav.setVisibility(View.VISIBLE);
+//        }
+//        else
+//        {
+//            favrecyclerView.setVisibility(View.VISIBLE);
+//            emptyFav.setVisibility(View.GONE);
+//        }
 
 
         /*setup backarrow for NAVIGATION */
@@ -99,7 +98,7 @@ public class FavouritePainting extends AppCompatActivity
         .subscribeOn(Schedulers.io())
         .subscribe(new Consumer<List<Favourites>>() {
             @Override
-            public void accept(List<Favourites> favourites) throws Exception
+            public void accept(List<Favourites> favourites) throws Exception 
             {
                 displayFavItems(favourites);
             }
@@ -127,7 +126,6 @@ public class FavouritePainting extends AppCompatActivity
                                 FavoriteRepository favRepository = FavoriteRepository.getInstance(FavoriteDataSource.getInstance(favd.favoriteDAO()));
                                 favRepository.deleteFavoriteItem(favList.get(pos));
                                 dialog.cancel();
-                                emptyFav.setVisibility(View.VISIBLE);
                             }
                         });
 
@@ -144,6 +142,18 @@ public class FavouritePainting extends AppCompatActivity
             }
         });
         favrecyclerView.setAdapter(favouriteAdapterView);
+
+
+        if (favList.size() == 0)
+        {
+            favrecyclerView.setVisibility(View.GONE);
+            emptyFav.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            favrecyclerView.setVisibility(View.VISIBLE);
+            emptyFav.setVisibility(View.GONE);
+        }
     }
 
 }

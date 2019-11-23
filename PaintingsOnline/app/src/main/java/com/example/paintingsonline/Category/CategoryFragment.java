@@ -68,7 +68,7 @@ public class CategoryFragment extends Fragment
 
     }
 
-    private void JSONrequest(final View view)
+    public void JSONrequest(final View view)
     {
         JsonArrayRequest request = new JsonArrayRequest(URL1, new Response.Listener<JSONArray>() {
             @Override

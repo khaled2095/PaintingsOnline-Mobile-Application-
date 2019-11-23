@@ -5,7 +5,6 @@ import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.Query;
-
 import com.example.paintingsonline.Database.ModelDB.Favourites;
 
 import java.util.List;
@@ -25,7 +24,7 @@ public interface FavoriteDAO
     int CountFavouriteItems();
 
     @Insert
-    void insertFavorite(Favourites... favourites);
+    void insertFavorite(Favourites...favourites);
 
     @Delete
     void deleteFavoriteItem(Favourites favourites);

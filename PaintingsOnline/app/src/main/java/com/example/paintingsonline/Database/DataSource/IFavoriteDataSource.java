@@ -16,7 +16,7 @@ public interface IFavoriteDataSource
 
     int CountFavouriteItems();
 
-    void insertFavorite(Favourites... favourites);
+    void insertFavorite(Favourites...favourites);
 
     void deleteFavoriteItem(Favourites favourites);
 }

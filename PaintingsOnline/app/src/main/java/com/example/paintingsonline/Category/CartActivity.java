@@ -3,16 +3,13 @@ package com.example.paintingsonline.Category;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
-
+import android.preference.PreferenceManager;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -113,16 +110,16 @@ public class CartActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setHasFixedSize(true);
 
-        if (cr.CountCartItems() == 0)
-        {
-            recyclerView.setVisibility(View.GONE);
-            emptyView.setVisibility(View.VISIBLE);
-        }
-        else
-        {
-            recyclerView.setVisibility(View.VISIBLE);
-            emptyView.setVisibility(View.GONE);
-        }
+//        if (cr.CountCartItems() == 0)
+//        {
+//            recyclerView.setVisibility(View.GONE);
+//            emptyView.setVisibility(View.VISIBLE);
+//        }
+//        else
+//        {
+//            recyclerView.setVisibility(View.VISIBLE);
+//            emptyView.setVisibility(View.GONE);
+//        }
 
         spReceiveRoomAndCategory = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         showpaintings_url = spReceiveRoomAndCategory.getString("url", "");
@@ -180,7 +177,6 @@ public class CartActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PAYMENT_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
                 DropInResult result = data.getParcelableExtra(DropInResult.EXTRA_DROP_IN_RESULT);
@@ -247,75 +243,193 @@ public class CartActivity extends AppCompatActivity {
         {
             showProgressBar();
 
-            if (carts.size() > 0)
-            {
-                StringRequest stringRequest = new StringRequest(Request.Method.POST, payment_url, new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        CounterInt += 1 ;
-                        if (CounterInt == carts.size())
-                        {
-                            hideProgressBar();
-                            Toast.makeText(CartActivity.this, "Purchased Successfully", Toast.LENGTH_SHORT).show();
-                            Log.d("try", "onr: " + response);
-                        }
+        if (carts.size() > 0)
+        {
+            StringRequest stringRequest = new StringRequest(Request.Method.POST, payment_url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    CounterInt += 1 ;
+                    if (CounterInt == carts.size())
+                    {
+                        hideProgressBar();
+                        Toast.makeText(CartActivity.this, "Purchased Successfully", Toast.LENGTH_SHORT).show();
+                        Log.d("try", "onr: " + response);
                     }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
 
-                    }
-                }) {
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<>();
-                        String CartID = String.valueOf(Math.random());
-
-
-                        Log.d("s", "painting_id" + String.valueOf(c.paintingid));
-                        params.put("painting_id", String.valueOf(c.paintingid));
-
-                        Log.d("s", "artist" + c.paintingartist);
-                        params.put("artist", "by " + c.paintingartist);
-
-                        Log.d("s", "buyer" + SharedPrefManager.getInstance(CartActivity.this).getUserName());
-                        params.put("buyer", SharedPrefManager.getInstance(CartActivity.this).getUserName());
-
-                        Log.d("s", "Address" + SharedPrefManager.getInstance(CartActivity.this).getUserAddress());
-                        params.put("Address", SharedPrefManager.getInstance(CartActivity.this).getUserAddress());
-
-                        Log.d("s", "Price" + String.valueOf(c.price * c.qty));
-                        params.put("Price", String.valueOf(c.price * c.qty));
-
-                        Log.d("s", "PaintingUrl" + c.paintingimg);
-                        params.put("PaintingUrl", c.paintingimg);
-
-                        Log.d("s", "CartID" + CartID);
-                        params.put("CartID", CartID);
-
-                        Log.d("s", "TXN_ID" + CartID);
-                        params.put("TXN_ID", CartID);
-
-                        Log.d("s", "Quantity" + String.valueOf(c.qty));
-                        params.put("Quantity", String.valueOf(c.qty));
-
-                        Log.d("s", "painting_name" + c.paintingname);
-                        params.put("painting_name", c.paintingname);
-
-                        params.put("Size", c.paintingsize);
+                }
+            }) {
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<>();
+                    String CartID = String.valueOf(Math.random());
 
 
-                        return params;
-                    }
-                };
+                    Log.d("s", "painting_id" + String.valueOf(c.paintingid));
+                    params.put("painting_id", String.valueOf(c.paintingid));
 
-                Log.d("body", "body" + stringRequest);
+                    Log.d("s", "artist" + c.paintingartist);
+                    params.put("artist", "by " + c.paintingartist);
 
-                MySingleton.getInstance(CartActivity.this).addToRequestQueue(stringRequest);
+                    Log.d("s", "buyer" + SharedPrefManager.getInstance(CartActivity.this).getUserName());
+                    params.put("buyer", SharedPrefManager.getInstance(CartActivity.this).getUserName());
+
+                    Log.d("s", "Address" + SharedPrefManager.getInstance(CartActivity.this).getUserAddress());
+                    params.put("Address", SharedPrefManager.getInstance(CartActivity.this).getUserAddress());
+
+                    Log.d("s", "Price" + String.valueOf(c.price * c.qty));
+                    params.put("Price", String.valueOf(c.price * c.qty));
+
+                    Log.d("s", "PaintingUrl" + c.paintingimg);
+                    params.put("PaintingUrl", c.paintingimg);
+
+                    Log.d("s", "CartID" + CartID);
+                    params.put("CartID", CartID);
+
+                    Log.d("s", "TXN_ID" + CartID);
+                    params.put("TXN_ID", CartID);
+
+                    Log.d("s", "Quantity" + String.valueOf(c.qty));
+                    params.put("Quantity", String.valueOf(c.qty));
+
+                    Log.d("s", "painting_name" + c.paintingname);
+                    params.put("painting_name", c.paintingname);
+
+                    params.put("Size", c.paintingsize);
+
+
+                    return params;
+                }
+            };
+
+            Log.d("body", "body" + stringRequest);
+
+            MySingleton.getInstance(CartActivity.this).addToRequestQueue(stringRequest);
             }
         }
     }
 
+
+//    private void sendOrderToServer()
+//    {
+//        placeorder.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//                if (!SharedPrefManager.getInstance(CartActivity.this).isLoggedIn())
+//                {
+//                    AlertDialog.Builder builder1 = new AlertDialog.Builder(CartActivity.this);
+//                    builder1.setMessage("You are not an Logged in. Click ok to Log In");
+//                    builder1.setCancelable(true);
+//
+//                    builder1.setPositiveButton(
+//                            "OK",
+//                            new DialogInterface.OnClickListener() {
+//                                public void onClick(DialogInterface dialog, int id) {
+//                                    dialog.cancel();
+//                                    finish();
+//                                    startActivity(new Intent(CartActivity.this, LoginActivity.class));
+//                                }
+//                            });
+//
+//                    AlertDialog alert11 = builder1.create();
+//                    alert11.show();
+//                }
+//                else
+//                {
+//                    if (cartsList.size() > 0)
+//                    {
+//                        // placeOrder();
+//                        String paintingIDs = "";
+//                        String paintingQunatity = "";
+//
+//                        for (Cart cart : cartsList)
+//                        {
+//                            if (paintingIDs.isEmpty())
+//                            {
+//                                paintingIDs = String.valueOf(cart.paintingid);
+//                            }
+//                            else
+//                            {
+//                                paintingIDs += "," + cart.paintingid;
+//                            }
+//
+//                            if (paintingQunatity.isEmpty())
+//                            {
+//                                paintingQunatity = String.valueOf(cart.qty);
+//                            }
+//                            else
+//                            {
+//                                paintingQunatity += "," + cart.qty;
+//                            }
+//
+//                            Log.d("hhhhhhhh", "pid: " + cart.paintingid);
+//                            Log.d("hhhhhhhh", "pid: " + cart.qty);
+//                        }
+//
+//                        String requestURL = URL +
+//                                "Username=" +  SharedPrefManager.getInstance(CartActivity.this).getUserName() +
+//                                "&Password=" + SharedPrefManager.getInstance(CartActivity.this).password() +
+//                                "&Paintings=" + paintingIDs + "&Quantity=" + paintingQunatity;
+//                        //Log.d("url", "finalURL = " + requestURL);
+//                        cr.emptycart();
+//
+//                        Intent i = new Intent(Intent.ACTION_VIEW);
+//                        i.setData(Uri.parse(requestURL));
+//                        startActivity(i);
+//
+//                    }
+//                    else
+//                    {
+//                        AlertDialog.Builder builder1 = new AlertDialog.Builder(CartActivity.this);
+//                        builder1.setMessage("No Items in the cart to be checked out");
+//                        builder1.setCancelable(true);
+//
+//                        builder1.setPositiveButton(
+//                                "OK",
+//                                new DialogInterface.OnClickListener() {
+//                                    public void onClick(DialogInterface dialog, int id) {
+//                                        dialog.cancel();
+//                                        finish();
+//                                        startActivity(new Intent(CartActivity.this, LoginActivity.class));
+//                                    }
+//                                });
+//
+//                        AlertDialog alert11 = builder1.create();
+//                        alert11.show();
+//                    }
+//
+//                }
+//
+//
+//            }
+//        });
+//
+//
+//
+//
+////        if (cartsList.size() > 0)
+////        {
+////            mService.placeOrder("new", 1).enqueue(new Callback<String>() {
+////                @Override
+////                public void onResponse(Call<String> call, Response<String> response) {
+////                    Toast.makeText(CartActivity.this, "Order Submitted", Toast.LENGTH_SHORT).show();
+////
+////                    //clear Checkout
+////                    cr.emptycart();
+////                }
+////
+////                @Override
+////                public void onFailure(Call<String> call, Throwable t) {
+////                    Log.e("ERROR", t.getMessage());
+////                }
+////            });
+////        }
+////
+//    }
 
 
     private void initDB()
@@ -420,7 +534,7 @@ public class CartActivity extends AppCompatActivity {
                                 CartRepository cartRepository = CartRepository.getInstance(CartDataSource.getInstance(cartd.cartDAO()));
                                 cartRepository.deleteCartItem(cartsList.get(pos));
                                 dialog.cancel();
-                                emptyView.setVisibility(View.VISIBLE);
+
                             }
                         });
 
@@ -438,6 +552,18 @@ public class CartActivity extends AppCompatActivity {
         });
         recyclerView.setAdapter(cartAdapterView);
         cartAdapterView.notifyDataSetChanged();
+
+
+        if (cartsList.size() == 0)
+        {
+            recyclerView.setVisibility(View.GONE);
+            emptyView.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            recyclerView.setVisibility(View.VISIBLE);
+            emptyView.setVisibility(View.GONE);
+        }
     }
 
 

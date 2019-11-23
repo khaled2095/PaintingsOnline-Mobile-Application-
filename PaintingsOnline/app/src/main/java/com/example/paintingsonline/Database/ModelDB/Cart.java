@@ -1,10 +1,10 @@
 package com.example.paintingsonline.Database.ModelDB;
 
 
-import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+import androidx.annotation.NonNull;
 
 @Entity(tableName = "Cart")
 public class Cart

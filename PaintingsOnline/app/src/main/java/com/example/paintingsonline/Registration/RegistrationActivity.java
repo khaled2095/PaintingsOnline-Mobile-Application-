@@ -8,9 +8,13 @@ import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
-import android.os.Bundle;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
@@ -18,11 +22,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -44,7 +43,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
+public class RegistrationActivity extends AppCompatActivity
+{
 
     //public String URL_REGISTER = "https://paintingsonline.000webhostapp.com/Register.php";
 
@@ -106,37 +106,56 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
 
-//        user = findViewById(R.id.user);
-//        artist = findViewById(R.id.artist1);
-//
-//
-//
-//        user.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                buttonPressed(view);
-//                u = 0;
-//            }
-//        });
-//
-//        artist.setOnClickListener(new View.OnClickListener()
-//        {
-//            @Override
-//            public void onClick(View view)
-//            {
-//                buttonPressed(view);
-//                u = 1;
-//            }
-//        });
+
+        signUp = findViewById(R.id.btn_signup);
+        signIn = findViewById(R.id.signin);
 
 
+        signUp.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                registerUser();
+            }
+        });
+
+
+        signIn.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+        UserAgreement.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View v)
+            {
+                setUserAgreement();
+            }
+        });
+
+
+        GetLocation();
+
+    }
+
+
+
+    public void GetLocation()
+    {
         if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION))
         {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATIONCODE);
         }
         else
-            {
+        {
             //if permission is granted
             BuildLocationRequest();
             BuildLocationCallBack();
@@ -151,20 +170,9 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             }
 
             fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-
         }
-
-
-
-        signUp = findViewById(R.id.btn_signup);
-        signIn = findViewById(R.id.signin);
-
-        signUp.setOnClickListener(this);
-        signIn.setOnClickListener(this);
-        UserAgreement.setOnClickListener(this);
-
-
     }
+
 
     public void setUserAgreement()
     {
@@ -248,8 +256,6 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             {
                 for (Location location: locationResult.getLocations())
                 {
-//                    String latitude = String.valueOf(location.getLatitude());
-//                    String longitude = String.valueOf(location.getLongitude());
 
                     try {
 
@@ -302,10 +308,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 //    }
 
 
-    private void registerUser(View v) {
-
-        //URL_REGISTER = "https://paintingsonline.000webhostapp.com/Register.php";
-
+    private void registerUser()
+    {
 
         final String fname = fullname.getText().toString().trim();
         final String uname = username.getText().toString().trim();
@@ -370,56 +374,10 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     }
 
 
-
-
     @Override
-    public void onClick(View v)
+    protected void onResume()
     {
-
-        if (v == signUp)
-        {
-            registerUser(v);
-        }
-
-        if (v == signIn)
-        {
-            Intent intent = new Intent(RegistrationActivity.this, LoginActivity.class);
-            startActivity(intent);
-        }
-
-        if (v == UserAgreement)
-        {
-            setUserAgreement();
-        }
-
-    }
-
-
-    @Override
-    protected void onResume() {
         super.onResume();
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION))
-        {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATIONCODE);
-        }
-        else
-        {
-            //if permission is granted
-            BuildLocationRequest();
-            BuildLocationCallBack();
-
-            fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
-
-            //Set Event for button
-            if (ActivityCompat.checkSelfPermission(RegistrationActivity.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-            {
-                ActivityCompat.requestPermissions(RegistrationActivity.this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_LOCATIONCODE);
-                return;
-            }
-
-            fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.myLooper());
-
-        }
-
+        GetLocation();
     }
 }

@@ -12,8 +12,54 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <!-- Top Toolbar -->
         <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout1">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/white_grey_border_bottom">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/paintingtoolbarhome">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Paintings Online"
+                            android:textColor="@color/Black"
+                            android:textSize="20sp"
+                            android:id="@+id/paintingname"/>
+
+
+                    </RelativeLayout>
+
+
+
+                </androidx.appcompat.widget.Toolbar>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+        </RelativeLayout>
+
+
+        <!-- Top Toolbar -->
+        <RelativeLayout
+            android:layout_below="@id/relativeLayout1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rel1">

@@ -2,8 +2,14 @@ package com.example.paintingsonline.Category;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -11,12 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -367,7 +367,7 @@ public class PaintingActivity extends AppCompatActivity implements SwipeRefreshL
         editor.putString("painting_artist", paintingsList2.get(position).getpOwner());
         editor.apply();
         //sp.edit().commit();
-        Intent paintingActivity = new Intent(PaintingActivity.this, PaintingDetails.class);
+        Intent paintingActivity = new Intent(PaintingActivity.this, PaintingsDetails.class);
         startActivity(paintingActivity);
     }
 }

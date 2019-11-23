@@ -91,6 +91,9 @@ public class OrderAdapterView extends RecyclerView.Adapter<OrderAdapterView.Orde
 
 
 
+
+
+
     class OrderViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
         RatingBar ratingBar;

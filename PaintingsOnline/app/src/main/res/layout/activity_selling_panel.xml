@@ -118,6 +118,7 @@
 
                 </LinearLayout>
 
+
                 <View
                     android:id="@+id/line"
                     android:background="@color/DarkGrey"

@@ -15,6 +15,22 @@
       },
       "oauth_client": [
         {
+          "client_id": "1083518197269-0ii33dne27r65dh70cbebuss8kfb553u.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.paintingsonline",
+            "certificate_hash": "139a6c10333b99f41cb4850cce7d3cc1e92eeafc"
+          }
+        },
+        {
+          "client_id": "1083518197269-gahndajq2995464ie6b5g9o2olv80ej1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.paintingsonline",
+            "certificate_hash": "78ada54d3e657a45732dd50de9b12d300b4a1db9"
+          }
+        },
+        {
           "client_id": "1083518197269-k8q64ggguor34m6dj2t07djmln1sgrt9.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

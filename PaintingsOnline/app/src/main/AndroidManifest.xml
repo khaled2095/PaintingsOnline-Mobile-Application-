@@ -2,23 +2,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.paintingsonline">
 
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
+        android:name=".NotificationSystem"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ArtistPanel.EditDeletePaintings"></activity>
-        <activity android:name=".ArtistPanel.ArtistBio" />
+        <activity android:name=".ArtistPanel.ArtistBio"></activity>
+        <activity android:name=".ArtistPanel.EditDeletePaintings" />
         <activity android:name=".ArtistPanel.ModifyPaintings" />
         <activity android:name=".ArtistPanel.SellingPanel" />
-        <activity android:name=".Category.PaintingDetails" />
         <activity android:name=".Login.forget_password" />
+        <activity android:name=".Category.PaintingsDetails" />
+        <activity android:name=".Favourite.FavouritePainting" />
         <activity android:name=".Search.SearchActivity" />
         <activity android:name=".Login.LoginActivity" />
         <activity android:name=".Registration.RegistrationActivity" />

@@ -18,7 +18,7 @@ public interface ICartDataSource
     void updatePaintingSizeAndPrice(String pSize, int pPrice, String pID);
     void updatePaintingImage(String pImage, String pID);
     void updatePaintingStock(int pStock, String pID);
-    void insertToCart(Cart... carts);
-    void updateCart(Cart... carts);
+    void insertToCart(Cart...carts);
+    void updateCart(Cart...carts);
     void deleteCartItem(Cart cart);
 }

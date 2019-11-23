@@ -4,23 +4,28 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.Signature;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.os.Bundle;
 import android.preference.PreferenceManager;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.appcompat.widget.Toolbar;
+
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
-
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkError;
@@ -35,7 +40,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.example.paintingsonline.Category.CartActivity;
-import com.example.paintingsonline.Category.PaintingDetails;
+import com.example.paintingsonline.Category.PaintingsDetails;
 import com.example.paintingsonline.Database.DataSource.CartRepository;
 import com.example.paintingsonline.Database.Local.CartDataSource;
 import com.example.paintingsonline.Database.Local.CartDatabase;
@@ -53,6 +58,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -655,7 +662,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         editor.putString("painting_desc", paintingsList.get(pos).getDescription());
         editor.putString("painting_artist", paintingsList.get(pos).getpOwner());
         editor.apply();
-        Intent homeActivity = new Intent(HomeActivity.this, PaintingDetails.class);
+        Intent homeActivity = new Intent(HomeActivity.this, PaintingsDetails.class);
         startActivity(homeActivity);
 
     }
@@ -671,7 +678,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         editor.putString("painting_desc", featuredList.get(pos).getDescription());
         editor.putString("painting_artist", featuredList.get(pos).getpOwner());
         editor.apply();
-        Intent homeActivity = new Intent(HomeActivity.this, PaintingDetails.class);
+        Intent homeActivity = new Intent(HomeActivity.this, PaintingsDetails.class);
         startActivity(homeActivity);
     }
 
@@ -686,7 +693,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         editor.putString("painting_desc", bestList.get(pos).getDescription());
         editor.putString("painting_artist", bestList.get(pos).getpOwner());
         editor.apply();
-        Intent homeActivity = new Intent(HomeActivity.this, PaintingDetails.class);
+        Intent homeActivity = new Intent(HomeActivity.this, PaintingsDetails.class);
         startActivity(homeActivity);
     }
 }

@@ -8,7 +8,6 @@
     tools:context=".Category.CartActivity">
 
 
-
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -86,25 +85,27 @@
     </RelativeLayout>
 
 
-    <TextView
-        android:id="@+id/tPrice"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text=""
-        android:textSize="20sp"
-        android:layout_above="@+id/placeorder"
-        android:textColor="@color/Black"
-        android:layout_margin="8dp"
-        android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/tPrice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            android:layout_above="@+id/placeorder"
+            android:textColor="@color/Black"
+            android:layout_margin="8dp"
+            android:textAlignment="center"/>
 
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="confirm order"
-        android:layout_alignParentBottom="true"
-        android:id="@+id/placeorder"
-        android:layout_margin="8dp"/>
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="confirm order"
+            android:layout_alignParentBottom="true"
+            android:id="@+id/placeorder"
+            android:background="@drawable/onclick_grey"
+            android:layout_margin="8dp"/>
 
 
     <ProgressBar
@@ -114,6 +115,7 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="120dp"
         android:visibility="invisible"/>
+
 
 
 

@@ -8,10 +8,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.android.volley.toolbox.NetworkImageView;
+import com.example.paintingsonline.Category.CategoryListAdapter;
 import com.example.paintingsonline.Model.MultipleSizePriceQuantity;
 import com.example.paintingsonline.R;
+import com.example.paintingsonline.Utils.MySingleton;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class multipleEntryListAdapter extends ArrayAdapter<MultipleSizePriceQuantity>
 {

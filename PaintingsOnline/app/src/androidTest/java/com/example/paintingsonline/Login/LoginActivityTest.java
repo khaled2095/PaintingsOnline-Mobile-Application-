@@ -1,5 +1,7 @@
 package com.example.paintingsonline.Login;
 
+import android.util.Log;
+
 import androidx.test.espresso.Espresso;
 import androidx.test.rule.ActivityTestRule;
 
@@ -14,6 +16,9 @@ import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.closeSoftKeyboard;
 import static androidx.test.espresso.action.ViewActions.typeText;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.matcher.ViewMatchers.withInputType;
+import static androidx.test.espresso.matcher.ViewMatchers.withText;
+import static org.junit.Assert.*;
 
 public class LoginActivityTest
 {
