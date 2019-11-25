@@ -5,24 +5,22 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.CountDownTimer;
+import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.RatingBar;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import android.os.Bundle;
-
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.RatingBar;
-import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -65,6 +63,10 @@ public class OrderActivity extends AppCompatActivity implements RatingDialogList
     public int positionSetting ;
     //private RatingDialogListener ratingDialogListener;
     private RatingBar ratingBar;
+    NotificationManagerCompat notificationManagerCompat;
+    SharedPreferences sp2;
+    Handler handler = new Handler();
+    View v;
 
 
 
@@ -73,36 +75,11 @@ public class OrderActivity extends AppCompatActivity implements RatingDialogList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order);
 
-
-        SharedPreferences sp2 = PreferenceManager.getDefaultSharedPreferences(OrderActivity.this);
-        URL = sp2.getString("mainurl", "");
-        url_order = URL + url_order;
-        rating_URL = URL + rating_URL;
-
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        Uri data = intent.getData();
-
-
-        orderList1 = new ArrayList<>();
-
-
-        JSONrequest();
-        setupBottomnavView();
-    }
-
-
-
-
-
-    private void JSONrequest()
-    {
-
         if (!SharedPrefManager.getInstance(this).isLoggedIn())
         {
             AlertDialog.Builder builder1 = new AlertDialog.Builder(OrderActivity.this);
             builder1.setMessage("You are not an Logged in. Click ok to Log In and view your orders");
-            builder1.setCancelable(true);
+            builder1.setCancelable(false);
 
             builder1.setPositiveButton(
                     "OK",
@@ -119,14 +96,52 @@ public class OrderActivity extends AppCompatActivity implements RatingDialogList
         }
         else
         {
+            notificationManagerCompat = NotificationManagerCompat.from(this);
+
+            sp2 = PreferenceManager.getDefaultSharedPreferences(OrderActivity.this);
+            URL = sp2.getString("mainurl", "");
+
+            rating_URL = URL + rating_URL;
+
+            url_order = URL + url_order;
             url_order += "?Username=" + SharedPrefManager.getInstance(this).getUserName();
 
+            Intent intent = getIntent();
+            String action = intent.getAction();
+            Uri data = intent.getData();
+
+            orderList1 = new ArrayList<>();
+
+            //runnableCode.run();
+
+           // GetNotifioationChannel(v);
+            JSONrequest();
+            setupBottomnavView();
+        }
+    }
+
+
+
+//    Runnable runnableCode = new Runnable() {
+//        @Override
+//        public void run()
+//        {
+//            JSONrequest();
+//            handler.postDelayed(runnableCode, 10000);
+//        }
+//    };
+
+
+
+    private void JSONrequest()
+    {
 
             JsonArrayRequest request = new JsonArrayRequest(url_order, new Response.Listener<JSONArray>() {
                 @Override
                 public void onResponse(JSONArray response)
                 {
 
+                    orderList1.clear();
                     JSONObject jsonObject = null;
 
                     for (int i=0; i < response.length(); i++)
@@ -136,15 +151,30 @@ public class OrderActivity extends AppCompatActivity implements RatingDialogList
                             jsonObject = response.getJSONObject(i);
 
                             int OrderId = jsonObject.getInt("purchase_id");
+                            String OrderName = jsonObject.getString("painting_name");
                             String OrderStatus = jsonObject.getString("status");
                             String OrderImage = jsonObject.getString("PaintingUrl");
                             String POwner = jsonObject.getString("Artist");
                             String Rating = jsonObject.getString("Rating");
                             int OrderPrice = jsonObject.getInt("Price");
 
+
                             Order orders = new Order(OrderId, OrderStatus, OrderPrice ,OrderImage, POwner, Rating);
                             orderList1.add(orders);
 
+                            if (OrderStatus.equals("Shipped to PaintingsOnline") || OrderStatus.equals("Processing") || OrderStatus.equals("Shipped to You"))
+                            {
+
+                                Notification notification = new NotificationCompat.Builder(getApplication(), CHANNEL_1_ID)
+                                        .setSmallIcon(R.drawable.ic_launcher_background)
+                                        .setContentTitle("Order Status Updated")
+                                        .setContentText("Your Painting Name " + OrderName + " Status has been updated to: " + OrderStatus)
+                                        .setPriority(NotificationCompat.PRIORITY_HIGH)
+                                        .setVibrate(new long[] {1000, 1000})
+                                        .build();
+
+                                notificationManagerCompat.notify(1, notification);
+                            }
 
                         }
                         catch (JSONException e)
@@ -166,9 +196,6 @@ public class OrderActivity extends AppCompatActivity implements RatingDialogList
             });
             Log.d("o", "orderurl" + url_order);
             MySingleton.getInstance(OrderActivity.this).addToRequestQueue(request);
-
-        }
-
 
     }
 
