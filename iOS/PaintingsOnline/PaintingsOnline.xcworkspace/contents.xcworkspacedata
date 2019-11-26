@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/mohammedalharthy/Documents/PaintingsOnline/PaintingsOnline/FeedViewController.swift">
+   </FileRef>
+   <FileRef
       location = "group:PaintingsOnline.xcodeproj">
    </FileRef>
    <FileRef

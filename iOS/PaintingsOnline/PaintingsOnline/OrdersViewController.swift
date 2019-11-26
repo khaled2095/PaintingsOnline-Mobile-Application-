@@ -11,47 +11,48 @@ import Alamofire
 import AlamofireImage
 import Foundation
 import MessageUI
+import MaterialComponents.MaterialCards
 
 class OrdersViewController:UIViewController,UITableViewDataSource,UITableViewDelegate , MFMailComposeViewControllerDelegate {
     
     @IBOutlet weak var TableView2: UITableView!
 
-    var tmpListOfPrices = [String]()
-    var tmpListOfStatus = [String]()
-    var tmpListOfurl = [String]()
-    var ListOfArtists = [String]()
-    var ListOfBuyers = [String]()
-    var ListOfWhat = [String]()
-    var ListOfStatus = [String]()
-    var ListOfPurchaseID = [String]()
+    var ListOfPaintings = [CartItem4]()
     var Images = [UIImage]()
-    var ListOfQuantities = [String]()
+
+
     
    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return ListOfArtists.count
+    if ListOfPaintings.count == 0 {
+        tableView.setEmptyView(title: "Your order history is empty", message: "You can track the purchases in this page.")
+    }
+    else {
+        tableView.restore()
+    }
+    return ListOfPaintings.count
     }
     
-     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier:"CustomCell", for: indexPath as IndexPath) as! TableViewCell
-        cell.Price.text = "Price: " + String(Int(tmpListOfPrices[indexPath.row])! * Int(ListOfQuantities[indexPath.row])!) + " Qt:" + ListOfQuantities[indexPath.row]
-        cell.Status.text = "Status: " + tmpListOfStatus[indexPath.row]
-        cell.Artist.text = "Artist: " + ListOfArtists[indexPath.row]
-        cell.Purchase_id = ListOfPurchaseID[indexPath.row]
-        cell.What.text = ListOfWhat[indexPath.row]
+        cell.Price.text = "Price: " + String(Int(ListOfPaintings[indexPath.row].CartPrice)! * Int(ListOfPaintings[indexPath.row].Quantity)!) + " Qt:" + ListOfPaintings[indexPath.row].Quantity
+        cell.Status.text = "Status: " + ListOfPaintings[indexPath.row].Status
+        cell.Artist.text = "Artist: " + ListOfPaintings[indexPath.row].CartArtist
+        cell.Purchase_id = ListOfPaintings[indexPath.row].PurchaseId
+        cell.What.text = ListOfPaintings[indexPath.row].Cartname
+        cell.Rating = Int(ListOfPaintings[indexPath.row].rating)!
         cell.viewController = self
-        print(self.Images.count)
-        if (Images.indexExists(indexPath.row)){
-            cell.CImage.image = Images[indexPath.row]
-        }
-        else {
-            cell.CImage.image = UIImage(named: "empty-image")
-        }
+        cell.ImageToShow = ListOfPaintings[indexPath.row].ImageIMG
+        cell.CImage!.image = ListOfPaintings[indexPath.row].ImageIMG
         return cell
     }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 228.0;//Choose your custom row height
+    }
+    
      @objc func sortArray() {
-       
+        self.ListOfPaintings.removeAll()
         
-        var URL1 = "https://jrnan.info/Painting/Orders.php?Username="
+        var URL1 = MainURL + "/Orders.php?Username="
         if(isKeyPresentInUserDefaults(key: "username")){
             URL1 += UserDefaults.standard.value(forKey: "username") as! String
         }
@@ -62,44 +63,27 @@ class OrdersViewController:UIViewController,UITableViewDataSource,UITableViewDel
             do {
                 let decoder = JSONDecoder()
                 let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
-                if (gitData.count != self.tmpListOfPrices.count) {
                     
-                    self.tmpListOfPrices.removeAll()
-                    self.tmpListOfurl.removeAll()
-                    self.Images.removeAll()
-                    self.ListOfArtists.removeAll()
-                    self.ListOfBuyers.removeAll()
-                    self.ListOfWhat.removeAll()
-                    self.ListOfStatus.removeAll()
-                    self.ListOfPurchaseID.removeAll()
-                    self.ListOfQuantities.removeAll()
-                    
+                
                 for data in gitData {
-                    self.tmpListOfurl.append((data.PaintingUrl as! String))
-                    self.tmpListOfStatus.append((data.status as! String))
-                    self.tmpListOfPrices.append((data.Price as! String))
-                    self.tmpListOfStatus.append((data.status as! String))
-                    self.ListOfArtists.append((data.Artist as! String))
-                    self.ListOfPurchaseID.append((data.purchase_id as! String))
-                    self.ListOfQuantities.append((data.Quantity as! String))
-                    self.ListOfBuyers.append((data.Buyer as! String))
-                    if ((data.Buyer as! String) == (UserDefaults.standard.value(forKey: "username") as! String)){
-                        self.ListOfWhat.append("Bought")
-                    }
-                    else{
-                        self.ListOfWhat.append("Sold")
-                    }
+                    var CartIte : CartItem4 = CartItem4()
+                    CartIte.CartUrl = data.PaintingUrl as! String
+                    CartIte.Status = data.status as! String
+                    CartIte.CartPrice = data.Price as! String
+                    CartIte.CartArtist = data.Artist as! String
+                    CartIte.PurchaseId = data.purchase_id as! String
+                    CartIte.Quantity = data.Quantity as! String
+                    CartIte.rating = data.Rating as! String
+                    CartIte.Buyer = data.Buyer as! String
+                    CartIte.Cartname = data.painting_name as! String
+                    CartIte.ImageIMG = UIImage(named:"empty-image")!
+                    self.ListOfPaintings.append(CartIte)
                 }
                 
-                
-                for str in self.tmpListOfurl{
-                    self.Images.append(UIImage(named:"empty-image")!)
-                }
-                
-                for (index, str) in self.tmpListOfurl.enumerated() {
-                    Alamofire.request(str).responseImage { response in
+                for (index, str) in self.ListOfPaintings.enumerated() {
+                    Alamofire.request(str.CartUrl).responseImage { response in
                         if let image = response.result.value {
-                            self.Images[index] = image
+                            self.ListOfPaintings[index].ImageIMG = image
                             DispatchQueue.main.async(execute: {let offset = self.TableView2.contentOffset
                                 self.reloadTableOnMain(with: offset)})
                         }
@@ -108,7 +92,6 @@ class OrdersViewController:UIViewController,UITableViewDataSource,UITableViewDel
                 
                 DispatchQueue.main.async(execute: {let offset = self.TableView2.contentOffset
                     self.reloadTableOnMain(with: offset)})
-                }
             }
             catch let err {
                 print("Err", err)
@@ -118,107 +101,25 @@ class OrdersViewController:UIViewController,UITableViewDataSource,UITableViewDel
         TableView2.reloadData()
         TableView2.refreshControl?.endRefreshing()
     }
-
-    override func viewDidLoad() {
+    var MainURL = ""
+    override func viewDidAppear(_ animated: Bool) {
         super.viewDidLoad()
-        LoadCategories()
+        MainURL = UserDefaults.standard.string(forKey: "MainURL")!
         let refreshControl = UIRefreshControl()
+        TableView2.rowHeight = 200
+        TableView2.estimatedRowHeight = 200
         refreshControl.addTarget(self, action:  #selector(sortArray), for: .valueChanged)
         self.TableView2.refreshControl = refreshControl
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-
-        var URL1 = "https://jrnan.info/Painting/Orders.php?Username="
-        if(isKeyPresentInUserDefaults(key: "username")){
-            URL1 += UserDefaults.standard.value(forKey: "username") as! String
-        }
-        guard let gitUrl = URL(string: URL1.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!) else { return }
-        URLSession.shared.dataTask(with: gitUrl) { (data, response
-            , error) in
-            guard let data = data else { return }
-            do {
-                let decoder = JSONDecoder()
-                let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
-                if (gitData.count != self.ListOfQuantities.count){
-                    self.LoadCategories()
-                }
-            } catch let err {
-                print("Err", err)
-            }
-            }.resume()
+        sortArray()
     }
     
     func isKeyPresentInUserDefaults(key: String) -> Bool {
         return UserDefaults.standard.object(forKey: key) != nil
     }
-    func LoadCategories() {
-        stopTheDamnRequests()
-        self.tmpListOfPrices.removeAll()
-        self.tmpListOfurl.removeAll()
-        self.Images.removeAll()
-        self.ListOfArtists.removeAll()
-        self.ListOfBuyers.removeAll()
-        self.ListOfWhat.removeAll()
-        self.ListOfStatus.removeAll()
-        self.ListOfPurchaseID.removeAll()
-        self.ListOfQuantities.removeAll()
-        
-        var URL1 = "https://jrnan.info/Painting/Orders.php?Username="
-        if(isKeyPresentInUserDefaults(key: "username")){
-        URL1 += UserDefaults.standard.value(forKey: "username") as! String
-        }
-        guard let gitUrl = URL(string: URL1.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!) else { return }
-        URLSession.shared.dataTask(with: gitUrl) { (data, response
-            , error) in
-            guard let data = data else { return }
-            do {
-                let decoder = JSONDecoder()
-                let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
-                for data in gitData {
-            self.tmpListOfurl.append((data.PaintingUrl as! String))
-            self.tmpListOfStatus.append((data.status as! String))
-            self.tmpListOfPrices.append((data.Price as! String))
-            self.tmpListOfStatus.append((data.status as! String))
-            self.ListOfArtists.append((data.Artist as! String))
-            self.ListOfPurchaseID.append((data.purchase_id as! String))
-            self.ListOfQuantities.append((data.Quantity as! String))
-            self.ListOfBuyers.append((data.Buyer as! String))
-                    if ((data.Buyer as! String) == (UserDefaults.standard.value(forKey: "username") as! String)){
-                        self.ListOfWhat.append("Bought")
-                    }
-                    else{
-                      self.ListOfWhat.append("Sold")
-                    }
-                }
-                
-       
-                for str in self.tmpListOfurl{
-                    self.Images.append(UIImage(named:"empty-image")!)
-                }
-                
-                for (index, str) in self.tmpListOfurl.enumerated() {
-                    Alamofire.request(str).responseImage { response in
-                        if let image = response.result.value {
-                            self.Images[index] = image
-                        DispatchQueue.main.async(execute: {let offset = self.TableView2.contentOffset
-                                self.reloadTableOnMain(with: offset)})
-                        }
-                    }
-                }
-                
-                DispatchQueue.main.async(execute: {let offset = self.TableView2.contentOffset
-                    self.reloadTableOnMain(with: offset)})
-            } catch let err {
-                print("Err", err)
-            }
-            }.resume()
-    }
     
     
     func reloadTableOnMain(with offset: CGPoint = CGPoint.zero){
         DispatchQueue.main.async { [weak self] () in
-            
             self?.TableView2.reloadData()
             self?.TableView2.layoutIfNeeded()
             self?.TableView2.contentOffset = offset
@@ -226,7 +127,6 @@ class OrdersViewController:UIViewController,UITableViewDataSource,UITableViewDel
     }
 
     func SendMail(OrderNumber : String , Artist : String ) {
-        
         let composeVC = MFMailComposeViewController()
         composeVC.mailComposeDelegate = self
         // Configure the fields of the interface.
@@ -242,6 +142,7 @@ class OrdersViewController:UIViewController,UITableViewDataSource,UITableViewDel
     }
     
     
+ 
     func stopTheDamnRequests(){
         if #available(iOS 9.0, *) {
             Alamofire.SessionManager.default.session.getAllTasks { (tasks) in
@@ -253,6 +154,20 @@ class OrdersViewController:UIViewController,UITableViewDataSource,UITableViewDel
                 uploadData.forEach { $0.cancel() }
                 downloadData.forEach { $0.cancel() }
             }
+        }
+    }
+    
+    public func RateMe() {
+        performSegue(withIdentifier: "ShowMeRating", sender: AnyObject.self)
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?)
+    {
+        if segue.destination is RatingViewController
+        {
+            let vc = segue.destination as? RatingViewController
+            vc?.vc = self;
         }
     }
     
@@ -322,3 +237,25 @@ extension UIBarButtonItem {
     }
     
 }
+
+
+
+
+struct CartItem4 {
+    var Cartname = ""
+    var CartPrice = ""
+    var CartArtist = ""
+    var Cartdescription = ""
+    var CartID = ""
+    var CartUrl = ""
+    var Quantity = ""
+    var MaxQuantity = 0
+    var ImageIMG = UIImage(named: "empty-image")!
+    var Status = ""
+    var rating = ""
+    var PurchaseId = ""
+    var Buyer = ""
+    
+}
+
+

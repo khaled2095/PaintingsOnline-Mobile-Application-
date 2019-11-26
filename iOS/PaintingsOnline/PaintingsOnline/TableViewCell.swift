@@ -18,17 +18,36 @@ class TableViewCell: UITableViewCell, MFMailComposeViewControllerDelegate {
     @IBOutlet weak var CImage: UIImageView!
     @IBOutlet weak var What: UILabel!
     
+    @IBOutlet weak var Star1: UIButton!
+    @IBOutlet weak var Star2: UIButton!
+    @IBOutlet weak var Star3: UIButton!
+    @IBOutlet weak var Star4: UIButton!
+    @IBOutlet weak var Star5: UIButton!
+    public var ImageToShow : UIImage!
+    
+    var Rating : Int = 0
+    
+    
     var Purchase_id : String =  ""
     var viewController : OrdersViewController = OrdersViewController()
+    
     override func awakeFromNib() {
         super.awakeFromNib()
-        // Initialization code
+        CImage.contentMode = .scaleAspectFit
+        CImage.image = ImageToShow
+        
     }
+    
+    
     
     @IBAction func sendEmail(_ sender: Any) {
         self.viewController.SendMail(OrderNumber: Purchase_id,  Artist: Artist.text! )
     }
     
+    @IBAction func Review(_ sender: Any) {
+        UserDefaults.standard.set(Purchase_id,forKey: "purchase_id")
+        viewController.RateMe()
+    }
     
 }
 

@@ -33,9 +33,7 @@ class ArtTableViewCell: UITableViewCell {
     var thisUrl : String = ""
     var MaxQuantity = 0
     var Quanitity = 1
-    
-    @IBOutlet weak var ImageView1: UIImageView!
-    
+  
     @IBOutlet weak var PriceB: UIButton!
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -45,7 +43,6 @@ class ArtTableViewCell: UITableViewCell {
     
     override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
-        
     }
     
     @IBAction func SelectedMe(_ sender: Any) {
@@ -78,7 +75,7 @@ class ArtTableViewCell: UITableViewCell {
         UserDefaults.standard.set(tmpCarts, forKey: "ListofPaintings")
     
         }
-          Daddy.UpdateCart()
+          Daddy.reloadBar()
     }
     
     func isKeyPresentInUserDefaults(key: String) -> Bool {

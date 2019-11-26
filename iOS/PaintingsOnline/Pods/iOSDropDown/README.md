@@ -73,6 +73,9 @@ Just clone and add the following Swift files to your project:
 dropDown.optionArray = ["Option 1", "Option 2", "Option 3"]
 //Its Id Values and its optional
 dropDown.optionIds = [1,23,54,22] 
+
+// Image Array its optional
+dropDown.ImageArray = [👩🏻‍🦳,🙊,🥞]
 // The the Closure returns Selected Index and String 
 dropDown.didSelect{(selectedText , index ,id) in
 self.valueLabel.text = "Selected String: \(selectedText) \n index: \(index)"
@@ -88,6 +91,9 @@ let  dropDown = DropDown(frame: CGRect(x: 110, y: 140, width: 200, height: 30)) 
 dropDown.optionArray = ["Option 1", "Option 2", "Option 3"]
 // Its Id Values and its optional
 dropDown.optionIds = [1,23,54,22] 
+// Image Array its optional
+dropDown.ImageArray = [👩🏻‍🦳,🙊,🥞]
+
 // The the Closure returns Selected Index and String 
 dropDown.didSelect{(selectedText , index ,id) in
 self.valueLabel.text = "Selected String: \(selectedText) \n index: \(index)"
@@ -135,14 +141,17 @@ You can customize these properties of the drop down:
 - `selectedIndex`:For preSelection of any of item in list
 - `Alingment and Fonts are same as TextField You Can change it`
 - `arrowSize`: The Size of arrow . Default value is `15 ` 
+- `arrowColor`: The Color of arrow . Default value is `.black ` 
+- `checkMarkEnabled`: The check Mark Enabled for selection of Row. Default value is `true ` 
 
 ## Note :
     
-    1.If you are using Multiple Drop Downs in a Single ViewController, Must Kept reverse order on StoryBoard or addSubview()  to avoid Overlaying
+    1.After Update the pod just do clean your buld folder 
+          Product > Clean Build Folder . 
     
 ## Author
 ### ✨✨If you like my project please Give me a STAR on Github✨✨
-### If this project help you reduce time to develop, you can give me a cup of coffee :) 
+### If this project help you to reduce develop time, can you offer a cup of coffee :) 
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/jishnurajt)
 

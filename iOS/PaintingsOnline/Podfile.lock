@@ -1,73 +1,194 @@
 PODS:
-  - Alamofire (4.8.2)
+  - Alamofire (4.9.0)
   - AlamofireImage (3.5.2):
     - Alamofire (~> 4.8)
   - BBBadgeBarButtonItem (1.2)
-  - iOSDropDown (0.2.7)
-  - MaterialComponents/AnimationTiming (81.0.0)
-  - MaterialComponents/Buttons (81.0.0):
+  - Braintree (4.27.1):
+    - Braintree/Card (= 4.27.1)
+    - Braintree/Core (= 4.27.1)
+    - Braintree/PayPal (= 4.27.1)
+    - Braintree/UI (= 4.27.1)
+  - Braintree/Card (4.27.1):
+    - Braintree/Core
+  - Braintree/Core (4.27.1)
+  - Braintree/PaymentFlow (4.27.1):
+    - Braintree/Card
+    - Braintree/Core
+    - Braintree/PayPalOneTouch
+  - Braintree/PayPal (4.27.1):
+    - Braintree/Core
+    - Braintree/PayPalOneTouch
+  - Braintree/PayPalDataCollector (4.27.1):
+    - Braintree/Core
+    - Braintree/PayPalUtils
+  - Braintree/PayPalOneTouch (4.27.1):
+    - Braintree/Core
+    - Braintree/PayPalDataCollector
+    - Braintree/PayPalUtils
+  - Braintree/PayPalUtils (4.27.1)
+  - Braintree/UI (4.27.1):
+    - Braintree/Card
+    - Braintree/Core
+  - Braintree/UnionPay (4.27.1):
+    - Braintree/Card
+    - Braintree/Core
+  - BraintreeDropIn (7.4.0):
+    - BraintreeDropIn/DropIn (= 7.4.0)
+  - BraintreeDropIn/DropIn (7.4.0):
+    - Braintree/Card (~> 4.27)
+    - Braintree/Core (~> 4.27)
+    - Braintree/PaymentFlow (~> 4.27)
+    - Braintree/PayPal (~> 4.27)
+    - Braintree/UnionPay (~> 4.27)
+    - BraintreeDropIn/UIKit
+  - BraintreeDropIn/UIKit (7.4.0)
+  - CollectionViewSlantedLayout (3.1.1)
+  - IGListKit (3.4.0):
+    - IGListKit/Default (= 3.4.0)
+  - IGListKit/Default (3.4.0):
+    - IGListKit/Diffing
+  - IGListKit/Diffing (3.4.0)
+  - ImagePicker (3.1.0)
+  - ImageSlideshow (1.8.0):
+    - ImageSlideshow/Core (= 1.8.0)
+  - ImageSlideshow/Core (1.8.0)
+  - iOSDropDown (0.3.4)
+  - Material (3.1.6):
+    - Material/Core (= 3.1.6)
+  - Material/Core (3.1.6):
+    - Motion (~> 3.1.1)
+  - MaterialComponents/AnimationTiming (88.2.0)
+  - MaterialComponents/Buttons (88.2.0):
+    - MaterialComponents/Elevation
     - MaterialComponents/Ink
     - MaterialComponents/private/Math
+    - MaterialComponents/Ripple
     - MaterialComponents/ShadowElevations
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Shapes
     - MaterialComponents/Typography
     - MDFInternationalization
     - MDFTextAccessibility
-  - MaterialComponents/Ink (81.0.0):
+  - MaterialComponents/Cards (88.2.0):
+    - MaterialComponents/Elevation
+    - MaterialComponents/Ink
+    - MaterialComponents/private/Icons/ic_check_circle
     - MaterialComponents/private/Math
-  - MaterialComponents/Palettes (81.0.0)
-  - MaterialComponents/private/Application (81.0.0)
-  - MaterialComponents/private/Math (81.0.0)
-  - MaterialComponents/ShadowElevations (81.0.0)
-  - MaterialComponents/ShadowLayer (81.0.0):
+    - MaterialComponents/Ripple
+    - MaterialComponents/ShadowLayer
+    - MaterialComponents/Shapes
+  - MaterialComponents/Elevation (88.2.0):
+    - MaterialComponents/private/Color
+    - MaterialComponents/private/Math
+  - MaterialComponents/Ink (88.2.0):
+    - MaterialComponents/private/Color
+    - MaterialComponents/private/Math
+  - MaterialComponents/Palettes (88.2.0)
+  - MaterialComponents/private/Application (88.2.0)
+  - MaterialComponents/private/Color (88.2.0)
+  - MaterialComponents/private/Icons/Base (88.2.0)
+  - MaterialComponents/private/Icons/ic_check_circle (88.2.0):
+    - MaterialComponents/private/Icons/Base
+  - MaterialComponents/private/Math (88.2.0)
+  - MaterialComponents/Ripple (88.2.0):
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/private/Color
+    - MaterialComponents/private/Math
+  - MaterialComponents/ShadowElevations (88.2.0)
+  - MaterialComponents/ShadowLayer (88.2.0):
     - MaterialComponents/ShadowElevations
-  - MaterialComponents/Shapes (81.0.0):
+  - MaterialComponents/Shapes (88.2.0):
+    - MaterialComponents/private/Color
     - MaterialComponents/private/Math
     - MaterialComponents/ShadowLayer
-  - MaterialComponents/TextFields (81.0.0):
+  - MaterialComponents/TextFields (88.2.0):
     - MaterialComponents/AnimationTiming
+    - MaterialComponents/Elevation
     - MaterialComponents/Palettes
     - MaterialComponents/private/Math
     - MaterialComponents/Typography
     - MDFInternationalization
-  - MaterialComponents/Typography (81.0.0):
+  - MaterialComponents/Typography (88.2.0):
     - MaterialComponents/private/Application
     - MaterialComponents/private/Math
   - MDFInternationalization (2.0.0)
   - MDFTextAccessibility (2.0.0)
-  - SkyFloatingLabelTextField (3.6.0)
+  - Motion (3.1.1):
+    - Motion/Core (= 3.1.1)
+  - Motion/Core (3.1.1)
+  - SearchTextField (1.2.4)
+  - SkyFloatingLabelTextField (3.7.0)
+  - Stripe (17.0.0)
+  - SwiftCharts (0.6.5)
+  - TimelineCards (1.0.5)
 
 DEPENDENCIES:
   - Alamofire (~> 4.4)
   - AlamofireImage (~> 3.3)
   - BBBadgeBarButtonItem
+  - Braintree
+  - Braintree/PayPal
+  - BraintreeDropIn
+  - CollectionViewSlantedLayout
+  - IGListKit (~> 3.4.0)
+  - ImagePicker
+  - ImageSlideshow
   - iOSDropDown
+  - Material
   - MaterialComponents/Buttons
+  - MaterialComponents/Cards
   - MaterialComponents/TextFields
+  - SearchTextField
   - SkyFloatingLabelTextField (~> 3.0)
+  - Stripe
+  - SwiftCharts
+  - TimelineCards
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
     - AlamofireImage
     - BBBadgeBarButtonItem
+    - Braintree
+    - BraintreeDropIn
+    - CollectionViewSlantedLayout
+    - IGListKit
+    - ImagePicker
+    - ImageSlideshow
     - iOSDropDown
+    - Material
     - MaterialComponents
     - MDFInternationalization
     - MDFTextAccessibility
+    - Motion
+    - SearchTextField
     - SkyFloatingLabelTextField
+    - Stripe
+    - SwiftCharts
+    - TimelineCards
 
 SPEC CHECKSUMS:
-  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
   AlamofireImage: 63cfe3baf1370be6c498149687cf6db3e3b00999
   BBBadgeBarButtonItem: c2fbca0bff18e21b70defc9438a8a5048008e7ca
-  iOSDropDown: 7a4cfc67d5166f319858747b63cd2f7760c4fb4b
-  MaterialComponents: 9ef60e1abd89463ac018ca6d354be41fd5df059a
+  Braintree: eeb6e5aa9a893cbd6e7059fac708297844f3cce6
+  BraintreeDropIn: ee413ce4f94b86179e5ff3f98eb847219610bb96
+  CollectionViewSlantedLayout: 24397455acd2461960bc45d394e0ef99c17d03ce
+  IGListKit: 7a5d788e9fb746bcd402baa8e8b24bc3bd2a5a07
+  ImagePicker: db1fd7626337b2577c523bef5f499bbbe5a37079
+  ImageSlideshow: 197130fe349aafa9446f54277c792551d41eadf9
+  iOSDropDown: c10a761f9a00c3f1cc9d3bce43ae504628e2f692
+  Material: 9b30613deb1b79487eeede5e4f90cbff084311ea
+  MaterialComponents: 9c32944d05360aa1e096c3c6058c4c0f784a7bbe
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
-  SkyFloatingLabelTextField: 38164979b79512f9ff9288ad8acfc4bbf5d843e3
+  Motion: f115b33f36cc52472a25a965daa89b3859817de0
+  SearchTextField: 40dc3cc57def5a211f263cac263622c163bbc25a
+  SkyFloatingLabelTextField: 4b46db0ab1ccde0919cded29c656e6b4805eda04
+  Stripe: 109ee11766e03d75c4f8b2a9ead563779f8852bb
+  SwiftCharts: 2e755ea292f0b87d3e4b2c1eb5afc080a20cdc15
+  TimelineCards: 8f3377fbe40ae587b5ad9e6d29dd7e6d2654e418
 
-PODFILE CHECKSUM: b530117fd1051e5bfcb371a68528faaa3386fc16
+PODFILE CHECKSUM: 2597267f65ff8470991c12d012ccbd95cebb8ee9
 
 COCOAPODS: 1.6.1

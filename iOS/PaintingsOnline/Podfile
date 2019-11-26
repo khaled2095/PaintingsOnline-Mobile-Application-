@@ -10,4 +10,18 @@ pod 'SkyFloatingLabelTextField', '~> 3.0'
 pod 'AlamofireImage', '~> 3.3'
 pod 'MaterialComponents/Buttons'
 pod 'MaterialComponents/TextFields'
+pod 'ImagePicker'
+pod 'ImageSlideshow'
+pod 'Material'
+pod 'CollectionViewSlantedLayout'
+pod 'MaterialComponents/Cards'
+pod 'IGListKit', '~> 3.4.0'
+pod 'TimelineCards'
+pod "SearchTextField"
+pod 'Stripe'
+pod 'Braintree'
+pod 'BraintreeDropIn'
+pod 'Braintree/PayPal'
+pod 'SwiftCharts'
+
 end

@@ -23,9 +23,9 @@ class CartTableViewCell: UITableViewCell {
     var QuantityInt : Int = 1
     var MaxQuantity : Int = 1
     
+    @IBOutlet weak var Sizelbl: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
-        
     }
     
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -36,7 +36,7 @@ class CartTableViewCell: UITableViewCell {
         if (MaxQuantity > QuantityInt){
             QuantityInt += 1
             Quantity.text = String(QuantityInt)
-            Daddy.Increment(ID: CurrentID,Count: QuantityInt)
+            Daddy.Increment(ID: Int(CurrentID)!)
         }
     }
     
@@ -48,7 +48,7 @@ class CartTableViewCell: UITableViewCell {
         if(QuantityInt > 1) {
             QuantityInt -= 1
             Quantity.text = String(QuantityInt)
-            Daddy.Decrement(ID: CurrentID, Count: QuantityInt)
+            Daddy.Decrement(ID: Int(CurrentID)!)
         }
     }
 }

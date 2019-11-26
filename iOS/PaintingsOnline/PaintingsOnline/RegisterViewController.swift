@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RegisterViewController: UIViewController {
+class RegisterViewController: UIViewController , UITextFieldDelegate{
 
     @IBOutlet weak var Username: UITextField!
     @IBOutlet weak var FullName: UITextField!
@@ -19,11 +19,11 @@ class RegisterViewController: UIViewController {
     var UserType : Int = 0
     @IBOutlet weak var GobackBtn: UIButton!
     @IBOutlet weak var lblResponse: UILabel!
-    @IBOutlet weak var Segments: UISegmentedControl!
     
-    
+    var MainURL = ""
     override func viewDidLoad() {
         super.viewDidLoad()
+        MainURL = UserDefaults.standard.string(forKey: "MainURL")!
         var frameRect : CGRect = Username.frame;
         frameRect.size.height = 40; // <-- Specify the height you want here.
        
@@ -31,35 +31,38 @@ class RegisterViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    @IBAction func ChangeUserType(_ sender: Any) {
-        if (Segments.selectedSegmentIndex == 0 ){
-            UserType = 0
-        }
-        else {
-            UserType = 1
-        }
-        
-    }
-    
+
     
     override func touchesBegan(_ touches: Set<UITouch>,
                                with event: UIEvent?) {
         self.view.endEditing(true)
     }
     
+    
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+         textField.resignFirstResponder()
+         return true
+     }
+    
     @IBAction func RegisterMe(_ sender: Any) {
         self.showSpinner(onView: self.view)
-        var URL1 = "https://jrnan.info/Painting/Register.php?Username=" + Username.text! + "&Password=" + Password.text! + "&Address=" + Address.text! + "&Email=" + Email.text! + "&Name=" + FullName.text! + "&Usertype="
-        URL1.append(String(UserType))
-        guard let gitUrl = URL(string: URL1.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!) else { return }
-        URLSession.shared.dataTask(with: gitUrl) { (data, response
-            , error) in
+        
+        let request = NSMutableURLRequest(url: NSURL(string: MainURL + "/Register.php")! as URL)
+        request.httpMethod = "POST"
+        let postString = "Username=\(Username.text!)&Password=\(Password.text!)&Address=\(Address.text!)&Email=\(Email.text!)&Name=\(FullName.text!)&Usertype=\(UserType)"
+        print(postString)
+        request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.httpBody = postString.data(using: String.Encoding.utf8)
+        let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
             guard let data = data else { return }
+            print(data)
             do {
+                print(String(decoding: data, as: UTF8.self))
                 let decoder = JSONDecoder()
                 let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
+                self.removeSpinner()
                 for data in gitData {
-                    self.removeSpinner()
                     var Username1 : String = data.username as! String
                     if (Username1 == "Null") {
                         DispatchQueue.main.async {
@@ -71,13 +74,12 @@ class RegisterViewController: UIViewController {
                     else {
                         DispatchQueue.main.async {
                         self.GobackBtn.setTitle("Welcome to the family, you can log in now", for: .normal)
-                        self.GobackBtn.isHidden = false
-                        self.GobackBtn.isEnabled = true
+                            self.Goback(self)
                         }
                     }
                 }
-            } catch let err {
-                print("Err", err)
+            } catch let error {
+                print("Err", error)
             }
             }.resume()
         

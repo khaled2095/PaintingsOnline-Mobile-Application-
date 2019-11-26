@@ -32,13 +32,12 @@ class LoginViewController: UIViewController {
                                with event: UIEvent?) {
         self.view.endEditing(true)
     }
-    
+    var MainURL = ""
     override func viewWillAppear(_ animated: Bool) {
+       
         if (isKeyPresentInUserDefaults(key: "username")) {
             performSegue(withIdentifier: "LoggidIn", sender: AnyObject.self)
         }
-      
-        
     }
     
     
@@ -47,13 +46,18 @@ class LoginViewController: UIViewController {
     }
 
     @IBAction func LoginAction(_ sender: Any) {
-        
-        let URL1 = "https://jrnan.info/Painting/Login.php?Username=" + txtUsername.text! + "&Password=" + txtPassword.text!
+         MainURL = UserDefaults.standard.string(forKey: "MainURL")!
+        let request = NSMutableURLRequest(url: NSURL(string: MainURL + "/Login.php")! as URL)
+        request.httpMethod = "POST"
+        let postString = "Username=\(txtUsername.text!)&Mac=\(String(describing: UIDevice.current.identifierForVendor!.uuidString))&Password=\(txtPassword.text!)"
+        print(postString)
+        request.setValue("application/x-www-form-urlencoded; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        request.httpBody = postString.data(using: String.Encoding.utf8)
         UserDefaults.standard.set(txtPassword.text, forKey: "Password")
-        guard let gitUrl = URL(string: URL1.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!) else { return }
-        let task = URLSession.shared.dataTask(with: gitUrl) { (data, response
-            , error) in
-            guard let data = data else { return }
+        
+       let task = URLSession.shared.dataTask(with: request as URLRequest) { data, response, error in
+        guard let data = data else { return }
+            print(data)
             do {
                 let decoder = JSONDecoder()
                 let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
@@ -66,36 +70,35 @@ class LoginViewController: UIViewController {
                     alert.show()
                     }
                 }
-                for data in gitData {
-                DispatchQueue.main.async { // Correct
-                    if (self.txtUsername.text  == data.username!) {
-                        self.performSegue(withIdentifier: "LoggidIn", sender: self)
-                    }
+                else {
+                    
                 }
+                for data in gitData {
                     self.Username = data.username!
                     self.Name = data.name!
                     self.Email = data.Email!
                     self.Address = data.Address!
                     self.UserType = data.usertype!
                     self.verified = data.verified!
-             
+                    
                     UserDefaults.standard.set(self.Username, forKey: "username")
                     UserDefaults.standard.set(self.Email, forKey: "Email")
                     UserDefaults.standard.set(self.Name, forKey: "Name")
                 UserDefaults.standard.set(self.Address, forKey: "Address")
                     UserDefaults.standard.set(self.UserType, forKey: "UserType")
                 UserDefaults.standard.set(data.verified!, forKey: "verified")
-                }
+                UserDefaults.standard.set(data.Bio!, forKey: "BioTxt")
+                    DispatchQueue.main.async {
+                     self.viewWillAppear(true)
+                    }
+              }
             } catch let err {
                 print("Err", err)
             }
             }
+       
         task.resume()
-        
-  
     }
-    
-    
 }
 
 

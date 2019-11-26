@@ -9,10 +9,11 @@
 import UIKit
 import Alamofire
 import AlamofireImage
+import CollectionViewSlantedLayout
+import IGListKit
 
-class CategoryViewController: UIViewController , UITableViewDataSource, UITableViewDelegate{
+class CategoryViewController: UIViewController , UICollectionViewDataSource , UICollectionViewDelegate , UICollectionViewDelegateFlowLayout{
     
-    @IBOutlet weak var TableView2: UITableView!
     var tmpListOfTitle = [String]()
     var tmpListOfurl = [String]()
     var ListOfTitle = [String]()
@@ -21,187 +22,314 @@ class CategoryViewController: UIViewController , UITableViewDataSource, UITableV
     var tmpListOfurlRoom = [String]()
     var ListOfTitleRoom = [String]()
     var ImagesRoom = [UIImage]()
-    @IBOutlet weak var Items: UIBarButtonItem!
     
+    var Items1 = [Category]()
+
     @IBOutlet weak var ChangeTypeObject: UISegmentedControl!
     
+    @IBOutlet weak var CollectionViewLayout: UICollectionViewLayout!
+    
+    @IBOutlet weak var collectionView: UICollectionView!
+    var MainURL = ""
+    let reuseIdentifier = "customViewCell"
+    
+    let labelWish = UILabel(frame: CGRect(x: 10, y: -5, width: 20, height: 20))
+    let labelCart = UILabel(frame: CGRect(x: 10, y: -5, width: 20, height: 20))
     
     override func viewWillAppear(_ animated: Bool) {
-        if (isKeyPresentInUserDefaults(key: "ListofPaintings")){
-        Items.addBadge(number: (UserDefaults.standard.array(forKey: "ListofPaintings")?.count)!)
-        Items.updateBadge(number: UserDefaults.standard.array(forKey: "ListofPaintings")!.count)
-    }
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (ChangeTypeObject.selectedSegmentIndex == 0) {
-        return tmpListOfTitle.count
-        }
-        else{
-        return tmpListOfTitleRoom.count
-        }
-    }
-    
-    @IBAction func ChangeType(_ sender: Any) {
-        if (ChangeTypeObject.selectedSegmentIndex == 0) {
-            LoadCategories()
-        }
-        else {
-            LoadRooms()
-        }
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier:"CustomCell", for: indexPath as IndexPath) as! CategoryTableViewCell
-        if (ChangeTypeObject.selectedSegmentIndex == 0) {
-        cell.Title.text = ListOfTitle[indexPath.row]
-        if (Images.indexExists(indexPath.row)){
-        cell.CImage.image = Images[indexPath.row]
-        }
-        else {
-            cell.CImage.image = UIImage(named: "empty-image")
-        }
-        return cell
-        }
-        else{
-            cell.Title.text = ListOfTitleRoom[indexPath.row]
-            if (ImagesRoom.indexExists(indexPath.row)){
-                cell.CImage.image = ImagesRoom[indexPath.row]
-            }
-            else {
-                cell.CImage.image = UIImage(named: "empty-image")
-            }
-            return cell
-        }
-        }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (ChangeTypeObject.selectedSegmentIndex == 0) {
-        UserDefaults.standard.set("https://jrnan.info/Painting/ShowPaintings.php?Category=", forKey: "URL")
-        UserDefaults.standard.set(String(indexPath.row), forKey: "Selected")
-        performSegue(withIdentifier: "ShowPainting", sender: (Any).self)
-        }
-        else {
-            UserDefaults.standard.set("https://jrnan.info/Painting/ShowPaintings.php?Room=", forKey: "URL")
-            UserDefaults.standard.set(String(indexPath.row), forKey: "Selected")
-            performSegue(withIdentifier: "ShowPainting", sender: (Any).self)
-        }
-    }
-
-    
-
-
-
-    override func viewDidLoad() {
-        Items.addBadge(number: 3)
-        super.viewDidLoad()
-        LoadCategories()
+        collectionView.isPrefetchingEnabled = false
+        MainURL = UserDefaults.standard.string(forKey: "MainURL")!
+        labelWish.layer.borderColor = UIColor.clear.cgColor
+        labelWish.layer.borderWidth = 2
+        labelWish.layer.cornerRadius = labelWish.bounds.size.height / 2
+        labelWish.textAlignment = .center
+        labelWish.layer.masksToBounds = true
+        labelWish.font = UIFont(name: "SanFranciscoText-Light", size: 11)
+        labelWish.textColor = .white
+        labelWish.backgroundColor = .red
+        labelWish.text = "0"
         
+        labelCart.layer.borderColor = UIColor.clear.cgColor
+        labelCart.layer.borderWidth = 2
+        labelCart.layer.cornerRadius = labelCart.bounds.size.height / 2
+        labelCart.textAlignment = .center
+        labelCart.layer.masksToBounds = true
+        labelCart.font = UIFont(name: "SanFranciscoText-Light", size: 11)
+        labelCart.textColor = .white
+        labelCart.backgroundColor = .red
+        labelCart.text = "0"
+        
+        let editButton   = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 20))
+        editButton.addTarget(self, action: #selector(didTapEditButton), for: .touchDown)
+        editButton.setBackgroundImage(UIImage(named: "icons8-heart-30")!, for: .normal)
+        editButton.addSubview(labelWish)
+        editButton.tintColor = UIColor.black
+        
+        let CartButton   = UIButton(frame: CGRect(x: 0, y: 0, width: 18, height: 20))
+        CartButton.addTarget(self, action: #selector(didTapCartButton), for: .touchDown)
+        CartButton.setBackgroundImage(UIImage(named: "icons8-shopping-cart-30")!, for: .normal)
+        CartButton.addSubview(labelCart)
+        CartButton.tintColor = UIColor.black
+        
+        let rightBarButtomItem = UIBarButtonItem(customView: editButton)
+        let rightBarButtomItem1 = UIBarButtonItem(customView: CartButton)
+        navigationItem.rightBarButtonItems = [rightBarButtomItem, rightBarButtomItem1 ]
+        
+        reloadBar()
     }
     
     func isKeyPresentInUserDefaults(key: String) -> Bool {
         return UserDefaults.standard.object(forKey: key) != nil
     }
-
-    func LoadCategories() {
-        
-        self.tmpListOfTitle.removeAll()
-        self.tmpListOfurl.removeAll()
-        self.ListOfTitle.removeAll()
-        self.Images.removeAll()
-        var URL1 = "https://jrnan.info/Painting/ShowCategory.php"
-        guard let gitUrl = URL(string: URL1 ) else { return }
-        URLSession.shared.dataTask(with: gitUrl) { (data, response
-            , error) in
-            guard let data = data else { return }
-            do {
-                let decoder = JSONDecoder()
-                let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
-                for data in gitData {
-                    self.tmpListOfTitle.append((data.Name as! String))
-                    self.tmpListOfurl.append((data.URL as! String))
-                }
-                
-                for str in self.tmpListOfurl{
-                    self.Images.append(UIImage(named:"empty-image")!)
-                    self.ListOfTitle.append("")
-                }
-                
-                for (index, str) in self.tmpListOfurl.enumerated() {
-                    Alamofire.request(str).responseImage { response in
-                        if let image = response.result.value {
-                            self.Images[index] = image
-                            self.ListOfTitle[index] = self.tmpListOfTitle[index]
-                            DispatchQueue.main.async(execute: {self.reload(tableView: self.TableView2)})
-                        }
-                    }
-                }
-                DispatchQueue.main.async(execute: {self.reload(tableView: self.TableView2)})
-            } catch let err {
-                print("Err", err)
-            }
-            }.resume()
-    }
-
     
-    func LoadRooms() {
-        self.tmpListOfTitleRoom.removeAll()
-        self.tmpListOfurlRoom.removeAll()
-        self.ListOfTitleRoom.removeAll()
-        self.ImagesRoom.removeAll()
-        var URL1 = "https://jrnan.info/Painting/ShowRoom.php"
-        guard let gitUrl = URL(string: URL1 ) else { return }
-        URLSession.shared.dataTask(with: gitUrl) { (data, response
-            , error) in
-            guard let data = data else { return }
-            do {
-                let decoder = JSONDecoder()
-                let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
-                for data in gitData {
-                    self.tmpListOfTitleRoom.append((data.Name as! String))
-                    self.tmpListOfurlRoom.append((data.URL as! String))
-                }
-                
-                for str in self.tmpListOfurlRoom{
-                    self.ImagesRoom.append(UIImage(named:"empty-image")!)
-                    self.ListOfTitleRoom.append("")
-                }
-                for (index, str) in self.tmpListOfurlRoom.enumerated() {
-                    Alamofire.request(str).responseImage { response in
-                        if let image = response.result.value {
-                            self.ImagesRoom[index] = image
-                            self.ListOfTitleRoom[index] = self.tmpListOfTitleRoom[index]
-                            DispatchQueue.main.async(execute: {let offset = self.TableView2.contentOffset
-                                self.reloadTableOnMain(with: offset)})
-                        }
-                    }
-                }
-                DispatchQueue.main.async(execute: {let offset = self.TableView2.contentOffset
-                    self.reloadTableOnMain(with: offset)})
-            } catch let err {
-                print("Err", err)
-            }
-            }.resume()
+    
+    func reloadBar() {
+        if (isKeyPresentInUserDefaults(key: "WishList")){
+            labelWish.text = String(UserDefaults.standard.array(forKey: "WishList")!.count)
+        }
+        if (isKeyPresentInUserDefaults(key: "CartItems")){
+            labelCart.text = String((UserDefaults.standard.structArrayData(SizeToSave.self, forKey: "CartItems")).count)
+        }
     }
     
-    func reloadTableOnMain(with offset: CGPoint = CGPoint.zero){
-        DispatchQueue.main.async { [weak self] () in
-            
-            self?.TableView2.reloadData()
-            self?.TableView2.layoutIfNeeded()
-            self?.TableView2.contentOffset = offset
+    @objc func didTapEditButton(sender: AnyObject){
+        performSegue(withIdentifier: "ShowWishList", sender: self)
+    }
+    
+    
+    @objc func didTapCartButton(sender: AnyObject){
+        performSegue(withIdentifier: "ShowCart", sender: self)
+    }
+    
+    
+    @IBAction func ChangeType(_ sender: Any) {
+        if (ChangeTypeObject.selectedSegmentIndex == 0) {
+        LoadCategories()
+        }
+        else {
+        LoadRooms()
         }
     }
     
 
-    func reload(tableView: UITableView) {
-        
-        let contentOffset = tableView.contentOffset
-        tableView.reloadData()
-        tableView.layoutIfNeeded()
-        tableView.setContentOffset(contentOffset, animated: false)
-        
+    
+   
+
+
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        MainURL = UserDefaults.standard.string(forKey: "MainURL")!
+            LoadCategories()
     }
+    
+    
+
+    func LoadCategories() {
+        stopTheDamnRequests()
+        Items1.removeAll()
+        collectionView.reloadData()
+          let offset = self.collectionView.contentOffset
+        var URL1 = MainURL + "/ShowCategory.php"
+        guard let gitUrl = URL(string: URL1 ) else { return }
+        URLSession.shared.dataTask(with: gitUrl) { (data, response
+            , error) in
+            guard let data = data else { return }
+            do {
+                let decoder = JSONDecoder()
+                let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
+                for data in gitData {
+                    var TempCat : Category = Category()
+                    TempCat.Name = data.Name as! String
+                    TempCat.Image = data.URL as! String
+                    self.Items1.append(TempCat)
+                }
+                DispatchQueue.main.async {
+                for (index, str) in self.Items1.enumerated() {
+                    Alamofire.request(str.Image).responseImage { response in
+                        if let image = response.result.value {
+                            self.Items1[index].ImageIMG = image
+                            self.collectionView.reloadData()
+                        }
+                    }
+                    DispatchQueue.main.async(execute: {
+                        self.collectionView.reloadData()
+                    })
+                }
+            }
+            }
+            catch let err {
+                print("Err", err)
+            }
+            }.resume()
+       
+    }
+
+    
+    func LoadRooms() {
+        stopTheDamnRequests()
+        Items1.removeAll()
+        collectionView.reloadData()
+        var URL1 = MainURL + "/ShowRoom.php"
+        guard let gitUrl = URL(string: URL1 ) else { return }
+        URLSession.shared.dataTask(with: gitUrl) { (data, response
+            , error) in
+            guard let data = data else { return }
+            do {
+                let decoder = JSONDecoder()
+                let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
+                for data in gitData {
+                    var TempCat : Category = Category()
+                    TempCat.Name = data.Name as! String
+                    TempCat.Image = data.URL as! String
+                    self.Items1.append(TempCat)
+                }
+                DispatchQueue.main.async {
+                for (index, str) in self.Items1.enumerated() {
+                    Alamofire.request(str.Image).responseImage { response in
+                        if let image = response.result.value {
+                            self.Items1[index].ImageIMG = image
+                            self.collectionView.reloadData()
+                        }
+                    }
+                     DispatchQueue.main.async(execute: {
+                    self.collectionView.reloadData()
+                    })
+                }
+                }} catch let err {
+                print("Err", err)
+            }
+            }.resume()
+       
+    }
+    
+    func reloadTableOnMain(){
+        DispatchQueue.main.async { [weak self] () in
+            self?.collectionView.reloadData()
+            self?.collectionView.collectionViewLayout.invalidateLayout()
+             self?.collectionView.layoutIfNeeded()
+            self?.collectionView.layoutSubviews() // <-- here it is :)
+        }
+    }
+    
+    
+    
+    func collectionView(_ collectionView: UICollectionView,numberOfItemsInSection sections: Int) -> Int {
+         if (ChangeTypeObject.selectedSegmentIndex == 0) {
+            return  GetCountOfCategories();
+        }
+         else {
+            return GetCountOfRooms();
+        }
+    }
+    
+
+    
+    func stopTheDamnRequests(){
+        if #available(iOS 9.0, *) {
+            Alamofire.SessionManager.default.session.getAllTasks { (tasks) in
+                tasks.forEach{ $0.cancel() }
+            }
+        } else {
+            Alamofire.SessionManager.default.session.getTasksWithCompletionHandler { (sessionDataTask, uploadData, downloadData) in
+                sessionDataTask.forEach { $0.cancel() }
+                uploadData.forEach { $0.cancel() }
+                downloadData.forEach { $0.cancel() }
+            }
+        }
+    }
+
+    func GetCountOfRooms()-> Int {
+        return Items1.count
+    }
+    func GetCountOfCategories()-> Int {
+        return Items1.count
+    }
+  
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath){
+        if (ChangeTypeObject.selectedSegmentIndex == 0) {
+            UserDefaults.standard.set(MainURL + "/ShowPaintings.php?Category=", forKey: "URL")
+            UserDefaults.standard.set(String(indexPath.row), forKey: "Selected")
+            performSegue(withIdentifier: "ShowPainting", sender: (Any).self)
+        }
+        else {
+            UserDefaults.standard.set(MainURL + "/ShowPaintings.php?Room=", forKey: "URL")
+            UserDefaults.standard.set(String(indexPath.row), forKey: "Selected")
+            performSegue(withIdentifier: "ShowPainting", sender: (Any).self)
+        }
+    }
+    
+    
+    func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        if segue.identifier == "showItem" {
+            if let destination = segue.destination as? AllPaintingViewController{
+                let cell = sender as! CustomCollectionCell
+                let selectedData = [cell.ID,cell.Artist,cell.Description.text,cell.PriceB.titleLabel?.text,cell.MaxQuantity] as! [String]
+                // postedData is the variable that will be sent, make sure to declare it in YourDestinationViewController
+                destination.strItem = selectedData
+            }
+        }
+    }
+    
+    
+    
+
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+            as? CategoryTableViewCell else {
+                
+                fatalError()
+        }
+        
+        cell.contentView.layer.cornerRadius = 10
+        cell.contentView.layer.borderWidth = 1.0
+        
+        cell.contentView.layer.borderColor = UIColor.clear.cgColor
+        cell.contentView.layer.masksToBounds = true
+        
+        cell.layer.shadowColor = UIColor.gray.cgColor
+        cell.layer.shadowOffset = CGSize(width: 0, height: 2.0)
+        cell.layer.shadowRadius = 2.0
+        cell.layer.shadowOpacity = 1.0
+        cell.layer.masksToBounds = false
+        cell.layer.shadowPath = UIBezierPath(roundedRect:cell.bounds, cornerRadius:cell.contentView.layer.cornerRadius).cgPath
+        
+        if (ChangeTypeObject.selectedSegmentIndex == 0 && Items1.count > indexPath.row) {
+            cell.Title.text = Items1[indexPath.row].Name
+            cell.CImage.image = Items1[indexPath.row].ImageIMG
+            return cell
+        }
+        else if (ChangeTypeObject.selectedSegmentIndex == 1 && Items1.count > indexPath.row){
+            cell.Title.text = Items1[indexPath.row].Name
+            cell.CImage.image = Items1[indexPath.row].ImageIMG
+            return cell
+        }
+        else {
+            return (collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath)
+                as? CategoryTableViewCell)!
+        }
+    }
+    
+    func collectionView(collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        return CGSize(width: 300, height: 100)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView,
+                        layout collectionViewLayout: UICollectionViewLayout,
+                        minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 1.0
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout
+        collectionViewLayout: UICollectionViewLayout,
+                        minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 1.0
+    }
+    
+
     /*
     // Override to support conditional editing of the table view.
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -318,3 +446,11 @@ extension UIBarButtonItem {
         badgeLayer?.removeFromSuperlayer()
     }
 }
+
+struct Category {
+     var Name : String = ""
+     var Image : String = ""
+    var ImageIMG : Image = UIImage(named: "empty-image")!
+}
+
+
