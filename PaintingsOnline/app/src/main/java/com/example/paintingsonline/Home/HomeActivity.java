@@ -7,10 +7,13 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.Signature;
+import android.icu.text.LocaleDisplayNames;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 
+import androidx.annotation.NonNull;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -25,6 +28,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsListView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -80,6 +85,7 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     private List<Paintings> bestList;
     private String urldiscount = "/LoadDiscount.php";
     private int mResults;
+    ProgressBar progressBar;
 
     private String URL = "https://jrnan.info/Paintings";
     private final String featured_URL = "/ShowPaintings.php?Search=&Type=Featured";
@@ -90,7 +96,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
     SwipeRefreshLayout mSwipeRefreshLayout;
     SliderLayout sliderLayout;
     List<DiscountBanner> banners;
-    CompositeDisposable compositeDisposable;
 
 
 
@@ -115,8 +120,6 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
             editor.apply();
 
             URL = sp.getString("mainurl", "");
-
-
 
 
 
@@ -617,6 +620,8 @@ public class HomeActivity extends AppCompatActivity implements SwipeRefreshLayou
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
     }
+
+
 
     private void FeaturedPaintingRecyclerView(List<Paintings> featuredPaintings)
     {

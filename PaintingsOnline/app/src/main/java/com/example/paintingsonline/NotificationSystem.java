@@ -7,7 +7,7 @@ import android.os.Build;
 
 public class NotificationSystem extends Application
 {
-    public static final String CHANNEL_1_ID = "PaintingsOnline";
+    public static final String CHANNEL_1_ID = "channel1";
 
     @Override
     public void onCreate()
@@ -23,7 +23,7 @@ public class NotificationSystem extends Application
         {
             NotificationChannel notificationChannel = new NotificationChannel(
                     CHANNEL_1_ID,
-                    "PaintingsOnline",
+                    "Channel 1",
                     NotificationManager.IMPORTANCE_HIGH
             );
             notificationChannel.setDescription("Order Status Updated");

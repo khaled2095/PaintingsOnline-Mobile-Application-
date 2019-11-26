@@ -300,6 +300,8 @@ public class CartActivity extends AppCompatActivity {
 
                     params.put("Size", c.paintingsize);
 
+                   // params.put("Status1", "Waiting For Payment");
+
 
                     return params;
                 }

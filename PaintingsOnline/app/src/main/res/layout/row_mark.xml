@@ -129,12 +129,40 @@
             </RelativeLayout>
 
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/pStatus"
+                android:layout_below="@+id/paintingqty"
+                android:layout_marginStart="2dp">
+
+                <TextView
+                    android:id="@+id/paymentStatus"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Payment status: "
+                    android:textColor="@color/Black"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showPaymentStatus"
+                    android:layout_toEndOf="@+id/paymentStatus"
+                    android:layout_marginTop="8dp"
+                    android:textSize="15sp"
+                    android:text=""/>
+
+            </RelativeLayout>
+
+
 
             <RelativeLayout
                 android:id="@+id/relfeedback"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/paintingqty"
+                android:layout_below="@+id/pStatus"
                 android:layout_marginEnd="6dp"
                 android:layout_marginBottom="4dp">
 

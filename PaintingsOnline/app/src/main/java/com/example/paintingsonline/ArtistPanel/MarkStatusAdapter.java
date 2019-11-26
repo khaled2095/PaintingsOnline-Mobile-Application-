@@ -3,6 +3,8 @@ package com.example.paintingsonline.ArtistPanel;
 import android.content.Context;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +46,15 @@ public class MarkStatusAdapter extends RecyclerView.Adapter<MarkStatusAdapter.Ma
         markViewHolder.mstatus1.setText(orderpaintings.getOrderStatus());
         markViewHolder.mprice2.setText(String.valueOf(orderpaintings.getOrderPrice()));
         markViewHolder.mqty3.setText(String.valueOf(orderpaintings.getOrderQty()));
+
+        if (orderpaintings.getPAYMENTSTATUS().equals("1"))
+        {
+            markViewHolder.paymentStatus.setText("You have been Paid by PaintingsOnline");
+        }
+        else
+        {
+            markViewHolder.paymentStatus.setText("You have Not been Paid by PaintingsOnline");
+        }
     }
 
     @Override
@@ -53,7 +64,7 @@ public class MarkStatusAdapter extends RecyclerView.Adapter<MarkStatusAdapter.Ma
 
     public class MarkViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener
     {
-        TextView mpname, mstatus1, mprice2, mqty3, markStatus;
+        TextView mpname, mstatus1, mprice2, mqty3, markStatus, paymentStatus;
         OnModifyMarkListener onModifyMarkListener;
 
         public MarkViewHolder(@NonNull View itemView, OnModifyMarkListener mmodifyMarkListener)
@@ -65,6 +76,7 @@ public class MarkStatusAdapter extends RecyclerView.Adapter<MarkStatusAdapter.Ma
             mprice2 = itemView.findViewById(R.id.showprice2);
             mqty3 = itemView.findViewById(R.id.showqty);
             markStatus = itemView.findViewById(R.id.marktext);
+            paymentStatus = itemView.findViewById(R.id.showPaymentStatus);
             onModifyMarkListener = mmodifyMarkListener;
 
             markStatus.setOnClickListener(this);

@@ -14,6 +14,7 @@ public class Order
     private String OrderImage;
     private String Rating;
     private String Comment;
+    private String PAYMENTSTATUS;
 
 
 
@@ -23,13 +24,14 @@ public class Order
     }
 
     //To mark painting shipment status in selling panel
-    public Order(String paintingID, String paintingName, int orderId, String orderStatus, int orderPrice, int orderqty) {
+    public Order(String paintingID, String paintingName, int orderId, String orderStatus, int orderPrice, int orderqty, String pstats) {
         PaintingID = paintingID;
         PaintingName = paintingName;
         OrderId = orderId;
         OrderStatus = orderStatus;
         OrderPrice = orderPrice;
         OrderQty = orderqty;
+        PAYMENTSTATUS = pstats;
     }
 
     public Order(int orderId, String orderStatus, int orderPrice, String orderImage, String paintingowner, String rating)
@@ -41,6 +43,15 @@ public class Order
         PaintingOwner = paintingowner;
         Rating = rating;
 
+    }
+
+
+    public String getPAYMENTSTATUS() {
+        return PAYMENTSTATUS;
+    }
+
+    public void setPAYMENTSTATUS(String PAYMENTSTATUS) {
+        this.PAYMENTSTATUS = PAYMENTSTATUS;
     }
 
     public String getPaintingOwner() {

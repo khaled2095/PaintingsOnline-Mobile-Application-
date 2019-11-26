@@ -56,6 +56,8 @@ public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter
     private String shippingURL = "/SetAsShipped.php?Username=";
     private String getOrderURL = "/MyOrders.php?Username=" + SharedPrefManager.getInstance(this).getUserName();
     private String url = "/Seller.php?Username=" + SharedPrefManager.getInstance(this).getUserName();
+    private String BestArtistUrl = "/Seller.php?BestSeller=";
+
     ArrayList<SellingPanelChart> sp;
     BarChart bc;
     List<BarEntry> barEntries = new ArrayList<>();
@@ -63,7 +65,7 @@ public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter
     MarkStatusAdapter markStatusAdapter;
     int totalSales = 0;
     double totalRevenue = 0;
-    TextView Sales, Revenue;
+    TextView Sales, Revenue, ArtistName, ArtistSales;
     Button test;
 
     //Capital Y-axis(Sum) and X-axis(Month)
@@ -83,6 +85,8 @@ public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter
         SharedPreferences sp2 = PreferenceManager.getDefaultSharedPreferences(SellingPanel.this);
         URL = sp2.getString("mainurl", "");
         url = URL + url;
+        BestArtistUrl = URL + BestArtistUrl;
+
 
         getOrderURL = URL + getOrderURL + "&Mac=" + MacAddress;
 
@@ -92,6 +96,8 @@ public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter
         bc = findViewById(R.id.BarChart);
         Sales = findViewById(R.id.tSales);
         Revenue = findViewById(R.id.tRevenue);
+        ArtistName = findViewById(R.id.tbestArtistName);
+        ArtistSales = findViewById(R.id.AmountEarned);
 
 
         sp = new ArrayList<>();
@@ -99,6 +105,7 @@ public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter
         JSONBarValuesRequest();
         getOrderJsonrequest();
         setupBottomnavView();
+        JSONForBestArtist();
 
     }
 
@@ -153,7 +160,6 @@ public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter
                 barEntries.add(new BarEntry(12, sums[11]));
 
 
-
                 BarDataSet barDataSet = new BarDataSet(barEntries, "Growth");
                 barDataSet.setColor(getColor(R.color.blue4));
 
@@ -185,6 +191,62 @@ public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter
     }
 
 
+
+
+    private void JSONForBestArtist()
+    {
+        JsonArrayRequest request = new JsonArrayRequest(BestArtistUrl, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response)
+            {
+
+
+                JSONObject jsonObject = null;
+                int [] sums = new int[12];
+                for (int i = 0 ; i < 12 ; i++) {
+                    sums[i] = 0;
+                }
+                for (int i=0; i < response.length(); i++)
+                {
+                    try
+                    {
+                        jsonObject = response.getJSONObject(i);
+
+                        String Artist = jsonObject.getString("Artist");
+                        int sum = Integer.parseInt(jsonObject.getString("Sum"));
+
+                        ArtistName.setText("Achieved " + Artist);
+                        ArtistSales.setText("Who Made $ " + sum);
+
+
+
+                    }
+                    catch (JSONException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+
+//                totalRevenue = totalSales * 0.8;
+//                Revenue.setText("Total Revenue: " + totalRevenue);
+
+
+
+            }
+        }, new Response.ErrorListener()
+        {
+            @Override
+            public void onErrorResponse(VolleyError error)
+            {
+            }
+        });
+
+        Log.d("url", "ur: " + request);
+        MySingleton.getInstance(SellingPanel.this).addToRequestQueue(request);
+    }
+
+
+
     private void getOrderJsonrequest()
     {
         JsonArrayRequest markRequest = new JsonArrayRequest(getOrderURL, new Response.Listener<JSONArray>()
@@ -206,8 +268,9 @@ public class SellingPanel extends AppCompatActivity implements MarkStatusAdapter
                         String status = jsonObject.getString("status");
                         int price = jsonObject.getInt("Price");
                         int qty = jsonObject.getInt("Quantity");
+                        String PaymentStatus = jsonObject.getString("PaidArtist");
 
-                        Order bestpaintings = new Order(id, title, orderid, status, price, qty);
+                        Order bestpaintings = new Order(id, title, orderid, status, price, qty, PaymentStatus);
                         markPaintings.add(bestpaintings);
                         Log.d("size", "size" + markPaintings.size());
 

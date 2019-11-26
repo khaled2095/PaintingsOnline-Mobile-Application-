@@ -97,7 +97,6 @@ public class PaintingsDetails extends AppCompatActivity implements RelativePaint
     ArrayList<String> imageurlLists = new ArrayList<>();
     ArrayList<String> quantityLists = new ArrayList<>();
     private String paintingID, paintingQuantity, size;
-    private ListView mlist;
     private RateCommentListAdapter rcla;
     ArrayList<UserRating> userRatings = new ArrayList<>();
     ArrayList<Paintings> relativePaintings;
@@ -141,7 +140,6 @@ public class PaintingsDetails extends AppCompatActivity implements RelativePaint
 
         collapsingToolbarLayout = findViewById(R.id.collapsing);
 
-        mlist = findViewById(R.id.RateComments);
 
         favbtn = findViewById(R.id.favbtn2);
         cartbtn = findViewById(R.id.cartbtn2);
@@ -169,7 +167,7 @@ public class PaintingsDetails extends AppCompatActivity implements RelativePaint
 
         nameText.setText(sp.getString("painting_name", ""));
         descriptionText.setText(sp.getString("painting_desc", ""));
-        paintOwner.setText(sp.getString("painting_artist", ""));
+        paintOwner.setText("by " + sp.getString("painting_artist", ""));
 
 
 
@@ -259,7 +257,7 @@ public class PaintingsDetails extends AppCompatActivity implements RelativePaint
                         jsonObject = response.getJSONObject(i);
                         String comment = jsonObject.getString("Comment");
                         String rate = jsonObject.getString("Rating");
-
+                        Log.d("How many times", "How many times yay");
 
                         UserRating ur = new UserRating(rate, comment);
                         userRatings.add(ur);
@@ -273,8 +271,10 @@ public class PaintingsDetails extends AppCompatActivity implements RelativePaint
                 }
 
 
-                rcla = new RateCommentListAdapter(getApplicationContext(), R.layout.ratecomment_listview, userRatings);
+                ListView mlist = findViewById(R.id.RateComments);
+                rcla = new RateCommentListAdapter(getApplication(), R.layout.ratecomment_listview, userRatings);
                 mlist.setAdapter(rcla);
+                mlist.setNestedScrollingEnabled(false);
 
             }
         }, new Response.ErrorListener() {

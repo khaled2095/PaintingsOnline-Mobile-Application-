@@ -67,12 +67,11 @@ public class ArtistBio extends AppCompatActivity implements ArtistPaintingsView.
         artistPaintings = new ArrayList<>();
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-
         ArtistName.setText(sharedPreferences.getString("paintingArtist", ""));
-
-        artist_url += ArtistName.getText().toString();
-        artistPaintings_url += ArtistName.getText().toString();
-
+        String TmpArtist = ArtistName.getText().toString().substring(3,ArtistName.length());
+        artist_url += TmpArtist;
+        Log.d("New Artist", "New Artist" + artist_url);
+        artistPaintings_url += TmpArtist;
         JSONRequestArtistProfile();
         JSONRequestArtistPaintings();
     }
@@ -94,7 +93,9 @@ public class ArtistBio extends AppCompatActivity implements ArtistPaintingsView.
                         jsonObject = response.getJSONObject(i);
                         String ArtistProfilePicture = jsonObject.getString("Image");
                         String Bio = jsonObject.getString("Bio");
-
+                        Log.d("Artist","Artist " + artist_url);
+                        Log.d("Artist","Artist " + ArtistProfilePicture);
+                        Log.d("Artist","Artist " + Bio);
                         ArtistProfilePic.setImageUrl(ArtistProfilePicture, MySingleton.getInstance(ArtistBio.this).getImageLoader());
                         ArtistBioText.setText(Bio);
 

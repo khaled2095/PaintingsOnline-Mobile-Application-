@@ -167,8 +167,6 @@
         </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
-
-
         <!-- Bottom Navigation -->
 
         <RelativeLayout
