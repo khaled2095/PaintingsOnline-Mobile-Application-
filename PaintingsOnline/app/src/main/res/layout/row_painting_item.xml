@@ -1,6 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    app:cardElevation="4dp"
+    android:layout_marginBottom="5dp">
 
-</LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/imgpaintings2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+
+        <TextView
+            android:id="@+id/owner2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:textAlignment="textStart"
+            android:layout_above="@id/painting_Name2"
+            android:textColor="@color/White"
+            android:background="#4f0e0d0e"
+            android:textSize="17sp" />
+
+
+
+        <TextView
+            android:id="@+id/painting_Name2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subtitle"
+            android:textAlignment="textStart"
+            android:layout_above="@+id/painting_Price2"
+            android:textColor="@color/White"
+            android:background="#4f0e0d0e"
+            android:textSize="17sp" />
+
+
+
+        <TextView
+            android:id="@+id/painting_Price2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:text="200"
+            android:textAlignment="textStart"
+            android:textColor="@color/White"
+            android:background="#4f0e0d0e"
+            android:textSize="17sp" />
+
+
+
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

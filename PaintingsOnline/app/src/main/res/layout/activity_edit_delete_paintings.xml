@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ArtistPanel.EditDeletePaintings">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Top Toolbar -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rel1">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/white_grey_border_bottom">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/paintingtoolbarhome">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Update Paintings"
+                            android:textSize="20sp"
+                            android:textColor="@color/Black"
+                            android:id="@+id/paintingname"/>
+
+
+                    </RelativeLayout>
+
+
+                </androidx.appcompat.widget.Toolbar>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+        </RelativeLayout>
+
+        <!-- Middle Section -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/rel2"
+            android:layout_below="@id/rel1"
+            android:layout_above="@id/rel3">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/relLayout1"
+                        android:background="@color/white">
+
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/vpager"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            android:layout_marginTop="15dp">
+                        </androidx.viewpager.widget.ViewPager>
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tab_layout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/vpager"
+                            app:tabGravity="center"
+                            app:tabBackground="@drawable/tab_selector"
+                            app:tabIndicatorHeight="0dp"
+                            app:tabMaxWidth="10dp">
+
+                        </com.google.android.material.tabs.TabLayout>
+
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/tab_layout"
+                            android:id="@+id/relLayout2"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp">
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:hint="Title"
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+
+
+                                <EditText
+                                    android:id="@+id/update_title"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:inputType="textPersonName"/>
+
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </RelativeLayout>
+
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/relLayout2"
+                            android:id="@+id/relLayout9"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginEnd="20dp">
+
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/size"
+                                android:orientation="horizontal"
+                                android:layout_below="@+id/relLayout4"
+                                android:layout_marginTop="15dp">
+
+
+                                <Button
+                                    android:id="@+id/updateSizes"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:text="ADD SIZE PRICE QUANTITY"
+                                    android:background="@drawable/onclick_grey"/>
+
+
+                            </LinearLayout>
+
+
+
+                            <LinearLayout
+                                android:id="@+id/linear"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_marginTop="15dp"
+                                android:layout_below="@+id/size">
+
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/onclick_grey"
+                                    android:id="@+id/relLayoutspin"
+                                    android:padding="10dp"
+                                    android:layout_weight="2"
+                                    android:layout_marginEnd="2dp">
+
+
+
+                                    <Spinner
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/updatespinner1">
+                                    </Spinner>
+
+
+                                </RelativeLayout>
+
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/onclick_grey"
+                                    android:id="@+id/relLayoutspin2"
+                                    android:layout_weight="2"
+                                    android:layout_marginStart="2dp"
+                                    android:padding="10dp">
+
+
+                                    <Spinner
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:id="@+id/updatespinner2">
+                                    </Spinner>
+
+
+                                </RelativeLayout>
+
+
+                            </LinearLayout>
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="150dp"
+                                android:background="@drawable/onclick_grey"
+                                android:backgroundTint="@color/grey1"
+                                android:id="@+id/relLayout3"
+                                android:layout_below="@+id/linear"
+                                android:layout_marginTop="10dp"
+                                android:padding="10dp">
+
+
+
+                                <EditText
+                                    android:layout_width="match_parent"
+                                    android:layout_height="100dp"
+                                    android:id="@+id/update_description"
+                                    android:layout_centerVertical="true"
+                                    android:maxLines="20"
+                                    android:background="@null"
+                                    android:hint="Description"
+                                    android:textColor="@color/Black"
+                                    android:gravity="start"/>
+
+
+                            </RelativeLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:layout_below="@+id/relLayout3"
+                                android:layout_marginTop="30dp"
+                                android:layout_marginBottom="35dp"
+                                android:weightSum="2">
+
+
+                                <Button
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="30dp"
+                                    android:id="@+id/btn_update"
+                                    android:text="UPDATE"
+                                    android:textSize="15sp"
+                                    android:layout_weight="1"
+                                    android:layout_marginEnd="10dp"
+                                    android:background="@drawable/onclick_grey"/>
+
+                                <Button
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="30dp"
+                                    android:id="@+id/btn_delete"
+                                    android:text="DELETE"
+                                    android:textSize="15sp"
+                                    android:layout_weight="1"
+                                    android:layout_marginEnd="10dp"
+                                    android:textColor="@color/red"
+                                    android:background="@drawable/onclick_grey"/>
+
+                            </LinearLayout>
+
+
+
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+            </androidx.core.widget.NestedScrollView>
+
+            <ProgressBar
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:id="@+id/progressBarEdit"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="120dp"
+                android:visibility="invisible"/>
+
+        </RelativeLayout>
+
+        <!-- Bottom Navigation -->
+
+        <RelativeLayout
+            android:id="@+id/rel3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true">
+
+
+            <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/bottom"
+                android:background="@drawable/white_grey_border_top"
+                app:menu="@menu/navigation">
+
+            </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
+
+
+        </RelativeLayout>
+
+
+
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

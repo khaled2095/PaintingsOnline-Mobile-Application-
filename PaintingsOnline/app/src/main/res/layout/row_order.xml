@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="8dp"
+        android:layout_margin="1dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/relimg"
+                android:layout_marginTop="8dp">
+
+                <com.android.volley.toolbox.NetworkImageView
+                    android:layout_width="190dp"
+                    android:layout_height="140dp"
+                    android:scaleType="fitXY"
+                    android:id="@+id/orderimg"/>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/boughtorsold"
+                android:layout_toEndOf="@+id/relimg"
+                android:layout_marginStart="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/paintingbuyingmethod"
+                    android:layout_marginTop="8dp"
+                    android:text=""
+                    android:textColor="@color/Black"
+                    android:textSize="15sp"/>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/artistnames"
+                android:layout_toEndOf="@+id/relimg"
+                android:layout_below="@+id/boughtorsold"
+                android:layout_marginStart="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/artist"
+                    android:layout_marginTop="8dp"
+                    android:text="Artist: "
+                    android:textColor="@color/Black"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showowner"
+                    android:layout_marginTop="8dp"
+                    android:text=""
+                    android:textSize="15sp"
+                    android:layout_toEndOf="@+id/artist"/>
+
+            </RelativeLayout>
+
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/paintingprices"
+                android:layout_below="@+id/artistnames"
+                android:layout_toEndOf="@+id/relimg"
+                android:layout_marginStart="2dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/productprice"
+                    android:layout_marginTop="8dp"
+                    android:text="Price: "
+                    android:textColor="@color/Black"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showPrice"
+                    android:layout_toEndOf="@+id/productprice"
+                    android:layout_marginTop="8dp"
+                    android:text=""
+                    android:textSize="15sp"/>
+
+            </RelativeLayout>
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/paintingstatus"
+                android:layout_toEndOf="@+id/relimg"
+                android:layout_below="@+id/paintingprices"
+                android:layout_marginStart="2dp">
+
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_marginTop="8dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Status: "
+                    android:textColor="@color/Black"
+                    android:textSize="15sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/showstatus"
+                    android:layout_toEndOf="@+id/status"
+                    android:layout_marginTop="8dp"
+                    android:textSize="15sp"
+                    android:text=""/>
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/buttons"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_below="@+id/relimg"
+                android:layout_marginTop="5dp"
+                android:weightSum="2">
+
+
+
+                    <Button
+                        android:id="@+id/rating"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="15sp"
+                        android:text="Rate Us"
+                        android:layout_weight="1"
+                        android:background="@drawable/onclick_grey"
+                        android:textColor="@color/blue1"/>
+
+
+                    <Button
+                        android:id="@+id/feedback"
+                        android:layout_width="0dp"
+                        android:layout_height="30dp"
+                        android:layout_marginBottom="5dp"
+                        android:textSize="15sp"
+                        android:text="Feed back"
+                        android:layout_weight="1"
+                        android:textColor="@color/blue1"
+                        android:layout_marginStart="5dp"
+                        android:background="@drawable/onclick_grey"/>
+
+
+            </LinearLayout>
+
+
+
+
+        </RelativeLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+
+</com.google.android.material.card.MaterialCardView>

@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Category.PaintingsDetails">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relativelayout1">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/tabrelative">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/white_grey_border_bottom">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/paintingtoolbar">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginStart="10dp"
+                            android:layout_marginEnd="20dp"
+                            android:layout_centerVertical="true"
+                            android:id="@+id/backarrow"
+                            android:src="@drawable/ic_back"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Painting Details"
+                            android:textSize="20sp"
+                            android:textColor="@color/Black"
+                            android:layout_marginStart="60dp"
+                            android:id="@+id/paintingname"/>
+
+                        <!--                        <ImageView-->
+                        <!--                            android:layout_width="28dp"-->
+                        <!--                            android:layout_height="28dp"-->
+                        <!--                            android:layout_marginStart="300dp"-->
+                        <!--                            android:layout_centerVertical="true"-->
+                        <!--                            android:id="@+id/fav"-->
+                        <!--                            android:src="@drawable/ic_fav"/>-->
+
+                        <!--                        <com.nex3z.notificationbadge.NotificationBadge-->
+                        <!--                            android:layout_width="28dp"-->
+                        <!--                            android:layout_height="28dp"-->
+                        <!--                            android:id="@+id/badge3"-->
+                        <!--                            android:layout_toEndOf="@+id/fav"-->
+                        <!--                            android:layout_alignTop="@+id/fav"-->
+                        <!--                            android:layout_marginStart="-17dp"-->
+                        <!--                            android:layout_marginTop="-4dp"-->
+                        <!--                            app:nbMaxTextLength="2">-->
+                        <!--                        </com.nex3z.notificationbadge.NotificationBadge>-->
+
+
+                        <!--                        <ImageView-->
+                        <!--                            android:layout_width="28dp"-->
+                        <!--                            android:layout_height="28dp"-->
+                        <!--                            android:layout_alignParentEnd="true"-->
+                        <!--                            android:layout_marginEnd="23dp"-->
+                        <!--                            android:layout_centerVertical="true"-->
+                        <!--                            android:id="@+id/cart"-->
+                        <!--                            android:src="@drawable/ic_cart"/>-->
+
+                        <!--                        <com.nex3z.notificationbadge.NotificationBadge-->
+                        <!--                            android:layout_width="28dp"-->
+                        <!--                            android:layout_height="28dp"-->
+                        <!--                            android:id="@+id/badge"-->
+                        <!--                            android:layout_toEndOf="@+id/cart"-->
+                        <!--                            android:layout_alignTop="@+id/cart"-->
+                        <!--                            android:layout_marginStart="-38dp"-->
+                        <!--                            android:layout_marginTop="-4dp"-->
+                        <!--                            app:nbMaxTextLength="2">-->
+                        <!--                        </com.nex3z.notificationbadge.NotificationBadge>-->
+
+                    </RelativeLayout>
+
+
+                </androidx.appcompat.widget.Toolbar>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+        </RelativeLayout>
+
+        <!-- Middle Section -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tabrelative"
+            android:layout_above="@+id/rel4">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rel3">
+
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:id="@+id/appbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                    android:fitsSystemWindows="true">
+
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                        android:id="@+id/collapsing"
+                        android:layout_width="match_parent"
+                        android:layout_height="280dp"
+                        android:fitsSystemWindows="true"
+                        app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                        app:contentScrim="@color/Black"
+                        app:expandedTitleTextAppearance="@color/Black">
+
+
+                        <androidx.viewpager.widget.ViewPager
+                            android:id="@+id/vpagerimage"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@null"
+                            android:scaleType="centerCrop"
+                            app:layout_collapseMode="parallax">
+                        </androidx.viewpager.widget.ViewPager>
+
+                        <com.google.android.material.tabs.TabLayout
+                            android:id="@+id/tab_layout2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="bottom"
+                            app:tabGravity="center"
+                            app:tabBackground="@drawable/tab_selector"
+                            app:tabIndicatorHeight="0dp"
+                            app:tabMaxWidth="10dp"/>
+
+
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+                </com.google.android.material.appbar.AppBarLayout>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/c1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true"
+                    android:layout_below="@+id/appbar"
+                    android:layout_marginTop="5dp">
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:id="@+id/lin1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:weightSum="2">
+
+
+                            <TextView
+                                android:id="@+id/pname2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textAlignment="textStart"
+                                android:layout_marginStart="10dp"
+                                android:textColor="@color/Black"
+                                android:text="Subtitle"
+                                android:textSize="18sp" />
+
+                            <TextView
+                                android:id="@+id/powner2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:textAlignment="textStart"
+                                android:layout_marginStart="10dp"
+                                android:textColor="@color/blue4"
+                                android:text="Subtitle"
+                                android:textSize="18sp" />
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/lin2"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="10dp"
+                            android:layout_marginBottom="8dp"
+                            android:weightSum="2">
+
+                            <RelativeLayout
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:layout_marginStart="10dp"
+                                android:background="@drawable/onclick_grey"
+                                android:layout_weight="1">
+
+                                <Spinner
+                                    android:id="@+id/painting_Size2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"/>
+
+
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/PaintingPrice"
+                                android:layout_width="0dp"
+                                android:layout_height="40dp"
+                                android:text="500"
+                                android:textSize="20sp"
+                                android:textAlignment="center"
+                                android:layout_weight="1"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/c2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/c1"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/paintDesc"
+                        android:layout_marginTop="5dp"
+                        android:lineSpacingMultiplier="1.1"
+                        android:text="This painting is amazing"
+                        android:padding="10dp"
+                        android:textSize="15sp"/>
+
+                </androidx.cardview.widget.CardView>
+
+
+                <View
+                    android:id="@+id/line3"
+                    android:background="@color/Grey"
+                    android:layout_width = "match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_below="@+id/c2"/>
+
+
+                <LinearLayout
+                    android:id="@+id/lin4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/line3"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:weightSum="2">
+
+
+
+                    <Button
+                        android:id="@+id/cartbtn2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:textColor="@color/Black"
+                        android:background="@drawable/onclick_grey"
+                        android:layout_weight="1"
+                        android:text="Add to Cart"/>
+
+                    <Button
+                        android:id="@+id/favbtn2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:textColor="@color/Black"
+                        android:background="@drawable/onclick_grey"
+                        android:layout_weight="1"
+                        android:text="Add to Wishlist"/>
+
+                </LinearLayout>
+
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardElevation="5dp"
+                    app:cardUseCompatPadding="true"
+                    android:layout_marginTop="8dp"
+                    android:layout_below="@+id/lin4">
+
+
+                    <LinearLayout
+                        android:id="@+id/ReviewLists"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+
+                        <TextView
+                            android:id="@+id/reviews"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Reviews"
+                            android:textSize="15sp"
+                            android:layout_marginStart="5dp"
+                            android:textColor="@color/Black">
+                        </TextView>
+
+
+                        <ListView
+                            android:id="@+id/RateComments"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginStart="5dp">
+                        </ListView>
+
+
+                    </LinearLayout>
+
+
+                </androidx.cardview.widget.CardView>
+
+
+                <LinearLayout
+                    android:id="@+id/lin6"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/card">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/relatedPaintingsView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+        <!-- Bottom Navigation -->
+        <RelativeLayout
+            android:id="@+id/rel4"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true">
+
+
+            <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/bottom"
+                android:background="@drawable/white_grey_border_top"
+                app:menu="@menu/navigation">
+
+            </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

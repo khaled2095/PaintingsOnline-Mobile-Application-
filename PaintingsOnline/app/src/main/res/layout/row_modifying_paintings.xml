@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardElevation="4dp"
+    android:layout_marginLeft="5dp"
+    android:layout_marginTop="5dp"
+    android:layout_marginRight="5dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <com.android.volley.toolbox.NetworkImageView
+            android:id="@+id/modifyimgpaintings"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+
+
+        <TextView
+            android:id="@+id/modifyowner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Admin"
+            android:textAlignment="textStart"
+            android:textColor="@color/White"
+            android:layout_above="@id/modifypainting_Name"
+            android:background="#4f0e0d0e"
+            android:textSize="17sp" />
+
+
+
+        <TextView
+            android:id="@+id/modifypainting_Name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Subtitle"
+            android:textAlignment="textStart"
+            android:layout_above="@id/modifypainting_Price"
+            android:textColor="@color/White"
+            android:background="#4f0e0d0e"
+            android:textSize="17sp" />
+
+
+
+        <TextView
+            android:id="@+id/modifypainting_Price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="200"
+            android:textAlignment="textStart"
+            android:textColor="@color/White"
+            android:layout_alignParentBottom="true"
+            android:background="#4f0e0d0e"
+            android:textSize="17sp" />
+
+
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

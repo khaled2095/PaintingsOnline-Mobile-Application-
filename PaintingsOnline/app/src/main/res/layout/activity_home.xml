@@ -1,18 +1,196 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Home.HomeActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+        <!-- Top Toolbar -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rel1">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/white_grey_border_bottom">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/paintingtoolbarhome">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Paintings Online"
+                            android:textColor="@color/Black"
+                            android:textSize="20sp"
+                            android:id="@+id/paintingname"/>
+
+
+                    </RelativeLayout>
+
+
+
+                </androidx.appcompat.widget.Toolbar>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+        </RelativeLayout>
+
+
+        <!-- Middle Section -->
+
+
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swiperecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@id/rel3"
+            android:layout_below="@id/rel1">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+
+                <RelativeLayout
+                    android:id="@+id/rel2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@color/grey1">
+
+                    <com.daimajia.slider.library.SliderLayout
+                        android:id="@+id/slider"
+                        android:layout_width="match_parent"
+                        android:layout_height="215dp">
+                    </com.daimajia.slider.library.SliderLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/bestSellingLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/slider"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/White">
+
+                        <TextView
+                            android:id="@+id/bsPaintings"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Best Selling"
+                            android:layout_marginStart="5dp"
+                            android:textColor="@color/Black"
+                            android:textSize="15sp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/horizontalBestList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/bsPaintings">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:id="@+id/horizontalLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/bestSellingLayout"
+                        android:layout_marginTop="5dp"
+                        android:background="@color/White">
+
+                        <TextView
+                            android:id="@+id/fPaintings"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Feature Paintings"
+                            android:layout_marginStart="5dp"
+                            android:textColor="@color/Black"
+                            android:textSize="15sp" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/horizontalList"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/fPaintings">
+
+                        </androidx.recyclerview.widget.RecyclerView>
+
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:id="@+id/verticalPaintingView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/horizontalLayout"
+                        android:layout_marginTop="10dp"
+                        android:background="@color/White"
+                        android:orientation="vertical">
+
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:clipToPadding="false"
+                            android:scrollbars="vertical"/>
+
+
+                    </RelativeLayout>
+
+
+                </RelativeLayout>
+
+
+            </androidx.core.widget.NestedScrollView>
+
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
+        <!-- Bottom Navigation -->
+
+        <RelativeLayout
+            android:id="@+id/rel3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true">
+
+
+            <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/bottom"
+                android:background="@drawable/white_grey_border_top"
+                app:menu="@menu/navigation">
+
+            </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
+
+
+        </RelativeLayout>
+
+
+
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

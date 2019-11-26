@@ -1,19 +1,28 @@
 import UIKit
+import iOSDropDown
 
 class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet var imageView: UIImageView!
     
+
     let imagePicker = UIImagePickerController()
     
     @IBOutlet weak var ArtWorkName: UITextField!
     @IBOutlet weak var ArtWorkPrice: UITextField!
     @IBOutlet weak var ArtWorkDescribtion: UITextView!
-    @IBOutlet weak var txtCategory: UITextField!
-    @IBOutlet weak var artistname: UITextField!
-    @IBOutlet weak var password: UITextField!
+    @IBOutlet weak var categorytxt: DropDown!
+    @IBOutlet weak var Roomtxt: DropDown!
+    @IBOutlet weak var Size: UITextField!
+    @IBOutlet weak var Quantity: UITextField!
     
+    var tmpListOfTitle : [String] = []
+    var SelectedIndex : Int = 0
     var DidUpload : Bool = false
+    
+    var tmpListOfTitleRoom : [String] = []
+    var SelectedIndexRoom : Int = 0
+  
     
     @IBAction func LoadImageTap(_ sender: UIButton) {
         imagePicker.allowsEditing = false
@@ -22,10 +31,190 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         present(imagePicker, animated: true, completion: nil)
     }
  
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        
+        LoadCategories()
+        LoadRooms()
+        
         imagePicker.delegate = self
+        
+        var frameRect : CGRect = ArtWorkName.frame;
+        frameRect.size.height = 40; // <-- Specify the height you want here.
+        ArtWorkName.frame = frameRect;
+        
+        frameRect = ArtWorkPrice.frame;
+        frameRect.size.height = 40; // <-- Specify the height you want here.
+        ArtWorkPrice.frame = frameRect;
+        
+        frameRect = Size.frame;
+        frameRect.size.height = 40; // <-- Specify the height you want here.
+        Size.frame = frameRect;
+       
+        frameRect = Size.frame;
+        frameRect.size.height = 40; // <-- Specify the height you want here.
+        Size.frame = frameRect;
+        
+       categorytxt.optionArray = tmpListOfTitle
+      categorytxt.optionIds = [1,1,1,1,1,1,1,1,1,1,1,1]
+        
+        Roomtxt.optionArray = tmpListOfTitleRoom
+        Roomtxt.optionIds = [1,1,1,1,1,1,1,1,1,1,1]
+        //Its Id Values and its optional
+        // The the Closure returns Selected Index and String
+       categorytxt.didSelect{(selectedText , index ,id) in
+        self.SelectedIndex = index
+    }
+       Roomtxt.didSelect{(selectedTextRoom , index ,id) in
+            self.SelectedIndexRoom = index
+        }
+    }
+    
+    func LoadCategories() {
+        var URL1 = "https://jrnan.info/Painting/ShowCategory.php"
+        guard let gitUrl = URL(string: URL1 ) else { return }
+        URLSession.shared.dataTask(with: gitUrl) { (data, response
+            , error) in
+            guard let data = data else { return }
+            do {
+                let decoder = JSONDecoder()
+                let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
+                for data in gitData {
+                    self.tmpListOfTitle.append((data.Name as! String))
+                    self.categorytxt.optionArray = self.tmpListOfTitle
+                }
+            } catch let err {
+                print("Err", err)
+            }
+            }.resume()
+    }
+    
+    func LoadRooms() {
+        var URL1 = "https://jrnan.info/Painting/ShowRoom.php"
+        guard let gitUrl = URL(string: URL1 ) else { return }
+        URLSession.shared.dataTask(with: gitUrl) { (data, response
+            , error) in
+            guard let data = data else { return }
+            do {
+                let decoder = JSONDecoder()
+                let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
+                for data in gitData {
+                    self.tmpListOfTitleRoom.append((data.Name as! String))
+                    self.Roomtxt.optionArray = self.tmpListOfTitleRoom
+                }
+            } catch let err {
+                print("Err", err)
+            }
+            }.resume()
+    }
+    
+    
+    
+    func UpdateMe() {
+         if (isKeyPresentInUserDefaults(key: "username")) {
+            let URL1 = "https://jrnan.info/Painting/Login.php?Username=" + (UserDefaults.standard.value(forKey: "username") as! String) + "&Password=" +  (UserDefaults.standard.value(forKey: "Password") as! String)
+            
+        guard let gitUrl = URL(string: URL1.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!) else { return }
+        let task = URLSession.shared.dataTask(with: gitUrl) { (data, response
+            , error) in
+            guard let data = data else { return }
+            do {
+                let decoder = JSONDecoder()
+                let gitData = try decoder.decode(Array<MyGitHub>.self, from: data)
+                for data in gitData {
+                    DispatchQueue.main.async { // Correct
+                    var Username = data.username!
+                    var Name = data.name!
+                    var Email = data.Email!
+                    var Address = data.Address!
+                    var UserType = data.usertype!
+                    var verified = data.verified!
+                    UserDefaults.standard.set(Username, forKey: "username")
+                    UserDefaults.standard.set(Email, forKey: "Email")
+                    UserDefaults.standard.set(Name, forKey: "Name")
+                    UserDefaults.standard.set(Address, forKey: "Address")
+                    UserDefaults.standard.set(UserType, forKey: "UserType")
+                    UserDefaults.standard.set(data.verified!, forKey: "verified")
+                }
+                }
+            } catch let err {
+                print("Err", err)
+            }
+        }
+        task.resume()
+        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        UpdateMe()
+        categorytxt.isEnabled = false ;
+        ArtWorkName.isEnabled = false;
+        ArtWorkPrice.isEnabled = false;
+        ArtWorkDescribtion.isEditable = false ;
+        categorytxt.isEnabled = false ;
+        Size.isEnabled = false ;
+        Quantity.isEnabled = false;
+        Roomtxt.isEnabled = false;
+        if (isKeyPresentInUserDefaults(key: "username")) {
+            if (String(UserDefaults.standard.value(forKey: "UserType") as! String) != "1"){
+                let alert = UIAlertView()
+                alert.title = "Invalid cridentials"
+                alert.message = "You are logged in with a costumer account please change your account to artist."
+                alert.addButton(withTitle: "Understood")
+                alert.show()
+            }
+            else {
+                if (String(UserDefaults.standard.value(forKey: "verified") as! String) != "1") {
+                    let alert = UIAlertView()
+                    alert.title = "Verification needed"
+                    alert.message = "You are not vertified yet, we are doing our best to get you onboard."
+                    alert.addButton(withTitle: "Understood")
+                    alert.show()
+                }
+                else {
+                    categorytxt.isEnabled = true ;
+                    ArtWorkName.isEnabled = true;
+                    ArtWorkPrice.isEnabled = true;
+                    ArtWorkDescribtion.isEditable = true ;
+                    categorytxt.isEnabled = true ;
+                    Size.isEnabled = true ;
+                    Quantity.isEnabled = true;
+                    Roomtxt.isEnabled = true;
+                    
+                }
+            }
+        }
+        else{
+            let alert = UIAlertView()
+            alert.title = "Invalid cridentials"
+            alert.message = "It doesn't seem that you are logged it, please log in with an artist account"
+            alert.addButton(withTitle: "Understood")
+            alert.show()
+        }
+    }
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if (Size.isEditing || Quantity.isEditing ){
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+        }
+    }
+    
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if self.view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
+    
+    func isKeyPresentInUserDefaults(key: String) -> Bool {
+        return UserDefaults.standard.object(forKey: key) != nil
     }
     
     // MARK: - UIImagePickerControllerDelegate Methods
@@ -53,9 +242,12 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
         return strBase64
     }
     
-    
+ 
     @IBAction func AddPost(_ sender: Any) {
         var AlertMessage : String = ""
+        
+        self.showSpinner1(onView: view)
+        
         if (ArtWorkName.text == "" ) {
             AlertMessage.append("Painting Name is required")
         }
@@ -69,9 +261,10 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
             AlertMessage.append("\n You have to choose a picture")
         }
         if (AlertMessage == ""){
+     
             
             // the image in UIImage type
-            guard let image = imageView.image else { return  }
+            let image = resize(imageView.image as! UIImage)
             
             let filename = "avatar.png"
             
@@ -119,7 +312,6 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
             
             // Send a POST request to the URL, with the data we created earlier
             session.uploadTask(with: urlRequest, from: data, completionHandler: { responseData, response, error in
-                
                 if(error != nil){
                     let alert = UIAlertView()
                     alert.title = "Error"
@@ -144,30 +336,91 @@ class AddViewController: UIViewController, UIImagePickerControllerDelegate, UINa
             }).resume()
         }
         else {
+           removeSpinner1()
         let alert = UIAlertView()
         alert.title = "Missing Details"
         alert.message = AlertMessage
         alert.addButton(withTitle: "Understood")
         alert.show()
+            
         }
+        self.removeSpinner1()
     }
     
-    
+    var vSpinner : UIView?
     
     func AddToServer(URL2 : String) {
-        var URL1 = "https://jrnan.info/Painting/testUpload.php?painting_url=" + URL2 + "&painting_name=" + ArtWorkName.text! + "&painting_price=" + ArtWorkPrice.text! + "&painting_description=" + ArtWorkDescribtion.text! + "&painting_artist=" + artistname.text! + "&Painting_category=" + txtCategory.text! + "&Password=" + password.text!
-        print (URL1);
-        
-        guard let gitUrl = URL(string: URL1 ) else { return }
+        var URL1 = "https://jrnan.info/Painting/testUpload.php?painting_url=" + URL2 + "&painting_name=" + ArtWorkName.text! + "&painting_price=" + ArtWorkPrice.text! + "&painting_description=" + ArtWorkDescribtion.text!
+        URL1.append("&painting_artist=" + (UserDefaults.standard.value(forKey: "username") as! String))
+        URL1.append("&Password=" + (UserDefaults.standard.value(forKey: "Password")as! String))
+        URL1.append("&Painting_category=" + String(SelectedIndex))
+        URL1.append("&Room=" + String(SelectedIndexRoom))
+        URL1.append("&Size=" + Size.text!)
+        URL1.append("&Quantity=" + Quantity.text!)
+        print(URL1)
+        guard let gitUrl = URL(string: URL1.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!) else { return }
         URLSession.shared.dataTask(with: gitUrl) { (data, response
             , error) in
             guard let data = data else { return }
             do {
+                 DispatchQueue.main.async { // Correct
+                if (data.count == 0) {
+                    let alert = UIAlertView()
+                    alert.title = "Error"
+                    alert.message = "We couldnt finalise your request"
+                    alert.addButton(withTitle: "Understood")
+                    alert.show()
+                }
+                else {
+                    let alert = UIAlertView()
+                    alert.title = "success"
+                    alert.message = "successfully uploaded the image"
+                    alert.addButton(withTitle: "Understood")
+                    alert.show()
+                }
+                }
             } catch let err {
                 print("Err", err)
             }
             }.resume()
     }
+    
+    func resize(_ image: UIImage) -> UIImage {
+        var actualHeight = Float(image.size.height)
+        var actualWidth = Float(image.size.width)
+        let maxHeight: Float = 400.0
+        let maxWidth: Float = 400.0
+        var imgRatio: Float = actualWidth / actualHeight
+        let maxRatio: Float = maxWidth / maxHeight
+        let compressionQuality: Float = 0.5
+        //50 percent compression
+        if actualHeight > maxHeight || actualWidth > maxWidth {
+            if imgRatio < maxRatio {
+                //adjust width according to maxHeight
+                imgRatio = maxHeight / actualHeight
+                actualWidth = imgRatio * actualWidth
+                actualHeight = maxHeight
+            }
+            else if imgRatio > maxRatio {
+                //adjust height according to maxWidth
+                imgRatio = maxWidth / actualWidth
+                actualHeight = imgRatio * actualHeight
+                actualWidth = maxWidth
+            }
+            else {
+                actualHeight = maxHeight
+                actualWidth = maxWidth
+            }
+        }
+        let rect = CGRect(x: 0.0, y: 0.0, width: CGFloat(actualWidth), height: CGFloat(actualHeight))
+        UIGraphicsBeginImageContext(rect.size)
+        image.draw(in: rect)
+        let img = UIGraphicsGetImageFromCurrentImageContext()
+        let imageData = img?.jpegData(compressionQuality: CGFloat(compressionQuality))
+        UIGraphicsEndImageContext()
+        return UIImage(data: imageData!) ?? UIImage()
+    }
+    
     }
 
 
@@ -178,3 +431,33 @@ extension UIImage {
         return self.pngData()
     }
 }
+
+  var vSpinner1 : UIView?
+
+extension UIViewController {
+    func showSpinner1(onView : UIView) {
+        let spinnerView = UIView.init(frame: onView.bounds)
+        spinnerView.backgroundColor = UIColor.init(red: 0.5, green: 0.5, blue: 0.5, alpha: 0.5)
+        let ai = UIActivityIndicatorView.init(style: .whiteLarge)
+        ai.startAnimating()
+        ai.center = spinnerView.center
+        
+        DispatchQueue.main.async {
+            spinnerView.addSubview(ai)
+            onView.addSubview(spinnerView)
+        }
+        
+        vSpinner1 = spinnerView
+    }
+    
+    
+    
+    func removeSpinner1() {
+        DispatchQueue.main.async {
+            vSpinner1?.removeFromSuperview()
+            vSpinner1 = nil
+        }
+    }
+}
+
+

@@ -1,0 +1,234 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ArtistPanel.SellingPanel">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Top Toolbar -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rel1">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/white_grey_border_bottom">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/paintingtoolbarhome">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Selling Panel"
+                            android:textSize="20sp"
+                            android:textColor="@color/Black"
+                            android:id="@+id/paintingname"/>
+
+
+                    </RelativeLayout>
+
+
+                </androidx.appcompat.widget.Toolbar>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+        </RelativeLayout>
+
+        <!-- Middle Section -->
+
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rel1"
+            android:layout_above="@id/rel3">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rel2">
+
+
+                <RelativeLayout
+                    android:id="@+id/graph"
+                    android:layout_width="match_parent"
+                    android:layout_height="350dp">
+
+                    <com.github.mikephil.charting.charts.BarChart
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/BarChart">
+
+                    </com.github.mikephil.charting.charts.BarChart>
+
+
+                </RelativeLayout>
+
+
+
+                <LinearLayout
+                    android:id="@+id/lintext"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_below="@id/graph"
+                    android:layout_marginTop="8dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/onclick_grey"
+                    android:weightSum="2">
+
+
+                    <TextView
+                        android:id="@+id/tSales"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:id="@+id/tRevenue"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="18sp"/>
+
+
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/lintext2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_below="@id/lintext"
+                    android:layout_marginTop="8dp"
+                    android:layout_margin="8dp"
+                    android:background="@drawable/onclick_grey"
+                    android:weightSum="2">
+
+
+                    <TextView
+                        android:id="@+id/BestArtist"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/Black"
+                        android:text="Best Artist of the Year"
+                        android:textSize="18sp"/>
+
+
+                    <TextView
+                        android:id="@+id/tbestArtistName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:id="@+id/AmountEarned"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="5dp"
+                        android:textColor="@color/Black"
+                        android:textSize="18sp"/>
+
+
+                </LinearLayout>
+
+
+                <View
+                    android:id="@+id/line"
+                    android:background="@color/DarkGrey"
+                    android:layout_width = "match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/lintext2"/>
+
+                    <RelativeLayout
+                        android:id="@+id/artistdelivery"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_below="@+id/line"
+                        android:layout_marginTop="10dp">
+
+                        <TextView
+                            android:id="@+id/LatestOrders"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="18sp"
+                            android:text="Latest Orders"
+                            android:layout_marginStart="5dp"
+                            android:textColor="@color/Black">
+                        </TextView>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/deliveryrecycler"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_below="@+id/LatestOrders">
+                        </androidx.recyclerview.widget.RecyclerView>
+
+
+                    </RelativeLayout>
+
+
+            </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+        <!-- Bottom Navigation -->
+
+        <RelativeLayout
+            android:id="@+id/rel3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true">
+
+
+            <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/bottom"
+                android:background="@drawable/white_grey_border_top"
+                app:menu="@menu/navigation">
+
+            </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
+
+
+        </RelativeLayout>
+
+
+
+
+    </RelativeLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

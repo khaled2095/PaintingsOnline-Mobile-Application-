@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item android:id="@+id/f1"
+        android:icon="@drawable/ic_fav"
+        android:title="Favourite"
+        app:showAsAction="always"
+        app:actionLayout="@layout/notification_favourite_badge_layout"/>
+
+    <item android:id="@+id/c1"
+        android:icon="@drawable/ic_cart"
+        android:title="Cart"
+        app:showAsAction="always"
+        app:actionLayout="@layout/notification_badge_layout"/>
+
+
+</menu>

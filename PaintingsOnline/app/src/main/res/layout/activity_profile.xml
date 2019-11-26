@@ -1,9 +1,376 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".Profile.ProfileActivity">
 
-</android.support.constraint.ConstraintLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!-- Top Toolbar -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rel1">
+
+            <com.google.android.material.appbar.AppBarLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:background="@drawable/white_grey_border_bottom">
+
+                <androidx.appcompat.widget.Toolbar
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/profiletoolbar">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:text="Profile"
+                            android:textSize="20sp"
+                            android:textColor="@color/Black"
+                            android:layout_marginStart="10dp"
+                            android:id="@+id/profile"/>
+
+
+                    </RelativeLayout>
+
+
+                </androidx.appcompat.widget.Toolbar>
+
+
+            </com.google.android.material.appbar.AppBarLayout>
+
+
+        </RelativeLayout>
+
+        <!-- Middle Section -->
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/rel1"
+            android:layout_above="@id/rel3"
+            android:background="@color/White">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/rel2">
+
+
+                <LinearLayout
+                    android:id="@+id/linButtons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:layout_marginTop="10dp">
+
+
+                    <Button
+                        android:id="@+id/SPanel"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_weight="1"
+                        android:layout_margin="5dp"
+                        android:text="Selling Panel"
+                        android:background="@drawable/onclick_grey">
+                    </Button>
+
+                    <Button
+                        android:id="@+id/ModifyPaintingsButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="35dp"
+                        android:layout_margin="5dp"
+                        android:layout_weight="1"
+                        android:text="Modify Paintings"
+                        android:background="@drawable/onclick_grey">
+                    </Button>
+
+
+                </LinearLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/pictureRelative"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:layout_below="@+id/linButtons">
+
+                    <ImageView
+                        android:id="@+id/ArtistProfile"
+                        android:layout_width="match_parent"
+                        android:layout_height="150dp"
+                        android:src="@drawable/ic_profile">
+                    </ImageView>
+
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="@drawable/onclick_grey"
+                    android:backgroundTint="@color/grey1"
+                    android:id="@+id/relbio"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@+id/pictureRelative"
+                    android:padding="10dp">
+
+
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:id="@+id/input_bio"
+                        android:layout_centerVertical="true"
+                        android:maxLines="20"
+                        android:background="@null"
+                        android:hint="Description"
+                        android:textColor="@color/Black"
+                        android:gravity="start"/>
+
+
+                </RelativeLayout>
+
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relLayout1"
+                    android:layout_below="@+id/relbio"
+                    android:layout_marginTop="15dp"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_profile"
+                        android:id="@+id/ivPerson"
+                        android:layout_centerVertical="true"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/ivPerson"
+                        android:inputType="textNoSuggestions"
+                        android:textSize="16sp"
+                        android:textColor="@color/Black"
+                        android:id="@+id/editfullName"
+                        android:layout_marginStart="10dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relLayout2"
+                    android:layout_below="@+id/relLayout1"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_address"
+                        android:id="@+id/address"
+                        android:layout_centerVertical="true"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/address"
+                        android:inputType="textNoSuggestions"
+                        android:textSize="16sp"
+                        android:textColor="@color/Black"
+                        android:id="@+id/editaddr"
+                        android:layout_marginStart="10dp"/>
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relLayout3"
+                    android:layout_below="@+id/relLayout2"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_email"
+                        android:id="@+id/email"
+                        android:layout_centerVertical="true"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/email"
+                        android:inputType="textNoSuggestions"
+                        android:textSize="16sp"
+                        android:textColor="@color/Black"
+                        android:id="@+id/editemail"
+                        android:layout_marginStart="10dp"/>
+
+                </RelativeLayout>
+
+                <Button
+                    android:id="@+id/updatedetails"
+                    android:layout_width="180dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/relLayout3"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Update"
+                    android:textSize="15sp"
+                    android:background="@drawable/onclick_grey"/>
+
+
+                <Button
+                    android:id="@+id/switchtoartist"
+                    android:layout_width="180dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/relLayout3"
+                    android:layout_toRightOf="@+id/updatedetails"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginStart="20dp"
+                    android:text="Sell your Paintings"
+                    android:textSize="15sp"
+                    android:textColor="@color/blue4"
+                    android:background="@drawable/onclick_grey"/>
+
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_marginTop="30dp"
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:background="#c0c0c0"
+                    android:layout_below="@+id/updatedetails"/>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relLayout4"
+                    android:layout_below="@+id/line"
+                    android:layout_marginTop="30dp"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_pass"
+                        android:id="@+id/pass"
+                        android:layout_centerVertical="true"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/pass"
+                        android:inputType="textPassword"
+                        android:textSize="16sp"
+                        android:textColor="@color/Black"
+                        android:id="@+id/editpass"
+                        android:hint="New Password"
+                        android:layout_marginStart="10dp"/>
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/relLayout5"
+                    android:layout_below="@+id/relLayout4"
+                    android:padding="10dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_pass"
+                        android:id="@+id/conpass"
+                        android:layout_centerVertical="true"/>
+
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/conpass"
+                        android:inputType="textPassword"
+                        android:textSize="16sp"
+                        android:textColor="@color/Black"
+                        android:id="@+id/editconpass"
+                        android:hint="Confirm Password"
+                        android:layout_marginStart="10dp"/>
+
+                </RelativeLayout>
+
+
+
+                <Button
+                    android:id="@+id/updatepass"
+                    android:layout_width="150dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/relLayout5"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:text="Update"
+                    android:background="@drawable/onclick_grey"/>
+
+                <Button
+                    android:id="@+id/logout"
+                    android:layout_width="150dp"
+                    android:layout_height="30dp"
+                    android:layout_below="@+id/updatepass"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="Logout"
+                    android:background="@drawable/onclick_grey"/>
+
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+
+        <!-- Bottom Navigation -->
+
+        <RelativeLayout
+            android:id="@+id/rel3"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_alignParentBottom="true">
+
+
+            <com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/bottom"
+                android:background="@drawable/white_grey_border_top"
+                app:menu="@menu/navigation">
+
+            </com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx>
+
+
+        </RelativeLayout>
+
+
+
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
